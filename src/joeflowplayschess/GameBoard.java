@@ -26,15 +26,27 @@ public class GameBoard {
     
     private void setUpStart(chessPiece[] wPieces, chessPiece[] bPieces){
         gameBoard = new chessPiece[8][8];
-        
+
         for(int col = 1; col < 9; col++){
             gameBoard[0][col-1] = wPieces[col-1];
-            gameBoard[1][col-1] = wPieces[col-1+8];
+            gameBoard[3][col-1] = wPieces[col-1+8];
             
             gameBoard[7][col-1] = bPieces[col-1];
             gameBoard[6][col-1] = bPieces[col-1+8];
             
         }
+        /*
+        for(int row = 3; row < 7; row++){
+            for(int col = 1; col < 9; col++){
+                gameBoard[row-1][col-1] = new chessPiece("Empty");
+            }
+        }
+*/
+    }
+    
+    public void move(int[] oldPos, int[] newPos){
+        gameBoard[newPos[0]-1][newPos[1]-1] = getPieceAt(oldPos[0], oldPos[1]);
+        gameBoard[oldPos[0]-1][oldPos[1]-1] = null;
     }
     
     private chessPiece[] getActivePieces(){
@@ -57,6 +69,6 @@ public class GameBoard {
     }
     
     public chessPiece getPieceAt(int row, int col){
-        return gameBoard[row-1][col-1];
+            return gameBoard[row-1][col-1];
     }
 }

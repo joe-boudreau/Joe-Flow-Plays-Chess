@@ -20,6 +20,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
+import java.awt.event.MouseListener;
 import java.util.Arrays;
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -35,13 +37,16 @@ public class JoeFlowPlaysChess extends JFrame {
     private JLabel mousep = new JLabel("0,0");
     private GameBoard gameState;
     private JPanel chessBoard;
+    private chessPiece[] wPieces;
+    private chessPiece[] bPieces;
     
     public JoeFlowPlaysChess(){
         initUI();
+       
     }
     
     public void initUI(){
-        
+  
         pane = getContentPane();
         
         chessBoard = setUpChessBoard();
@@ -52,32 +57,31 @@ public class JoeFlowPlaysChess extends JFrame {
         pack();
         pane.validate();
         
-        startGame();
+        //startGame();
+        
+        
     }    
     
     public void startGame(){
         
         boolean whiteTurn = true;
-        JLayeredPane boardPanel = (JLayeredPane) chessBoard.getComponent(0);
-        chessPiece[] boardPieces = (chessPiece[]) boardPanel.getComponentsInLayer(0);
-        
+
         while(whiteTurn){
-            for(chessPiece currPiece :  boardPieces){
-                if(currPiece.hasMoved()){
-                    int[] newPos = currPiece.getPosition();
-                    if(currPiece.isCapture()){
-                        //chessPiece deadPiece = gameState.getPieceAt(newPos[0], newPos[1]);
-                        
-                        for(chessPiece cP: boardPieces){
-                            if(Arrays.equals(newPos, cP.getPosition()) && cP.getColour()=="BLACK"){
-                                
-                            }
-                        }
+            for(int i = 0; i <  16; i++){
+                if(wPieces[i].hasMoved()){
+                    int[] newPos = wPieces[i].getNewPosition();
+                    if(wPieces[i].isACapture()){ gameState.getPieceAt(newPos[0], newPos[1]).makeDead();}
+                    gameState.move(wPieces[i].getPosition(), newPos);
+                    wPieces[i].clearFlagsAndUpdatePosition();
+                    for(int j = 0; j <  wPieces.length; j++){
+                        wPieces[j].updateGameBoard(gameState);
+                        bPieces[j].updateGameBoard(gameState);
                     }
                 }
-            
-            }    
+            }
         }
+        
+        
     }
     
     public JPanel setUpChessBoard(){
@@ -107,8 +111,8 @@ public class JoeFlowPlaysChess extends JFrame {
             }
         });
         
-        chessPiece[] wPieces = getPieces("w");
-        chessPiece[] bPieces = getPieces("b");
+        wPieces = getPieces("w");
+        bPieces = getPieces("b");
         
         chessBoard.add(board, 1);
         
@@ -125,6 +129,11 @@ public class JoeFlowPlaysChess extends JFrame {
         
         gameState = new GameBoard(wPieces, bPieces);
         
+        for(int j = 0; j <  16; j++){
+            wPieces[j].updateGameBoard(gameState);
+            bPieces[j].updateGameBoard(gameState);
+        }
+        
         gameState.printPiecePositions();
         
         return chessPanel;
@@ -138,7 +147,7 @@ public class JoeFlowPlaysChess extends JFrame {
         int colourNum;
         if(colour.equals("w")){ 
             yRow1 = 1;
-            yRow2 = 2;
+            yRow2 = 4;
             colourNum = 0;
             }
         else{
@@ -186,5 +195,5 @@ public class JoeFlowPlaysChess extends JFrame {
             }
         });
     }
-    
+
 }

@@ -21,12 +21,13 @@ public class chessPiece
   private volatile int myX = 0;
   private volatile int myY = 0;
   
-  private int r, c, colour, temp_r, temp_c;
+  private int r, c, colour, newRow, newCol;
   private String type;
   private GameBoard gameState;
   private boolean hasMoved;
-  private boolean isCapture;
-  
+  private boolean isACapture;
+  private boolean isCaptured;
+  private boolean isEmpty;
   public chessPiece(int row, int col, String typePiece, int colourPiece) {
       
     String colourStr = colourPiece == 0 ? "w" : "b";  
@@ -38,9 +39,10 @@ public class chessPiece
     
     setBounds(100*(c-1), 800 - 100*(r-1), 100, 100);
     
-    isCapture = false;
+    isACapture = false;
     hasMoved = false;
-
+    isCaptured = false;
+    isEmpty = false;
     addMouseListener(new MouseListener() {
 
       @Override
@@ -88,10 +90,15 @@ public class chessPiece
     });
     
   }
-    
+  
+  //public chessPiece(String empty){
+      //isEmpty = true;
+  //}
+  
     public void updateGameBoard(GameBoard gb){
         gameState = gb;
     }
+    
     public String getColour(){
         return colour == 0 ? "White" : "Black";
     }
@@ -145,21 +152,21 @@ public class chessPiece
                 colFound = true;
             }
         }
-        int newRow = (int)(800-y)/100 + 1;
-        int newCol = (int)(x)/100 + 1;
+        newRow = (int)(800-y)/100 + 1;
+        newCol = (int)(x)/100 + 1;
+        System.out.println(newRow + "  " + newCol);
+        System.out.println(r + "  " + c);
+        
         String move = moveType(colour, type, newRow, newCol, r, c);
         
         if(move.equals("INVALID")){
             movePiece(r, c);
         }
         else{
+            System.out.println("VALID");
             hasMoved = true;
-            setLocation(new Point(x, y));
-            isCapture = move.equals("CAPTURE") ? true : false;
-            temp_r = r;
-            temp_c = c;
-            r = newRow;
-            c = newCol;    
+            movePiece(newRow, newCol);
+            isACapture = move.equals("CAPTURE") ? true : false;   
             }
         }
     
@@ -167,15 +174,31 @@ public class chessPiece
         return hasMoved;
     }
     
-    public boolean isCapture(){
-        return isCapture;
+    public boolean isACapture(){
+        return isACapture;
     }
     
-    public int[] newPosition(){
-        hasMoved = false;
-        isCapture = false;
-        return new int[]{r, c};
+    //public boolean isEmpty(){
+        //return isEmpty;
+    //}
+    
+    public void makeDead(){
+        setVisible(false);
+        isCaptured=true;
     }
+    
+    public int[] getNewPosition(){
+        return new int[]{newRow, newCol};
+    }
+    
+    public void clearFlagsAndUpdatePosition(){
+        hasMoved = false;
+        isACapture = false;
+        System.out.println(newRow + "  " + newCol);
+        r = newRow;
+        c = newCol;
+    }
+    
     private String moveType(int colour, String type, int newR, int newC, int R, int C){
             
         switch(type){
@@ -198,13 +221,13 @@ public class chessPiece
                         }
                     }
                 }
-                if(colour == 1 && gameState.getPieceAt(newR, newC).getColour().equals("WHITE")){
+                if(gameState.getPieceAt(newR, newC) != null && colour == 1 && gameState.getPieceAt(newR, newC).getColour().equals("WHITE")){
                     return "CAPTURE";
                 }
-                else if(colour == 0 && gameState.getPieceAt(newR, newC).getColour().equals("BLACK")){
+                else if(gameState.getPieceAt(newR, newC) != null && colour == 0 && gameState.getPieceAt(newR, newC).getColour().equals("BLACK")){
                     return "CAPTURE";
                 }
-                return "INVALID";
+                return "VALID";
                 
         
         }
