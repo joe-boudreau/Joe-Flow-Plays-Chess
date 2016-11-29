@@ -5,6 +5,7 @@
  */
 package joeflowplayschess;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,184 +22,42 @@ public class chessPiece
   private volatile int myX = 0;
   private volatile int myY = 0;
   
-  private int r, c, colour, newRow, newCol;
-  private String type;
-  private GameBoard gameState;
   private boolean hasMoved;
-  private boolean isACapture;
-  private boolean isCaptured;
-  private boolean isEmpty;
-  public chessPiece(int row, int col, String typePiece, int colourPiece) {
+  private int colour;
+  private String type;
+  private int row;
+  private char col;
+  
+  public chessPiece(String typePiece, int colourPiece, int Row, char Col) {
       
     String colourStr = colourPiece == 0 ? "w" : "b";  
     setIcon(new ImageIcon(getClass().getResource("/resources/" + colourStr + typePiece + ".png")));
-    r = row;
-    c = col;
     type = typePiece;
     colour = colourPiece;
-    
-    setBounds(100*(c-1), 800 - 100*(r-1), 100, 100);
-    
-    isACapture = false;
     hasMoved = false;
-    isCaptured = false;
-    isEmpty = false;
-    addMouseListener(new MouseListener() {
-
-      @Override
-      public void mouseClicked(MouseEvent e) { }
-
-      @Override
-      public void mousePressed(MouseEvent e) {
-        screenX = e.getXOnScreen();
-        screenY = e.getYOnScreen();
-
-        myX = getX();
-        myY = getY();
-      }
-
-      @Override
-      public void mouseReleased(MouseEvent e) {
-          
-        System.out.println(getLocation().x + ", " + getLocation().y);
-
-        correctLocation();
-      }
-      
-      @Override
-      public void mouseEntered(MouseEvent e) { }
-
-      @Override
-      public void mouseExited(MouseEvent e) { }
-
-
-    });
-    addMouseMotionListener(new MouseMotionListener() {
-
-      @Override
-      public void mouseDragged(MouseEvent e) {
-        int deltaX = e.getXOnScreen() - screenX;
-        int deltaY = e.getYOnScreen() - screenY;
-
-        setLocation(myX + deltaX, myY + deltaY);
-       
-      }
-
-      @Override
-      public void mouseMoved(MouseEvent e) { }
-
-    });
+    
+    int[] rowCol = ANtoArrayIndex(Row, Col);
+    setBounds(100*(rowCol[1]), 800 - 100*(rowCol[0]), 100, 100);
     
   }
   
-  //public chessPiece(String empty){
-      //isEmpty = true;
-  //}
   
-    public void updateGameBoard(GameBoard gb){
-        gameState = gb;
-    }
-    
-    public String getColour(){
-        return colour == 0 ? "White" : "Black";
-    }
-    
-    public int[] getPosition(){
-        return new int[]{r, c};
+    public int getColour(){
+        return colour;
     }
     
     public String getType(){
         return type;
     }
     
-    public void printPieceInfo(){
-        int[] pos = getPosition();
-        System.out.println(getColour() + " " + getType() + " at (" + pos[0] + ", " + pos[1] + ")");
-    }
-    
-  
-    private void correctLocation(){
-        int x = getLocation().x;
-        int y = getLocation().y;
-        
-        boolean rowFound = false;
-        int rowStartX = 700;
-        
-        while(!rowFound){
-            if(x+50 >= rowStartX){
-                    x = rowStartX;
-                    rowFound = true;
-                    break;
-            }
-            rowStartX = rowStartX - 100;
-            if(rowStartX == 0){
-                x = rowStartX;
-                rowFound = true;
-            }
-        }
-        
-        boolean colFound = false;
-        int colStartY = 800;
-        
-        while(!colFound){
-            if(y+50 >= colStartY){
-                    y = colStartY;
-                    colFound = true;
-                    break;
-            }
-            colStartY = colStartY - 100;
-            if(colStartY == 100){
-                y = colStartY;
-                colFound = true;
-            }
-        }
-        newRow = (int)(800-y)/100 + 1;
-        newCol = (int)(x)/100 + 1;
-        System.out.println(newRow + "  " + newCol);
-        System.out.println(r + "  " + c);
-        
-        String move = moveType(colour, type, newRow, newCol, r, c);
-        
-        if(move.equals("INVALID")){
-            movePiece(r, c);
-        }
-        else{
-            System.out.println("VALID");
-            hasMoved = true;
-            movePiece(newRow, newCol);
-            isACapture = move.equals("CAPTURE") ? true : false;   
-            }
-        }
-    
     public boolean hasMoved(){
         return hasMoved;
     }
     
-    public boolean isACapture(){
-        return isACapture;
+    public void setMoved(){
+        hasMoved = true;
     }
-    
-    //public boolean isEmpty(){
-        //return isEmpty;
-    //}
-    
-    public void makeDead(){
-        setVisible(false);
-        isCaptured=true;
-    }
-    
-    public int[] getNewPosition(){
-        return new int[]{newRow, newCol};
-    }
-    
-    public void clearFlagsAndUpdatePosition(){
-        hasMoved = false;
-        isACapture = false;
-        System.out.println(newRow + "  " + newCol);
-        r = newRow;
-        c = newCol;
-    }
-    
+
     private String moveType(int colour, String type, int newR, int newC, int R, int C){
             
         switch(type){
@@ -234,8 +93,10 @@ public class chessPiece
         return "VALID";
     }
     
-    private void movePiece(int row, int col){
-        setLocation(new Point(100*(col-1),800 - 100*(row-1)));
+    
+    private int[] ANtoArrayIndex(int Row, char Col){
+        
+        return new int[]{Row - 1, (int) Col - 97};
     }
     
     
