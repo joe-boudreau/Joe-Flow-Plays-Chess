@@ -39,8 +39,8 @@ public class chessPiece
     int[] rowCol = ANtoArrayIndex(Row, Col);
     setBounds(100*(rowCol[1]), 800 - 100*(rowCol[0]), 100, 100);
     
+    
   }
-  
   
     public int getColour(){
         return colour;
@@ -57,42 +57,15 @@ public class chessPiece
     public void setMoved(){
         hasMoved = true;
     }
-
-    private String moveType(int colour, String type, int newR, int newC, int R, int C){
-            
-        switch(type){
-            
-            case "Rook":
-                if(!(newR == R || newC == C)){
-                    return "INVALID";
-                }
-                if(newR == R){
-                    for(int col = C; col < newC; col++){
-                        if(gameState.getPieceAt(R,col+1) != null){
-                            return "INVALID";
-                        }
-                    }
-                }
-                else{
-                    for(int row = R; row < newR; row++){
-                        if(gameState.getPieceAt(row+1,C) != null){
-                            return "INVALID";
-                        }
-                    }
-                }
-                if(gameState.getPieceAt(newR, newC) != null && colour == 1 && gameState.getPieceAt(newR, newC).getColour().equals("WHITE")){
-                    return "CAPTURE";
-                }
-                else if(gameState.getPieceAt(newR, newC) != null && colour == 0 && gameState.getPieceAt(newR, newC).getColour().equals("BLACK")){
-                    return "CAPTURE";
-                }
-                return "VALID";
-                
-        
-        }
-        return "VALID";
+    
+    public void printInfo(){
+        System.out.println("Type: " + type + ", Colour: " + colour);
     }
     
+    
+    public void setLocation(int Row, char Col){
+        this.setLocation(new Point(100*((int) Col - 97),800 - 100*(Row - 1)));
+    }
     
     private int[] ANtoArrayIndex(int Row, char Col){
         
