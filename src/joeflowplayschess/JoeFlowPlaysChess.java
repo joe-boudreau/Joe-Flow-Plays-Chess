@@ -20,20 +20,32 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 /**
  *
  * @author jboudrea
  */
 public class JoeFlowPlaysChess extends JFrame {
+    
+    private int WHITE = 0;
+    private int BLACK = 1;
     
     private volatile int screenX = 0;
     private volatile int screenY = 0;
@@ -43,14 +55,23 @@ public class JoeFlowPlaysChess extends JFrame {
     private Container pane;
     private JLabel board;
     private JPanel chessBoard;
+    private JPanel infoMsgPanel;
+    private JPanel footerPanel;
     private chessPiece[] wPieces;
     private chessPiece[] bPieces;
     private BoardTile[][] boardSquares;
     private BoardTile[] validSquares;
     private chessPiece currPiece;
+    private boolean whiteTurn;
+    private int[] newPos;
+    private int[] oldPos;
+    private boolean castleFlag;
     
     char[] columns = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
     int[] rows = {1, 2, 3, 4, 5, 6, 7, 8};
+    
+    Object LOCK = new Object();
+    
     
     public JoeFlowPlaysChess(){
         initUI();
@@ -62,40 +83,37 @@ public class JoeFlowPlaysChess extends JFrame {
         pane = getContentPane();
         
         chessBoard = setUpChessBoard();
-        whiteTurnListener();
-        pane.add(chessBoard);
+        setUpInfoMsgPanel();
+        
+        pane.add(chessBoard, BorderLayout.CENTER);
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1000,1000);
+        setSize(800,1000);
         pack();
         pane.validate();
         
-        //startGame();
-        
+        Runnable game = new Runnable(){
+                    @Override
+                    public void run(){
+                        startGame();
+                    }
+                };  
+        new Thread(game).start(); 
         
     }    
-    /*
+    
     public void startGame(){
         
-        boolean whiteTurn = true;
+        whiteTurnListener();
+        whiteTurn = true;
 
         while(whiteTurn){
-            for(int i = 0; i <  16; i++){
-                if(wPieces[i].hasMoved()){
-                    int[] newPos = wPieces[i].getNewPosition();
-                    if(wPieces[i].isACapture()){ gameState.getPieceAt(newPos[0], newPos[1]).makeDead();}
-                    gameState.move(wPieces[i].getPosition(), newPos);
-                    wPieces[i].clearFlagsAndUpdatePosition();
-                    for(int j = 0; j <  wPieces.length; j++){
-                        wPieces[j].updateGameBoard(gameState);
-                        bPieces[j].updateGameBoard(gameState);
-                    }
-                }
-            }
+            
+
         }
         
         
-    }*/
+    }
     
     public void whiteTurnListener(){
         
@@ -116,16 +134,19 @@ public class JoeFlowPlaysChess extends JFrame {
               int colIndex = (int)(myX)/100;
               
               currPiece = boardSquares[rowIndex][colIndex].getPiece();
-              if(currPiece != null){
+              if(currPiece != null && currPiece.getColour() == WHITE){
+                  
                 myX = currPiece.getX();
                 myY = currPiece.getY();
-                //setComponentZOrder(currPiece,getComponentCount());
+                currPiece.printInfo();
                 validSquares = generateValidMoves(currPiece);
                 
-
+                /*
                 for(BoardTile bT : validSquares){
                     bT.lightUp();
+                    //chessBoard.repaint();
                 }
+                */
                 
               }
               
@@ -134,20 +155,49 @@ public class JoeFlowPlaysChess extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if(currPiece != null){
-                    int[] newPos = returnNewLocation(currPiece);
-                    //System.out.println(newPos[0] + " " +newPos[1]);
-                    if(!boardSquares[newPos[0]][newPos[1]].isEmpty() && boardSquares[newPos[0]][newPos[1]].getPiece().getColour() == 0){
-                        //invalid move
-                        int[] oldPos = getPosition(currPiece);
-                        currPiece.setLocation(new Point(100*(oldPos[1]),800 - 100*(oldPos[0])));
+                if(currPiece != null  && currPiece.getColour() == WHITE){
+                    newPos = returnNewLocation(currPiece);
+                    oldPos = getPosition(currPiece);
+                    BoardTile newSquare = boardSquares[newPos[0]][newPos[1]];
+                    boolean valid = false;
+                    for(BoardTile sq : validSquares){
+                        if(sq.equals(newSquare)){
+                            valid = true;
+                        }
                     }
-                    
-                    
-                    
+                    if(valid){
+                        
+                        if(!newSquare.isEmpty()){
+                            boardSquares[newPos[0]][newPos[1]].getPiece().setVisible(false);
+                        }
+                        
+                        if(currPiece.getType().equals("King")){
+                            
+                            if(oldPos[1] == getIndex('e') && newPos[1] == getIndex('g')){
+                                boardSquares[getIndex(1)][getIndex('h')].getPiece().setLocation(1, 'f');
+                                castleFlag = true;
+                            }
+                            else if(oldPos[1] == getIndex('e') && newPos[1] == getIndex('c')){
+                                boardSquares[getIndex(1)][getIndex('a')].getPiece().setLocation(1, 'd');
+                                castleFlag = true;
+                            }
+                        }
+                        
+                        getComponentInContainer(infoMsgPanel, "Yes").setVisible(true);
+                        getComponentInContainer(infoMsgPanel, "No").setVisible(true);
+                        getComponentInContainer(infoMsgPanel, "confirmText").setVisible(true);
+                        
+                    }
+                    else{
+                        
+                        currPiece.setLocation(getRow(oldPos[0]), getColumn(oldPos[1]));
+                        
+                    }
+                    /*
                     for(BoardTile bT : validSquares){
                         bT.lightDown();
                     }
+                    */
                 }
             }
 
@@ -164,7 +214,7 @@ public class JoeFlowPlaysChess extends JFrame {
             
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(currPiece != null){
+                if(currPiece != null && currPiece.getColour() == WHITE){
                     int deltaX = e.getXOnScreen() - screenX;
                     int deltaY = e.getYOnScreen() - screenY;
 
@@ -183,39 +233,399 @@ public class JoeFlowPlaysChess extends JFrame {
         int pieceRow = piecePos[0];
         int pieceCol = piecePos[1];
         
+        int nextRow, nextCol, prevRow, prevCol;
+        int[] rowDelta, colDelta;
+        
+        if(pieceIsPinned(cP)){
+            return new BoardTile[]{};
+        }
+        
         ArrayList<BoardTile> validBoardList = new ArrayList();
         
         switch(cP.getType()){
             
             case "Pawn":
                 if(boardSquares[pieceRow+1][pieceCol].isEmpty()){
-                    System.out.println(true);
                     validBoardList.add(boardSquares[pieceRow+1][pieceCol]);
                 }
                 if(!cP.hasMoved() && boardSquares[pieceRow+2][pieceCol].isEmpty()){
-                    System.out.println(true);
                     validBoardList.add(boardSquares[pieceRow+2][pieceCol]);
                 }
                 if(pieceCol<7 && !boardSquares[pieceRow+1][pieceCol+1].isEmpty() 
-                              && boardSquares[pieceRow+1][pieceCol+1].getPiece().getColour() == 1){
+                              && boardSquares[pieceRow+1][pieceCol+1].getPiece().getColour() == BLACK){
                     validBoardList.add(boardSquares[pieceRow+1][pieceCol+1]);
                 }
                 if(pieceCol>0 && !boardSquares[pieceRow+1][pieceCol-1].isEmpty() 
-                              && boardSquares[pieceRow+1][pieceCol-1].getPiece().getColour() == 1){
+                              && boardSquares[pieceRow+1][pieceCol-1].getPiece().getColour() == BLACK){
                     validBoardList.add(boardSquares[pieceRow+1][pieceCol-1]);
                 }
+            break;
+                
+            case "Rook":
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
+                    validBoardList.add(boardSquares[nextRow++][pieceCol]);
+                }
+                if(nextRow < 8 && boardSquares[nextRow][pieceCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[nextRow][pieceCol]);
+                }
+                
+                while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
+                    validBoardList.add(boardSquares[pieceRow][nextCol++]);
+                }
+                if(nextCol < 8 && boardSquares[pieceRow][nextCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[pieceRow][nextCol]);
+                }
+                
+                while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
+                    validBoardList.add(boardSquares[prevRow--][pieceCol]);
+                }
+                if(prevRow > -1 && boardSquares[prevRow][pieceCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[prevRow][pieceCol]);
+                }
+                
+                while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
+                    validBoardList.add(boardSquares[pieceRow][prevCol--]);
+                }
+                if(prevCol > -1 && boardSquares[pieceRow][prevCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[pieceRow][prevCol]);
+                }
+            break;
+                
+            case "Knight":
+                rowDelta = new int[]{-2, -2, -1, -1, 1, 1, 2, 2};
+                colDelta = new int[]{-1, 1, -2, 2, -2, 2, -1, 1};
+                
+                for(int j = 0; j < 8; j++){
+                    if(pieceRow+rowDelta[j] <= 7 &&
+                       pieceRow+rowDelta[j] >= 0 &&
+                       pieceCol+colDelta[j] <= 7 &&
+                       pieceCol+colDelta[j] >= 0){
+                        
+                        if(boardSquares[pieceRow+rowDelta[j]][pieceCol+colDelta[j]].isEmpty() ||
+                           boardSquares[pieceRow+rowDelta[j]][pieceCol+colDelta[j]].getPiece().getColour() == BLACK){
+                            validBoardList.add(boardSquares[pieceRow+rowDelta[j]][pieceCol+colDelta[j]]);
+                        }
+                        
+                    }
+                }
+            break;
+            
+            case "Bishop":
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
+                    validBoardList.add(boardSquares[nextRow++][nextCol++]);
+                }
+                if(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[nextRow][nextCol]);
+                }
+                
+                while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
+                    validBoardList.add(boardSquares[prevRow--][prevCol--]);
+                }
+                if(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[prevRow][prevCol]);
+                }
+                
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
+                    validBoardList.add(boardSquares[nextRow++][prevCol--]);
+                }
+                if(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[nextRow][prevCol]);
+                }
+                
+                while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
+                    validBoardList.add(boardSquares[prevRow--][nextCol++]);
+                }
+                if(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[prevRow][nextCol]);
+                }
+            break;
+            
+            case "Queen":
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
+                    validBoardList.add(boardSquares[nextRow++][pieceCol]);
+                }
+                if(nextRow < 8 && boardSquares[nextRow][pieceCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[nextRow][pieceCol]);
+                }
+                
+                while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
+                    validBoardList.add(boardSquares[pieceRow][nextCol++]);
+                }
+                if(nextCol < 8 && boardSquares[pieceRow][nextCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[pieceRow][nextCol]);
+                }
+                
+                while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
+                    validBoardList.add(boardSquares[prevRow--][pieceCol]);
+                }
+                if(prevRow > -1 && boardSquares[prevRow][pieceCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[prevRow][pieceCol]);
+                }
+                
+                while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
+                    validBoardList.add(boardSquares[pieceRow][prevCol--]);
+                }
+                if(prevCol > -1 && boardSquares[pieceRow][prevCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[pieceRow][prevCol]);
+                }
+                
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
+                    validBoardList.add(boardSquares[nextRow++][nextCol++]);
+                }
+                if(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[nextRow][nextCol]);
+                }
+                
+                while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
+                    validBoardList.add(boardSquares[prevRow--][prevCol--]);
+                }
+                if(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[prevRow][prevCol]);
+                }
+                
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
+                    validBoardList.add(boardSquares[nextRow++][prevCol--]);
+                }
+                if(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[nextRow][prevCol]);
+                }
+                
+                while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
+                    validBoardList.add(boardSquares[prevRow--][nextCol++]);
+                }
+                if(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].getPiece().getColour() == BLACK){
+                    validBoardList.add(boardSquares[prevRow][nextCol]);
+                }
+                
+            break;
+            
+            case "King":
+                rowDelta = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
+                colDelta = new int[]{-1, 0, 1, -1, 1, -1, 0, 1};
+                
+                for(int j = 0; j < 8; j++){
+                    if(pieceRow+rowDelta[j] <= 7 &&
+                       pieceRow+rowDelta[j] >= 0 &&
+                       pieceCol+colDelta[j] <= 7 &&
+                       pieceCol+colDelta[j] >= 0){
+                        
+                        if(boardSquares[pieceRow+rowDelta[j]][pieceCol+colDelta[j]].isEmpty() ||
+                           boardSquares[pieceRow+rowDelta[j]][pieceCol+colDelta[j]].getPiece().getColour() == BLACK){
+                            validBoardList.add(boardSquares[pieceRow+rowDelta[j]][pieceCol+colDelta[j]]);
+                        }
+                        
+                    }
+                }
+                if(!cP.hasMoved() && boardSquares[getIndex(1)][getIndex('a')].getPiece().getType().equals("Rook") &&
+                                     !boardSquares[getIndex(1)][getIndex('a')].getPiece().hasMoved() &&
+                                     boardSquares[getIndex(1)][getIndex('b')].isEmpty() &&
+                                     boardSquares[getIndex(1)][getIndex('c')].isEmpty() &&
+                                     boardSquares[getIndex(1)][getIndex('d')].isEmpty()){
+                    validBoardList.add(boardSquares[getIndex(1)][getIndex('c')]);
+                }
+                if(!cP.hasMoved() && boardSquares[getIndex(1)][getIndex('h')].getPiece().getType().equals("Rook") &&
+                                     !boardSquares[getIndex(1)][getIndex('h')].getPiece().hasMoved() &&
+                                     boardSquares[getIndex(1)][getIndex('f')].isEmpty() &&
+                                     boardSquares[getIndex(1)][getIndex('g')].isEmpty()){
+                    validBoardList.add(boardSquares[getIndex(1)][getIndex('g')]);
+                }
+                
+            break;
             
         }
+
         BoardTile[] vbt = new BoardTile[validBoardList.size()];
         validBoardList.toArray(vbt);
         return vbt;
     }
     
+    public boolean pieceIsPinned(chessPiece cP){
+        
+        chessPiece[] blackPieces = getPiecesOnBoard(BLACK);
+
+        int nextRow, nextCol, prevRow, prevCol;
+        
+        for (chessPiece bP : blackPieces){
+            
+            int[] piecePos = getPosition(bP);
+            int pieceRow = piecePos[0];
+            int pieceCol = piecePos[1];
+            
+            if(bP.getType().equals("Rook") || bP.getType().equals("Queen")){
+                
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
+                    nextRow++;
+                }
+                if(nextRow < 8 && boardSquares[nextRow][pieceCol].getPiece().equals(cP)){
+                    nextRow++;
+                    while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
+                        nextRow++;
+                    }
+                    if(nextRow < 8 && boardSquares[nextRow][pieceCol].getPiece().getType().equals("King") &&
+                                      boardSquares[nextRow][pieceCol].getPiece().getColour() == WHITE) {
+                        return true;
+                    }
+                }
+                
+                while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
+                    nextCol++;
+                }
+                if(nextCol < 8 && boardSquares[pieceRow][nextCol].getPiece().equals(cP)){
+                    nextCol++;
+                    while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
+                        nextCol++;
+                    }
+                    if(nextCol < 8 && boardSquares[pieceRow][nextCol].getPiece().getType().equals("King") &&
+                                      boardSquares[pieceRow][nextCol].getPiece().getColour() == WHITE) {
+                        return true;
+                    }
+                }
+                
+                while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
+                    prevRow--;
+                }
+                if(prevRow > -1 && boardSquares[prevRow][pieceCol].getPiece().equals(cP)){
+                    prevRow--;
+                    while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
+                        prevRow--;
+                    }
+                    if(prevRow > -1 && boardSquares[prevRow][pieceCol].getPiece().getType().equals("King") &&
+                                      boardSquares[prevRow][pieceCol].getPiece().getColour() == WHITE) {
+                        return true;
+                    }
+                }
+                
+                while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
+                    prevCol--;
+                }
+                if(prevCol > -1 && boardSquares[pieceRow][prevCol].getPiece().equals(cP)){
+                    prevCol--;
+                    while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
+                        prevCol--;
+                    }
+                    if(prevCol > -1 && boardSquares[pieceRow][prevCol].getPiece().getType().equals("King") &&
+                                      boardSquares[pieceRow][prevCol].getPiece().getColour() == WHITE) {
+                        return true;
+                    }
+                }
+                
+            }
+                
+            if(bP.getType().equals("Bishop") || bP.getType().equals("Queen")){ 
+                
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                                
+                while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
+                    nextRow++; nextCol++;
+                }
+                if(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].getPiece().equals(cP)){
+                    nextRow++; nextCol++;
+                    while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
+                        nextRow++; nextCol++;
+                    }
+                    if(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].getPiece().getType().equals("King") &&
+                                                     boardSquares[nextRow][nextCol].getPiece().getColour() == WHITE){
+                        return true;
+                    }
+                }
+                
+                while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
+                    prevRow--; prevCol--;
+                }
+                if(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].getPiece().equals(cP)){
+                    prevRow--; prevCol--;
+
+                    while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
+                        prevRow--; prevCol--;
+                    }
+                    if(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].getPiece().getType().equals("King") &&
+                                                     boardSquares[prevRow][prevCol].getPiece().getColour() == WHITE){
+                        return true;
+                    }
+                }
+
+                nextRow = pieceRow+1;
+                nextCol = pieceCol+1;
+                prevRow = pieceRow-1;
+                prevCol = pieceCol-1;
+                
+                while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
+                    nextRow++; prevCol--;
+                }
+                if(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].getPiece().equals(cP)){
+                    nextRow++; prevCol--;
+                    while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
+                        nextRow++; prevCol--;
+                    }
+                    if(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].getPiece().getType().equals("King") &&
+                                                     boardSquares[nextRow][prevCol].getPiece().getColour() == WHITE){
+                        return true;
+                    }
+                }
+                
+                while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
+                    prevRow--; nextCol++;
+                }
+                if(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].getPiece().equals(cP)){
+                    prevRow--; nextCol++;
+                    while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
+                        prevRow--; nextCol++;
+                    }
+                    if(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].getPiece().getType().equals("King") &&
+                                                     boardSquares[prevRow][nextCol].getPiece().getColour() == WHITE){
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
     public int[] getPosition(chessPiece cP){
         for(int r : rows){
             for(char c : columns){
-                if(boardSquares[getIndex(r)][getIndex(c)].getPiece().equals(currPiece)){
-                    return new int[]{getIndex(r),getIndex(c)};
+                if(!boardSquares[getIndex(r)][getIndex(c)].isEmpty() &&
+                    boardSquares[getIndex(r)][getIndex(c)].getPiece().equals(cP)){
+                        return new int[]{getIndex(r),getIndex(c)};
                 }
             }
         }
@@ -225,19 +635,35 @@ public class JoeFlowPlaysChess extends JFrame {
     public JPanel setUpChessBoard(){
         
         JPanel  chessPanel = new JPanel ();
+        
         chessPanel.setLayout(new BorderLayout());
         
         JLayeredPane chessBoard = new JLayeredPane();
+        
         chessBoard.setBorder(new LineBorder(Color.BLACK, 1));
         chessBoard.setPreferredSize(new Dimension(800, 1000));
         
+        infoMsgPanel = new JPanel();
+        infoMsgPanel.setLayout(new BoxLayout(infoMsgPanel, BoxLayout.Y_AXIS));
+        infoMsgPanel.setBounds(0, 0, 800, 100);
+        infoMsgPanel.setBorder(new LineBorder(Color.BLACK));
+        
+        footerPanel = new JPanel();
+        footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.X_AXIS));
+        footerPanel.setBounds(0, 900, 800, 100);
+        footerPanel.setBorder(new LineBorder(Color.BLACK));
+        
         board = new JLabel(new ImageIcon(getClass().getResource("/resources/board.png")));
+        
         board.setBounds(0, 100, 800, 800);
         
-        boardSquares = getTiles();
+        boardSquares = setUpTiles();
         
-        wPieces = getPieces(0);
-        bPieces = getPieces(1);
+        wPieces = setUpPieces(0);
+        bPieces = setUpPieces(1);
+        
+        chessBoard.add(infoMsgPanel,3);
+        chessBoard.add(footerPanel, 3);
         
         chessBoard.add(board, 2);
         
@@ -258,6 +684,60 @@ public class JoeFlowPlaysChess extends JFrame {
         chessPanel.add(chessBoard,BorderLayout.CENTER);
         
         return chessPanel;
+    }
+    
+    public void setUpInfoMsgPanel(){
+        
+        JButton yConfirm = new JButton("Yes");
+        yConfirm.setName("Yes");
+        yConfirm.addActionListener(new ButtonAction());
+        
+        JButton nConfirm = new JButton("No");
+        nConfirm.setName("No");
+        nConfirm.addActionListener(new ButtonAction());
+        
+        JPanel buttPanel = new JPanel();
+        buttPanel.setLayout(new BoxLayout(buttPanel, BoxLayout.X_AXIS));
+        
+        buttPanel.add(Box.createHorizontalStrut(150));
+        buttPanel.add(yConfirm);
+        buttPanel.add(Box.createHorizontalGlue());
+        buttPanel.add(nConfirm);
+        buttPanel.add(Box.createHorizontalStrut(150));
+        
+        JLabel confirmText = new JLabel("Are you sure?");
+        confirmText.setName("confirmText");
+        confirmText.setAlignmentX(CENTER_ALIGNMENT);
+        confirmText.setFont(new Font("Arial", Font.BOLD, 25));
+        
+        infoMsgPanel.add(Box.createVerticalStrut(20));
+        infoMsgPanel.add(confirmText);
+        infoMsgPanel.add(Box.createVerticalGlue());
+        infoMsgPanel.add(buttPanel);
+        
+        
+        yConfirm.setVisible(false);
+        nConfirm.setVisible(false);
+        confirmText.setVisible(false);
+        
+    }
+    
+    public void setUpFooterPanel(){
+        
+        JPanel promotionOptions = new JPanel();
+        
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        TitledBorder title = BorderFactory.createTitledBorder(
+                       blackline, "PROMOTE:");
+        title.setTitleJustification(TitledBorder.CENTER);
+        
+        promotionOptions.setBorder(title);
+        
+        JButton queen = new JButton(new ImageIcon(getClass().getResource("/resources/wqueenSmall.png")));
+        
+        
+        
+        
     }
     
     public int[] returnNewLocation(chessPiece cP){
@@ -298,7 +778,6 @@ public class JoeFlowPlaysChess extends JFrame {
         }
         
         cP.setLocation(x,y);
-        
         return new int[]{(int)(800-y)/100, (int)(x)/100};
         /*
         newRow = (int)(800-y)/100 + 1;
@@ -318,12 +797,12 @@ public class JoeFlowPlaysChess extends JFrame {
         */
     }
     
-    public chessPiece[] getPieces(int colour){
+    public chessPiece[] setUpPieces(int colour){
         
         chessPiece[] pieces = new chessPiece[16];
         int pieceNum = 0;
-        int row = colour == 0 ? 1 : 8;
-        int pawnRow = colour == 0 ? 2 : 7;
+        int row = colour == WHITE ? 1 : 8;
+        int pawnRow = colour == WHITE ? 2 : 7;
         
         pieces[pieceNum++]  = new chessPiece("Rook", colour, row, 'a');
         boardSquares[getIndex(row)][getIndex('a')].setPiece(pieces[pieceNum-1]);
@@ -362,30 +841,35 @@ public class JoeFlowPlaysChess extends JFrame {
 
     }
     
-    public BoardTile[][] getTiles(){
+    public chessPiece[] getPiecesOnBoard(int colour){
+        ArrayList<chessPiece> piecesLst = new ArrayList();
+        
+        BoardTile bt;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                bt = boardSquares[i][j];
+                if(!bt.isEmpty() && bt.getPiece().getColour() == colour){
+                    piecesLst.add(bt.getPiece());
+                }
+            }
+        }
+        
+        chessPiece[] pieces = new chessPiece[piecesLst.size()];
+        piecesLst.toArray(pieces);
+        return pieces;
+    }
+    
+    public BoardTile[][] setUpTiles(){
         
         BoardTile[][] bT = new BoardTile[8][8];
         
         for(int row : rows){
             for(char c : columns){
                 bT[getIndex(row)][getIndex(c)] = new BoardTile(null, row, c);
-                //bT[getIndex(row)][getIndex(c)].setOpaque(true);
             }
         }
         
         return bT;
-    }
-    
-    public static void main(String[] args) {        
-        
-        EventQueue.invokeLater(new Runnable() {
-           
-            @Override
-            public void run() {
-                JoeFlowPlaysChess jfpc = new JoeFlowPlaysChess();
-                jfpc.setVisible(true);
-            }
-        });
     }
     
     public static int getIndex(int row){
@@ -403,8 +887,94 @@ public class JoeFlowPlaysChess extends JFrame {
     public static char getColumn(int columnIndex){
         return (char) (columnIndex + 97);
     }
+    
+    public class ButtonAction extends AbstractAction{
+        
+        @Override
+        public void actionPerformed(ActionEvent e){
 
+            JButton buttonPressed = (JButton) e.getSource();
+            String buttonName = buttonPressed.getName();   //Get the name of the button pressed
+            
+            if(null != buttonName)switch (buttonName) {
+                case "Yes":
+                    currPiece.setMoved();
+                    boardSquares[newPos[0]][newPos[1]].setPiece(currPiece);
+                    boardSquares[oldPos[0]][oldPos[1]].setPiece(null);
+                    
+                    if(castleFlag){
+                        if(getColumn(newPos[1]) == 'g'){
+                            boardSquares[getIndex(1)][getIndex('f')].setPiece(boardSquares[getIndex(1)][getIndex('h')].getPiece());
+                            boardSquares[getIndex(1)][getIndex('h')].setPiece(null);
+                        }
+                        if(getColumn(newPos[1]) == 'c'){
+                            boardSquares[getIndex(1)][getIndex('d')].setPiece(boardSquares[getIndex(1)][getIndex('a')].getPiece());
+                            boardSquares[getIndex(1)][getIndex('a')].setPiece(null);
+                        }
+                        castleFlag = false;
+                    }
+                    
+                    break;
+                    
+                case "No":
+                    if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
+                        boardSquares[newPos[0]][newPos[1]].getPiece().setVisible(true);
+                    }
+                    
+                    if(castleFlag){
+                        if(getColumn(newPos[1]) == 'g'){
+                            boardSquares[getIndex(1)][getIndex('h')].getPiece().setLocation(1, 'h');
+                        }
+                        if(getColumn(newPos[1]) == 'c'){
+                             boardSquares[getIndex(1)][getIndex('a')].getPiece().setLocation(1, 'a');
+                        }  
+                        castleFlag = false;
+                    }
+                    
+                    currPiece.setLocation(getRow(oldPos[0]), getColumn(oldPos[1]));
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            getComponentInContainer(infoMsgPanel, "Yes").setVisible(false);
+            getComponentInContainer(infoMsgPanel, "No").setVisible(false);
+            getComponentInContainer(infoMsgPanel, "confirmText").setVisible(false);
+        }
+    }
+    
+    public static JComponent getComponentInContainer(Container c, String name){
+        int num = c.getComponentCount();
+
+        Component jC = null;
+        JComponent returnedComp = null;
+        for(int i = 0; i < num; i++){
+            jC = c.getComponent(i);
+            
+            if(c.getClass().isInstance(jC)){
+                returnedComp = getComponentInContainer((Container)jC, name);
+            }
+            else if(jC.getName() != null && jC.getName().equals(name)){
+                returnedComp = (JComponent) jC;
+                break;
+            }
+        }
+        return returnedComp;
+    }
     
     
-
+    
+    public static void main(String[] args) {        
+        
+        SwingUtilities.invokeLater(new Runnable() {
+           
+            @Override
+            public void run() {
+                JoeFlowPlaysChess jfpc = new JoeFlowPlaysChess();
+                jfpc.setVisible(true);
+            }
+        });
+    }
+    
 }
