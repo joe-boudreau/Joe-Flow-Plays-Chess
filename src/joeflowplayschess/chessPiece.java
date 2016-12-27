@@ -16,11 +16,6 @@ import javax.swing.JLabel;
 
 public class chessPiece
     extends JLabel {
-
-  private volatile int screenX = 0;
-  private volatile int screenY = 0;
-  private volatile int myX = 0;
-  private volatile int myY = 0;
   
   private boolean hasMoved;
   private int colour;
@@ -37,7 +32,7 @@ public class chessPiece
     hasMoved = false;
     
     int[] rowCol = ANtoArrayIndex(Row, Col);
-    setBounds(100*(rowCol[1]), 800 - 100*(rowCol[0]), 100, 100);
+    setBounds(100*(rowCol[1]), 780 - 100*(rowCol[0]), 100, 100);
     
     
   }
@@ -58,13 +53,20 @@ public class chessPiece
         hasMoved = true;
     }
     
+    public void setType(String newType){
+          
+        String colourStr = colour == 0 ? "w" : "b"; 
+        setIcon(new ImageIcon(getClass().getResource("/resources/" + colourStr + newType + ".png")));
+        type = newType;
+    }
+    
     public void printInfo(){
         System.out.println("Type: " + type + ", Colour: " + colour);
     }
     
     
     public void setLocation(int Row, char Col){
-        this.setLocation(new Point(100*((int) Col - 97),800 - 100*(Row - 1)));
+        this.setLocation(new Point(100*((int) Col - 97),780 - 100*(Row - 1)));
     }
     
     private int[] ANtoArrayIndex(int Row, char Col){

@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
@@ -44,19 +45,13 @@ import javax.swing.border.TitledBorder;
  */
 public class JoeFlowPlaysChess extends JFrame {
     
-    private int WHITE = 0;
-    private int BLACK = 1;
-    
-    private volatile int screenX = 0;
-    private volatile int screenY = 0;
-    private volatile int myX = 0;
-    private volatile int myY = 0;
-    
+    //declarations
     private Container pane;
     private JLabel board;
     private JPanel chessBoard;
     private JPanel infoMsgPanel;
     private JPanel footerPanel;
+    private JPanel promotionOptions;
     private chessPiece[] wPieces;
     private chessPiece[] bPieces;
     private BoardTile[][] boardSquares;
@@ -67,6 +62,21 @@ public class JoeFlowPlaysChess extends JFrame {
     private int[] oldPos;
     private boolean castleFlag;
     
+    //declarations + initializations
+    private int WHITE = 0;
+    private int BLACK = 1;
+    
+    private int numWTaken = 0;
+    private int numBTaken = 0;
+    
+    private volatile int screenX = 0;
+    private volatile int screenY = 0;
+    private volatile int myX = 0;
+    private volatile int myY = 0;
+    
+    private boolean checkmate = false;
+    private boolean confirmNeeded = false;
+
     char[] columns = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
     int[] rows = {1, 2, 3, 4, 5, 6, 7, 8};
     
@@ -84,11 +94,11 @@ public class JoeFlowPlaysChess extends JFrame {
         
         chessBoard = setUpChessBoard();
         setUpInfoMsgPanel();
+        setUpFooterPanel();
         
         pane.add(chessBoard, BorderLayout.CENTER);
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800,1000);
         pack();
         pane.validate();
         
@@ -106,14 +116,30 @@ public class JoeFlowPlaysChess extends JFrame {
         
         whiteTurnListener();
         whiteTurn = true;
+        long[] gamePosition = new long[12];
+        int flags = 0x0000;
+        
+        while(!checkmate){
 
-        while(whiteTurn){
-            
+        synchronized(LOCK) {
+            while(whiteTurn) {
 
+                try { LOCK.wait(); }
+                catch (InterruptedException e) {
+                    break;
+                }
+            }
         }
         
         
+        
+        System.out.println("BLACK TURN");
+        
+        }
+        
     }
+    
+    
     
     public void whiteTurnListener(){
         
@@ -124,33 +150,35 @@ public class JoeFlowPlaysChess extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-              screenX = e.getXOnScreen();
-              screenY = e.getYOnScreen();
+              
+                if(!confirmNeeded){  
+                    screenX = e.getXOnScreen();
+                    screenY = e.getYOnScreen();
 
-              myX = e.getX();
-              myY = e.getY();
-              
-              int rowIndex = (int)(800-myY)/100;
-              int colIndex = (int)(myX)/100;
-              
-              currPiece = boardSquares[rowIndex][colIndex].getPiece();
-              if(currPiece != null && currPiece.getColour() == WHITE){
-                  
-                myX = currPiece.getX();
-                myY = currPiece.getY();
-                currPiece.printInfo();
-                validSquares = generateValidMoves(currPiece);
-                
-                /*
-                for(BoardTile bT : validSquares){
-                    bT.lightUp();
-                    //chessBoard.repaint();
+                    myX = e.getX();
+                    myY = e.getY();
+
+                    int rowIndex = (int)(800-myY)/100;
+                    int colIndex = (int)(myX)/100;
+
+                    currPiece = boardSquares[rowIndex][colIndex].getPiece();
+                    if(currPiece != null && currPiece.getColour() == WHITE){
+
+                      myX = currPiece.getX();
+                      myY = currPiece.getY();
+                      currPiece.printInfo();
+                      validSquares = generateValidMoves(currPiece);
+
+                      /*
+                      for(BoardTile bT : validSquares){
+                          bT.lightUp();
+                          //chessBoard.repaint();
+                      }
+                      */
+
+                    }
+
                 }
-                */
-                
-              }
-              
-              
             }
 
             @Override
@@ -183,9 +211,11 @@ public class JoeFlowPlaysChess extends JFrame {
                             }
                         }
                         
+                        
                         getComponentInContainer(infoMsgPanel, "Yes").setVisible(true);
                         getComponentInContainer(infoMsgPanel, "No").setVisible(true);
                         getComponentInContainer(infoMsgPanel, "confirmText").setVisible(true);
+                        confirmNeeded = true;
                         
                     }
                     else{
@@ -214,7 +244,7 @@ public class JoeFlowPlaysChess extends JFrame {
             
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(currPiece != null && currPiece.getColour() == WHITE){
+                if(!confirmNeeded && currPiece != null && currPiece.getColour() == WHITE){
                     int deltaX = e.getXOnScreen() - screenX;
                     int deltaY = e.getYOnScreen() - screenY;
 
@@ -645,17 +675,16 @@ public class JoeFlowPlaysChess extends JFrame {
         
         infoMsgPanel = new JPanel();
         infoMsgPanel.setLayout(new BoxLayout(infoMsgPanel, BoxLayout.Y_AXIS));
-        infoMsgPanel.setBounds(0, 0, 800, 100);
+        infoMsgPanel.setBounds(0, 0, 800, 80);
         infoMsgPanel.setBorder(new LineBorder(Color.BLACK));
         
-        footerPanel = new JPanel();
-        footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.X_AXIS));
-        footerPanel.setBounds(0, 900, 800, 100);
-        footerPanel.setBorder(new LineBorder(Color.BLACK));
+        footerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        //footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.X_AXIS));
+        footerPanel.setBounds(0, 880, 800, 120);
         
         board = new JLabel(new ImageIcon(getClass().getResource("/resources/board.png")));
         
-        board.setBounds(0, 100, 800, 800);
+        board.setBounds(0, 80, 800, 800);
         
         boardSquares = setUpTiles();
         
@@ -680,6 +709,52 @@ public class JoeFlowPlaysChess extends JFrame {
         for (chessPiece cP : bPieces){
             chessBoard.add(cP, 0);
         }
+        
+        promotionOptions = new JPanel();
+        promotionOptions.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        promotionOptions.setBackground(Color.WHITE);
+        
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        TitledBorder title = BorderFactory.createTitledBorder(
+                       blackline, "PROMOTE:");
+        title.setTitleJustification(TitledBorder.CENTER);
+        title.setTitleFont(new Font("Arial", Font.BOLD, 25));
+        
+        promotionOptions.setBorder(title);
+        promotionOptions.setAlignmentX(CENTER_ALIGNMENT);
+        promotionOptions.setBounds(310, 450, 180, 75);
+        
+        JButton queen = new JButton();
+        queen.setName("queen");
+        JButton knight = new JButton();
+        knight.setName("knight");
+        JButton bishop = new JButton();
+        bishop.setName("bishop");
+        JButton rook = new JButton();
+        rook.setName("rook");
+        
+        ButtonAction BA = new ButtonAction();
+        
+        queen.addActionListener(BA);
+        knight.addActionListener(BA);
+        bishop.addActionListener(BA);
+        rook.addActionListener(BA);
+        
+        
+        
+        makeCustomButton(queen, "/resources/wqueenSmall.png", "/resources/wqueenSmallPressed.png");
+        makeCustomButton(knight, "/resources/wknightSmall.png", "/resources/wknightSmallPressed.png");
+        makeCustomButton(bishop, "/resources/wbishopSmall.png", "/resources/wbishopSmallPressed.png");
+        makeCustomButton(rook, "/resources/wrookSmall.png", "/resources/wrookSmallPressed.png");
+        
+        promotionOptions.add(queen);
+        promotionOptions.add(knight);
+        promotionOptions.add(bishop);
+        promotionOptions.add(rook);
+        
+        promotionOptions.setVisible(false);
+        
+        chessBoard.add(promotionOptions, 0);
         
         chessPanel.add(chessBoard,BorderLayout.CENTER);
         
@@ -710,7 +785,7 @@ public class JoeFlowPlaysChess extends JFrame {
         confirmText.setAlignmentX(CENTER_ALIGNMENT);
         confirmText.setFont(new Font("Arial", Font.BOLD, 25));
         
-        infoMsgPanel.add(Box.createVerticalStrut(20));
+        infoMsgPanel.add(Box.createVerticalStrut(5));
         infoMsgPanel.add(confirmText);
         infoMsgPanel.add(Box.createVerticalGlue());
         infoMsgPanel.add(buttPanel);
@@ -724,19 +799,31 @@ public class JoeFlowPlaysChess extends JFrame {
     
     public void setUpFooterPanel(){
         
-        JPanel promotionOptions = new JPanel();
+        JPanel whiteTaken = new JPanel();
+        whiteTaken.setBackground(Color.WHITE);
+        whiteTaken.setAlignmentY(LEFT_ALIGNMENT);
         
-        Border blackline = BorderFactory.createLineBorder(Color.black);
-        TitledBorder title = BorderFactory.createTitledBorder(
-                       blackline, "PROMOTE:");
-        title.setTitleJustification(TitledBorder.CENTER);
+        JPanel blackTaken = new JPanel();
+        blackTaken.setBackground(Color.WHITE);
+        blackTaken.setAlignmentY(LEFT_ALIGNMENT);
+
+        JLabel[] whitePiecesTaken = new JLabel[15];
+        JLabel[] blackPiecesTaken = new JLabel[15];
         
-        promotionOptions.setBorder(title);
+        for(int i = 0; i < 15; i++){
+            whitePiecesTaken[i] = new JLabel(new ImageIcon(getClass().getResource("/resources/blank.png")));
+            blackPiecesTaken[i] = new JLabel(new ImageIcon(getClass().getResource("/resources/blank.png")));
+            
+            whiteTaken.add(whitePiecesTaken[i]);
+            blackTaken.add(blackPiecesTaken[i]);
+        }
         
-        JButton queen = new JButton(new ImageIcon(getClass().getResource("/resources/wqueenSmall.png")));
+        whiteTaken.setBorder(new LineBorder(Color.BLACK));
+        blackTaken.setBorder(new LineBorder(Color.BLACK));
+
+        footerPanel.add(whiteTaken);
         
-        
-        
+        footerPanel.add(blackTaken);
         
     }
     
@@ -762,7 +849,7 @@ public class JoeFlowPlaysChess extends JFrame {
         }
         
         boolean colFound = false;
-        int colStartY = 800;
+        int colStartY = 780;
         
         while(!colFound){
             if(y+50 >= colStartY){
@@ -778,7 +865,7 @@ public class JoeFlowPlaysChess extends JFrame {
         }
         
         cP.setLocation(x,y);
-        return new int[]{(int)(800-y)/100, (int)(x)/100};
+        return new int[]{(int)(780-y)/100, (int)(x)/100};
         /*
         newRow = (int)(800-y)/100 + 1;
         newCol = (int)(x)/100 + 1;
@@ -872,6 +959,26 @@ public class JoeFlowPlaysChess extends JFrame {
         return bT;
     }
     
+    public void addToTakenPieces(int colour, String type){
+    
+        JPanel takenPanel;
+        JLabel newDeadPiece;
+        if(colour == WHITE){
+            
+            takenPanel = (JPanel) footerPanel.getComponent(0);
+            newDeadPiece = (JLabel) takenPanel.getComponent(numWTaken);
+            newDeadPiece.setIcon(new ImageIcon(getClass().getResource("/resources/w" + type + "small.png")));
+            numWTaken++;
+        }
+        else{
+            
+            takenPanel = (JPanel) footerPanel.getComponent(1);
+            newDeadPiece = (JLabel) takenPanel.getComponent(numBTaken);
+            newDeadPiece.setIcon(new ImageIcon(getClass().getResource("/resources/b" + type + "small.png")));
+            numBTaken++;
+        }
+    }
+    
     public static int getIndex(int row){
         return row - 1;
     }
@@ -890,6 +997,7 @@ public class JoeFlowPlaysChess extends JFrame {
     
     public class ButtonAction extends AbstractAction{
         
+        
         @Override
         public void actionPerformed(ActionEvent e){
 
@@ -899,6 +1007,15 @@ public class JoeFlowPlaysChess extends JFrame {
             if(null != buttonName)switch (buttonName) {
                 case "Yes":
                     currPiece.setMoved();
+                    confirmNeeded = false;
+                    
+                    if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
+                        
+                        chessPiece deadPiece = boardSquares[newPos[0]][newPos[1]].getPiece();
+                        addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
+                        
+                    }
+                    
                     boardSquares[newPos[0]][newPos[1]].setPiece(currPiece);
                     boardSquares[oldPos[0]][oldPos[1]].setPiece(null);
                     
@@ -914,9 +1031,21 @@ public class JoeFlowPlaysChess extends JFrame {
                         castleFlag = false;
                     }
                     
+                    if(currPiece.getType().equals("Pawn") && newPos[0] == getIndex(8)){
+                            promotionOptions.setVisible(true);
+                            confirmNeeded = true;
+                    }
+                    
+                    whiteTurn = false;
+                    synchronized(LOCK){
+                        LOCK.notifyAll();
+                    }
+                    
                     break;
                     
                 case "No":
+                    confirmNeeded = false;
+                    
                     if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
                         boardSquares[newPos[0]][newPos[1]].getPiece().setVisible(true);
                     }
@@ -932,6 +1061,30 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     
                     currPiece.setLocation(getRow(oldPos[0]), getColumn(oldPos[1]));
+                    break;
+                    
+                case "queen":
+                    currPiece.setType("Queen");
+                    promotionOptions.setVisible(false);
+                    confirmNeeded = false;
+                    break;
+                    
+                case "knight":
+                    currPiece.setType("Knight");
+                    promotionOptions.setVisible(false);
+                    confirmNeeded = false;
+                    break;
+                    
+                case "bishop":
+                    currPiece.setType("Bishop");
+                    promotionOptions.setVisible(false);
+                    confirmNeeded = false;
+                    break;
+                    
+                case "rook":
+                    currPiece.setType("Rook");
+                    promotionOptions.setVisible(false);
+                    confirmNeeded = false;
                     break;
                     
                 default:
@@ -963,7 +1116,18 @@ public class JoeFlowPlaysChess extends JFrame {
         return returnedComp;
     }
     
-    
+    public void makeCustomButton(JButton butt, String unpressed, String pressed){
+        butt.setIcon(new ImageIcon(getClass().getResource(unpressed)));
+        butt.setPressedIcon(new ImageIcon(getClass().getResource(pressed)));
+        butt.setDisabledIcon(new ImageIcon(getClass().getResource(unpressed)));
+        butt.setOpaque(false);              //let unpainted areas of button show
+                                            //the image below it
+        butt.setContentAreaFilled(false);   //do not paint the entire JButton background
+        butt.setBorderPainted(false);
+        butt.setFocusPainted(false);
+        butt.setMargin(new Insets(0, 0, 0, 0));
+        
+    }
     
     public static void main(String[] args) {        
         
