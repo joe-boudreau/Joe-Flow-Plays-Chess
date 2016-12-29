@@ -114,7 +114,34 @@ for(int sq = 0; sq < 64; sq++){
 }
 
 //Test Space
-generateAllMoves(BLACK);
+
+long currentBoardAllPieces = 0xc90022410880L;
+
+System.out.println("Current Board");
+printAsBitBoard(currentBoardAllPieces);
+
+long occupancyMask = Constants.RookMaskOnSquare[0];
+
+System.out.println("Occupancy Variation");
+printAsBitBoard((currentBoardAllPieces & occupancyMask));
+
+int index = (int)(((currentBoardAllPieces & occupancyMask)*Constants.magicNumberRook[0]) >>> Constants.magicShiftsRook[0]);
+
+long friendlyPieces = 0x890002410000L;
+
+System.out.println("Friendly Pieces");
+printAsBitBoard(friendlyPieces);
+
+long moves = Constants.magicMovesRook[0][index] & (~friendlyPieces);
+
+System.out.println("Magic Moves Available");
+printAsBitBoard(Constants.magicMovesRook[0][index]);
+
+System.out.println("Moves");
+printAsBitBoard(moves);
+
+
+//printAsBitBoard(Constants.occupancyAttackSet[35][511]);
 
 /*TEST SPACE
 
@@ -139,6 +166,8 @@ ArrayList<Integer> possibleMoves = new ArrayList();
 if(colour == WHITE){
 
     generatePawnTargets(possibleMoves, colour, wPawn, PIECEBOARDS[wPawn]);
+    generateKnightTargets(possibleMoves, colour, wKnight, PIECEBOARDS[wKnight]);
+    generateKingTargets(possibleMoves, colour, wKing, PIECEBOARDS[wKing]);
 
 
 
@@ -147,6 +176,9 @@ if(colour == WHITE){
 else{
     
     generatePawnTargets(possibleMoves, colour, bPawn, PIECEBOARDS[bPawn]);
+    generateKnightTargets(possibleMoves, colour, bKnight, PIECEBOARDS[bKnight]);
+    generateKingTargets(possibleMoves, colour, bKing, PIECEBOARDS[bKing]);
+
     
 }
 
@@ -227,18 +259,47 @@ public void generateKnightTargets(ArrayList moves, int Colour, int pieceType, lo
     long targets;
     
     long friendlyPieces = 0;
-    for(int j = pieceType; j < pieceType + 6; j++){
+    for(int j = Colour*6; j < Colour*6 + 6; j++){
         friendlyPieces |= PIECEBOARDS[j];
     }
     
     while(knights > 0){
         int fromSq = Long.numberOfTrailingZeros(knights);
-        targets = Constants.KnightMoves[fromSq];
+        targets = Constants.KnightMoves[fromSq] & ~friendlyPieces;
+        generateMoves(fromSq, targets, pieceType, moves, 0);
+        knights &= knights - 1;
     }
     
 }
 
+public void generateKingTargets(ArrayList moves, int Colour, int pieceType, long king){
+    
+    long targets;
+    
+    long friendlyPieces = 0;
+    for(int j = Colour*6; j < Colour*6 + 6; j++){
+        friendlyPieces |= PIECEBOARDS[j];
+    }
+    
+    int fromSq = Long.numberOfTrailingZeros(king);
+    targets = Constants.KingMoves[fromSq] & ~friendlyPieces;
+    generateMoves(fromSq, targets, pieceType, moves, 0);
 
+    
+}
+
+public void generateMoves(int from, long Targets, int pieceType, ArrayList moveList, int flags){
+    
+    while(Targets > 0){
+        
+        int toSq = Long.numberOfTrailingZeros(Targets);
+        int capture = board[toSq];
+        int move = pieceType << 28 | capture << 24 | from << 16 | toSq << 8 | flags;
+        moveList.add(move);
+        Targets &= Targets - 1;
+        
+    }
+}
 
 public void generatePawnMoves(long Targets, int moveDiff, int pieceType, ArrayList moveList, int flags){
 
@@ -255,8 +316,8 @@ public void generatePawnMoves(long Targets, int moveDiff, int pieceType, ArrayLi
 
     
     while(Targets > 0){
+        
         int toSq = Long.numberOfTrailingZeros(Targets);
-        //int fromSq = toSq - moveDiff;
         int fromSq = Integer.remainderUnsigned(toSq - moveDiff, 64);
         int capture = board[toSq];
         int move = pieceType << 28 | capture << 24 | fromSq << 16 | toSq << 8 | flags;

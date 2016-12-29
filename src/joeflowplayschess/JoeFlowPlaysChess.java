@@ -140,7 +140,6 @@ public class JoeFlowPlaysChess extends JFrame {
     }
     
     
-    
     public void whiteTurnListener(){
         
         board.addMouseListener(new MouseListener() {

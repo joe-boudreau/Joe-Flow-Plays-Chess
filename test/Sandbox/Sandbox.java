@@ -13,8 +13,15 @@ public class Sandbox {
     
     public static void main(String args[]){
         
-        long a = 0b0001101000;
+        long[][] a = new long[2][];
         
-        System.out.println(a);
+        a[0] = new long[1];
+        a[1] = new long[2];
+        
+        a[0][0] = 1L;
+        a[1][0] = 2;
+        
+        
+        System.out.println(a[1].length);
     }
 }
