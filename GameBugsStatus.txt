@@ -1,0 +1,11 @@
+Game Bugs:
+
+Bug: Black just moved white Queen, which was promoted from a white pawn, on black's turn
+Status:
+
+
+Bug: Can't advance pawn from e2 to e3 after a black pawn just advanced to d4
+. Able to move it on the following turn however
+Status:
+
+Bug: Black just advanced a pawn to c6 and took its own black knight

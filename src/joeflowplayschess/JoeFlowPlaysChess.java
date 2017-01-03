@@ -46,6 +46,7 @@ import javax.swing.border.TitledBorder;
 public class JoeFlowPlaysChess extends JFrame {
     
     //declarations
+    private ChessEngine JoeFlow;
     private Container pane;
     private JLabel board;
     private JPanel chessBoard;
@@ -74,8 +75,17 @@ public class JoeFlowPlaysChess extends JFrame {
     private volatile int myX = 0;
     private volatile int myY = 0;
     
+    public int moveFlagPromotedPiece =   0b00001111;
+    public int moveFlagPromotion =       0b00010000;
+    public int moveFlagEnPassant =       0b00100000;
+    public int moveFlagQueenSideCastle = 0b01000000;
+    public int moveFlagKingSideCastle =  0b10000000;
+    
     private boolean checkmate = false;
     private boolean confirmNeeded = false;
+    
+    String[] pieceTypes = {"Pawn", "Rook", "Knight", "Bishop", "Queen", "King",
+                           "Pawn", "Rook", "Knight", "Bishop", "Queen", "King"};
 
     char[] columns = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
     int[] rows = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -91,10 +101,12 @@ public class JoeFlowPlaysChess extends JFrame {
     public void initUI(){
   
         pane = getContentPane();
+        JoeFlow = new ChessEngine();
         
         chessBoard = setUpChessBoard();
         setUpInfoMsgPanel();
         setUpFooterPanel();
+        
         
         pane.add(chessBoard, BorderLayout.CENTER);
         
@@ -131,14 +143,76 @@ public class JoeFlowPlaysChess extends JFrame {
             }
         }
         
-        
-        
-        System.out.println("BLACK TURN");
-        
+        makeBlackMove();
+        whiteTurn = true;
         }
         
     }
     
+    public void makeBlackMove(){
+        
+        int[] blackMove = JoeFlow.selectMove(BLACK);
+        // piece(4) | capturedPiece{4} | fromSq(8) | toSq(8) | flags(8)
+        /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
+                   bit 5: promotion flag
+                   bit 6: en-passant capture flag
+                   bit 7: Queen Side Capture
+                   bit 8: King Side Capture
+        */
+        
+        int capturedPiece = blackMove[1];
+        int fromSq = blackMove[2];
+            int fromRow = (int)(fromSq-fromSq%8)/8;
+            int fromCol = fromSq%8;
+        int toSq = blackMove[3];
+            int toRow = (int)(toSq-toSq%8)/8;
+            int toCol = toSq%8;
+        int flags = blackMove[4];
+        
+        chessPiece pieceToMove = boardSquares[fromRow][fromCol].getPiece();
+        boardSquares[fromRow][fromCol].setPiece(null);
+        
+        if((flags & moveFlagPromotion) != 0){
+            
+            int newPiece = flags & moveFlagPromotedPiece;
+            pieceToMove.setType(pieceTypes[newPiece]);
+        }
+        
+        else if((flags & moveFlagKingSideCastle) != 0){
+            
+            chessPiece rook = boardSquares[getIndex(8)][getIndex('h')].getPiece();
+            boardSquares[getIndex(8)][getIndex('f')].setPiece(rook);
+            boardSquares[getIndex(8)][getIndex('h')].setPiece(null);
+            rook.setLocation(8, 'f');
+        }
+        
+        else if((flags & moveFlagQueenSideCastle) != 0){
+            
+            chessPiece rook = boardSquares[getIndex(8)][getIndex('a')].getPiece();
+            boardSquares[getIndex(8)][getIndex('d')].setPiece(rook);
+            boardSquares[getIndex(8)][getIndex('a')].setPiece(null);
+            rook.setLocation(8, 'd');
+        }
+        else if((flags & moveFlagEnPassant) != 0){
+            
+            chessPiece deadPiece = boardSquares[toRow+1][toCol].getPiece();
+            addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
+            deadPiece.setVisible(false);
+            boardSquares[toRow+1][toCol].setPiece(null);
+        }
+        
+        if(capturedPiece != 0xE){
+            
+            chessPiece deadPiece = boardSquares[toRow][toCol].getPiece();
+            addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
+            deadPiece.setVisible(false);
+        }
+        
+        boardSquares[toRow][toCol].setPiece(pieceToMove);
+        pieceToMove.setLocation(getRow(toRow), getColumn(toCol));
+        
+        
+    }
     
     public void whiteTurnListener(){
         
@@ -1002,6 +1076,7 @@ public class JoeFlowPlaysChess extends JFrame {
 
             JButton buttonPressed = (JButton) e.getSource();
             String buttonName = buttonPressed.getName();   //Get the name of the button pressed
+            int moveFlags = 0;
             
             if(null != buttonName)switch (buttonName) {
                 case "Yes":
@@ -1022,10 +1097,12 @@ public class JoeFlowPlaysChess extends JFrame {
                         if(getColumn(newPos[1]) == 'g'){
                             boardSquares[getIndex(1)][getIndex('f')].setPiece(boardSquares[getIndex(1)][getIndex('h')].getPiece());
                             boardSquares[getIndex(1)][getIndex('h')].setPiece(null);
+                            moveFlags = moveFlagKingSideCastle;
                         }
                         if(getColumn(newPos[1]) == 'c'){
                             boardSquares[getIndex(1)][getIndex('d')].setPiece(boardSquares[getIndex(1)][getIndex('a')].getPiece());
                             boardSquares[getIndex(1)][getIndex('a')].setPiece(null);
+                            moveFlags = moveFlagQueenSideCastle;
                         }
                         castleFlag = false;
                     }
@@ -1033,14 +1110,21 @@ public class JoeFlowPlaysChess extends JFrame {
                     if(currPiece.getType().equals("Pawn") && newPos[0] == getIndex(8)){
                             promotionOptions.setVisible(true);
                             confirmNeeded = true;
+                            
+                            break;
+                    }
+                    else{
+                        JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                        
+                        whiteTurn = false;
+                        synchronized(LOCK){
+                            LOCK.notifyAll();
+                        }
+
+                        break;
                     }
                     
-                    whiteTurn = false;
-                    synchronized(LOCK){
-                        LOCK.notifyAll();
-                    }
                     
-                    break;
                     
                 case "No":
                     confirmNeeded = false;
@@ -1066,24 +1150,54 @@ public class JoeFlowPlaysChess extends JFrame {
                     currPiece.setType("Queen");
                     promotionOptions.setVisible(false);
                     confirmNeeded = false;
+                    moveFlags = moveFlagPromotion | 4;
+                    
+                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    
+                    whiteTurn = false;
+                        synchronized(LOCK){
+                            LOCK.notifyAll();
+                        }
+
                     break;
                     
                 case "knight":
                     currPiece.setType("Knight");
                     promotionOptions.setVisible(false);
                     confirmNeeded = false;
+                    moveFlags = moveFlagPromotion | 2;
+                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    
+                    whiteTurn = false;
+                        synchronized(LOCK){
+                            LOCK.notifyAll();
+                        }
                     break;
                     
                 case "bishop":
                     currPiece.setType("Bishop");
                     promotionOptions.setVisible(false);
                     confirmNeeded = false;
+                    moveFlags = moveFlagPromotion | 3;
+                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    
+                    whiteTurn = false;
+                        synchronized(LOCK){
+                            LOCK.notifyAll();
+                        }
                     break;
                     
                 case "rook":
                     currPiece.setType("Rook");
                     promotionOptions.setVisible(false);
                     confirmNeeded = false;
+                    moveFlags = moveFlagPromotion | 1;
+                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    
+                    whiteTurn = false;
+                        synchronized(LOCK){
+                            LOCK.notifyAll();
+                        }
                     break;
                     
                 default:

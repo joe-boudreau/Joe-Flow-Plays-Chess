@@ -6,6 +6,8 @@
 package joeflowplayschess;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class ChessEngine {
     
@@ -26,14 +28,17 @@ private int bBishop = 9;
 private int bQueen = 10;
 private int bKing = 11;
 
-private byte flags;
+private int empty = 0xE;
 
-private long[] PIECEBOARDS;
+private byte gameFlags;
+
+private long[] gamePieceBoards;
 private long[] BITSQUARES;
 
-private int[] board;
+private int[] gameBoard;
 
 Constants Constants = new Constants();
+Random r = new Random();
     
 public ChessEngine(){
 
@@ -52,143 +57,326 @@ bit 7: White Queen Side Castle possible (Rook on square 0)
 bit 8: White King Side Castle possible  (Rook on square 7)
   
 */
-flags = (byte) 0b11110000;
+gameFlags = (byte) 0b11110000;
 
-PIECEBOARDS = new long[12];
-board = new int[64];
+gamePieceBoards = new long[12];
+gameBoard = new int[64];
 
 for(int sq = 0; sq < 64; sq++){
     
     //White Pieces
     if(sq == 0 || sq == 7){
-        PIECEBOARDS[wRook] = PIECEBOARDS[wRook] | BITSQUARES[sq];
-        board[sq] = wRook;
+        gamePieceBoards[wRook] = gamePieceBoards[wRook] | BITSQUARES[sq];
+        gameBoard[sq] = wRook;
     }
     if(sq == 1 || sq == 6){
-        PIECEBOARDS[wKnight] = PIECEBOARDS[wKnight] | BITSQUARES[sq];
-        board[sq] = wKnight;
+        gamePieceBoards[wKnight] = gamePieceBoards[wKnight] | BITSQUARES[sq];
+        gameBoard[sq] = wKnight;
     }
     if(sq == 2 || sq == 5){
-        PIECEBOARDS[wBishop] = PIECEBOARDS[wBishop] | BITSQUARES[sq];
-        board[sq] = wBishop;
+        gamePieceBoards[wBishop] = gamePieceBoards[wBishop] | BITSQUARES[sq];
+        gameBoard[sq] = wBishop;
     }
     if(sq == 3){
-        PIECEBOARDS[wQueen] = PIECEBOARDS[wQueen] | BITSQUARES[sq];
-        board[sq] = wQueen;
+        gamePieceBoards[wQueen] = gamePieceBoards[wQueen] | BITSQUARES[sq];
+        gameBoard[sq] = wQueen;
     }
     if(sq == 4){
-        PIECEBOARDS[wKing] = PIECEBOARDS[wKing] | BITSQUARES[sq];
-        board[sq] = wKing;
+        gamePieceBoards[wKing] = gamePieceBoards[wKing] | BITSQUARES[sq];
+        gameBoard[sq] = wKing;
     }
     if(sq > 7 && sq < 16){
-        PIECEBOARDS[wPawn] = PIECEBOARDS[wPawn] | BITSQUARES[sq];
-        board[sq] = wPawn;
+        gamePieceBoards[wPawn] = gamePieceBoards[wPawn] | BITSQUARES[sq];
+        gameBoard[sq] = wPawn;
     }
     
-    
+    if(sq > 15 && sq < 48){
+        gameBoard[sq] = empty;
+    }
     //Black pieces
     if(sq == 56 || sq == 63){
-        PIECEBOARDS[bRook] = PIECEBOARDS[bRook] | BITSQUARES[sq];
-        board[sq] = bRook;
+        gamePieceBoards[bRook] = gamePieceBoards[bRook] | BITSQUARES[sq];
+        gameBoard[sq] = bRook;
     }
     if(sq == 57 || sq == 62){
-        PIECEBOARDS[bKnight] = PIECEBOARDS[bKnight] | BITSQUARES[sq];
-        board[sq] = bKnight;
+        gamePieceBoards[bKnight] = gamePieceBoards[bKnight] | BITSQUARES[sq];
+        gameBoard[sq] = bKnight;
     }
     if(sq == 58 || sq == 61){
-        PIECEBOARDS[bBishop] = PIECEBOARDS[bBishop] | BITSQUARES[sq];
-        board[sq] = bBishop;
+        gamePieceBoards[bBishop] = gamePieceBoards[bBishop] | BITSQUARES[sq];
+        gameBoard[sq] = bBishop;
     }
     if(sq == 59){
-        PIECEBOARDS[bQueen] = PIECEBOARDS[bQueen] | BITSQUARES[sq];
-        board[sq] = bQueen;
+        gamePieceBoards[bQueen] = gamePieceBoards[bQueen] | BITSQUARES[sq];
+        gameBoard[sq] = bQueen;
     }
     if(sq == 60){
-        PIECEBOARDS[bKing] = PIECEBOARDS[bKing] | BITSQUARES[sq];
-        board[sq] = bKing;
+        gamePieceBoards[bKing] = gamePieceBoards[bKing] | BITSQUARES[sq];
+        gameBoard[sq] = bKing;
     }
     if(sq > 47 && sq < 56){
-        PIECEBOARDS[bPawn] = PIECEBOARDS[bPawn] | BITSQUARES[sq];
-        board[sq] = bPawn;
+        gamePieceBoards[bPawn] = gamePieceBoards[bPawn] | BITSQUARES[sq];
+        gameBoard[sq] = bPawn;
     }
 }
 
-//Test Space
-
-long currentBoardAllPieces = 0xc90022410880L;
-
-System.out.println("Current Board");
-printAsBitBoard(currentBoardAllPieces);
-
-long occupancyMask = Constants.RookMaskOnSquare[0];
-
-System.out.println("Occupancy Variation");
-printAsBitBoard((currentBoardAllPieces & occupancyMask));
-
-int index = (int)(((currentBoardAllPieces & occupancyMask)*Constants.magicNumberRook[0]) >>> Constants.magicShiftsRook[0]);
-
-long friendlyPieces = 0x890002410000L;
-
-System.out.println("Friendly Pieces");
-printAsBitBoard(friendlyPieces);
-
-long moves = Constants.magicMovesRook[0][index] & (~friendlyPieces);
-
-System.out.println("Magic Moves Available");
-printAsBitBoard(Constants.magicMovesRook[0][index]);
-
-System.out.println("Moves");
-printAsBitBoard(moves);
-
-
-//printAsBitBoard(Constants.occupancyAttackSet[35][511]);
-
-/*TEST SPACE
-
-long Targets = 0x218008020000L;
-int Diff = 64-8;
-int pieceType = bPawn;
-ArrayList<Integer> moves = new ArrayList();
-int flags = 0;
-
-moves = generateMoves(Targets, Diff, pieceType, moves, flags);
-
-for(int i = 0; i<5;i++){
-System.out.println(Integer.toBinaryString(moves.get(i)));
-}
-END OF TEST SPACE*/
 }
 
-public void generateAllMoves(int colour){
+public int[] selectMove(int colour){
+    
+int[] bestMove, moveInfo;
+
+bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, 1);
+
+moveInfo = parseMove(bestMove[0]);
+
+updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
+
+return moveInfo;
+
+}
+
+private int[] chooseBestMove(int[] currBoard, long[] pieceBoards, byte flags, int colour, int depth){
+
+int i;
+int[] moves, moveInfo, moveScore, tempBoard, bestMove;
+long[] tempPieceBoards;
+byte tempFlags;
+
+ArrayList<int[]> bestMoves = new ArrayList();
+
+moves = generateAllMoves(colour, currBoard, pieceBoards, flags);
+
+moveInfo = new int[5];
+
+for(i = 0; i < moves.length; i++){
+    
+    tempBoard = Arrays.copyOf(currBoard, 64);
+    tempPieceBoards = Arrays.copyOf(pieceBoards, 12);
+    tempFlags = flags;
+    
+    moveInfo = parseMove(moves[i]);
+
+    updateGame(moveInfo, tempBoard, tempPieceBoards, tempFlags);
+    
+    moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards)};
+    
+    if(bestMoves.isEmpty() || bestMoves.get(0)[1] < moveScore[1]){
+        bestMoves.clear();
+        bestMoves.add(moveScore);
+    }
+    else if(bestMoves.get(0)[1] == moveScore[1]){
+        bestMoves.add(moveScore);
+    }
+}
+
+if(bestMoves.size() > 1){
+    int randInt = r.nextInt(bestMoves.size());
+    bestMove = bestMoves.get(randInt);
+}
+else{
+    bestMove = bestMoves.get(0);
+}    
+
+return bestMove;
+
+}
+
+public int evaluateGameScore(long[] PIECEBOARDS){
+
+int materialScore = (numSet(PIECEBOARDS[bPawn]) - numSet(PIECEBOARDS[wPawn])) +
+                    3*(numSet(PIECEBOARDS[bKnight]) - numSet(PIECEBOARDS[wKnight])) +
+                    3*(numSet(PIECEBOARDS[bBishop]) - numSet(PIECEBOARDS[wBishop])) +   
+                    5*(numSet(PIECEBOARDS[bRook]) - numSet(PIECEBOARDS[wRook])) +   
+                    9*(numSet(PIECEBOARDS[bQueen]) - numSet(PIECEBOARDS[wQueen])) +   
+                    10000000*(numSet(PIECEBOARDS[bKing]) - numSet(PIECEBOARDS[wKing]));  
+
+return materialScore;
+}
+
+public void printMovesAsStrings(int[] moves){
+    
+    int piece, capturedPiece, fromSq, toSq, moveFlags, fromRow, fromCol, toRow, toCol;
+    String[] pieceTypes = {"wPawn", "wRook", "wKnight", "wBishop", "wQueen", "wKing",
+                           "bPawn", "bRook", "bKnight", "bBishop", "bQueen", "bKing", "", "", "None"};
+    String[] rowNumber = {"1", "2", "3", "4", "5", "6", "7", "8"};
+    String[] colNumber = {"a", "b", "c", "d", "e", "f", "g", "h"};
+    
+    String moveStr;
+    
+    for(int move : moves){
+        piece =          move >>> 28;
+        capturedPiece = (move << 4) >>> 28;
+        fromSq =        (move << 8) >>> 24;
+            fromRow = (int)(fromSq-fromSq%8)/8;
+            fromCol = fromSq%8;
+        toSq =          (move << 16) >>> 24;
+            toRow = (int)(toSq-toSq%8)/8;
+            toCol = toSq%8;
+        moveFlags = (int)(byte) move;
+        
+        moveStr = "Piece: " + pieceTypes[piece] + ", Captured: " + pieceTypes[capturedPiece] +
+                  ", From: " + colNumber[fromCol]+rowNumber[fromRow] + ", To: " +
+                  colNumber[toCol]+rowNumber[toRow];
+        if((moveFlags & Constants.moveFlagPromotion) != 0){
+            moveStr += ", PROMOTION";
+        }
+        else if((moveFlags & Constants.moveFlagEnPassant) != 0){
+            moveStr += ", EN PASSANT";
+        }
+        else if((moveFlags & Constants.moveFlagKingSideCastle) != 0){
+            moveStr += ", KING-SIDE CASTLE";
+        }
+        else if((moveFlags & Constants.moveFlagQueenSideCastle) != 0){
+            moveStr += ", QUEEN-SIDE CASTLE";
+        }
+        
+        System.out.println(moveStr);
+    }
+}
+
+public int[] parseMove(int move){
+    int piece =          move >>> 28;
+    int capturedPiece = (move << 4) >>> 28;
+    int fromSq =        (move << 8) >>> 24;
+    int toSq =          (move << 16) >>> 24;
+    byte moveFlags =    (byte) move;
+    
+    return new int[]{piece, capturedPiece, fromSq, toSq, moveFlags};
+}
+
+public void updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
+    
+    int piece =         move[0];
+    int capturedPiece = move[1];
+    int fromSq =        move[2];
+    int toSq =          move[3];
+    int moveFlags =     move[4];
+    
+    int colour = piece < 6 ? WHITE : BLACK;
+    
+    PIECEBOARDS[piece] &= (~(1L << fromSq)); //Remove moving piece from old square
+    board[fromSq] = empty;
+    
+    if((moveFlags & Constants.moveFlagPromotion) != 0){
+        
+        PIECEBOARDS[moveFlags & Constants.moveFlagPromotedPiece] |= (1L << toSq); //Add promoted piece to new square
+        board[toSq] = moveFlags & Constants.moveFlagPromotedPiece;
+    }
+    else if((moveFlags & Constants.moveFlagEnPassant) != 0){
+        
+        int[] otherPiece = new int[]{bPawn, wPawn};
+        int[] sqDelta = new int[]{-8, 8};
+        
+        PIECEBOARDS[piece] |= (1L << toSq); //add piece to new square
+        PIECEBOARDS[otherPiece[colour]] &= (~(1L << (toSq + sqDelta[colour]))); //remove captured piece
+        board[toSq + sqDelta[colour]] = empty;
+        board[toSq] = piece;
+    }
+    else if((moveFlags & Constants.moveFlagKingSideCastle) != 0){
+        
+        int[] rook = new int[]{wRook, bRook};
+        int[] newSq = new int[]{5, 61};
+        int[] oldSq = new int[]{7, 63};
+
+        PIECEBOARDS[piece] |= (1L << toSq); //add piece to new square
+        PIECEBOARDS[rook[colour]] |= (1L << newSq[colour]); // Add rook to new square
+        PIECEBOARDS[rook[colour]] &= (~(1L << oldSq[colour])); // Remove rook from old square
+        board[toSq] = piece;
+        board[oldSq[colour]] = empty;
+        board[newSq[colour]] = rook[colour];
+    }
+    else if((moveFlags & Constants.moveFlagQueenSideCastle) != 0){
+        
+        int[] rook = new int[]{wRook, bRook};
+        int[] newSq = new int[]{3, 59};
+        int[] oldSq = new int[]{0, 56};
+
+        PIECEBOARDS[piece] |= (1L << toSq); //add piece to new square
+        PIECEBOARDS[rook[colour]] |= (1L << newSq[colour]); // Add rook to new square
+        PIECEBOARDS[rook[colour]] &= (~(1L << oldSq[colour])); // Remove rook from old square
+        board[toSq] = piece;
+        board[oldSq[colour]] = empty;
+        board[newSq[colour]] = rook[colour];
+    }
+    else{
+        PIECEBOARDS[piece] |= (1L << toSq); //add piece to new square
+        board[toSq] = piece;
+    }
+    
+    if(capturedPiece != empty) {
+            PIECEBOARDS[capturedPiece] &= (~(1L << toSq)); //remove captured piece
+    }
+    
+    if((flags & 0b11110000) > 0){
+        if(colour == WHITE){
+            if(piece == wKing){
+                flags &= 0b00111111;
+            }
+            else if(piece == wRook && fromSq == 0){
+                flags &= 0b10111111;
+            }
+            else if(piece == wRook && fromSq == 7){
+                flags &= 0b01111111;
+            }
+            
+        }
+        else{
+            if(piece == bKing){
+                flags &= 0b11001111;
+            }
+            else if(piece == bRook && fromSq == 56){
+                flags &= 0b11101111;
+            }
+            else if(piece == bRook && fromSq == 63){
+                flags &= 0b11011111;
+            } 
+        }
+    }
+    flags &= 0b11110000; // clear en-passant flags from last move
+    
+    if((piece == wPawn || piece == bPawn) && Math.abs(toSq - fromSq) == 16){ //en passant possible
+        flags = (byte) (flags | (toSq%8 << 1) | 1);
+    }
+    
+}
+
+public int[] generateAllMoves(int colour, int[] board, long[] PIECEBOARDS, byte flags){
 
 ArrayList<Integer> possibleMoves = new ArrayList();
 
 if(colour == WHITE){
 
-    generatePawnTargets(possibleMoves, colour, wPawn, PIECEBOARDS[wPawn]);
-    generateKnightTargets(possibleMoves, colour, wKnight, PIECEBOARDS[wKnight]);
-    generateKingTargets(possibleMoves, colour, wKing, PIECEBOARDS[wKing]);
-
-
-
+    generatePawnTargets(possibleMoves, colour, wPawn, PIECEBOARDS[wPawn], board, PIECEBOARDS, flags);
+    generateKnightTargets(possibleMoves, colour, wKnight, PIECEBOARDS[wKnight], board, PIECEBOARDS);
+    generateKingTargets(possibleMoves, colour, wKing, PIECEBOARDS[wKing],  board, PIECEBOARDS, flags);
+    generateRookTargets(possibleMoves, colour, wRook, PIECEBOARDS[wRook],  board, PIECEBOARDS);
+    generateBishopTargets(possibleMoves, colour, wBishop, PIECEBOARDS[wBishop],  board, PIECEBOARDS);
+    generateQueenTargets(possibleMoves, colour, wQueen, PIECEBOARDS[wQueen],  board, PIECEBOARDS);
 
 }
 else{
     
-    generatePawnTargets(possibleMoves, colour, bPawn, PIECEBOARDS[bPawn]);
-    generateKnightTargets(possibleMoves, colour, bKnight, PIECEBOARDS[bKnight]);
-    generateKingTargets(possibleMoves, colour, bKing, PIECEBOARDS[bKing]);
-
-    
+    generatePawnTargets(possibleMoves, colour, bPawn, PIECEBOARDS[bPawn], board, PIECEBOARDS, flags);
+    generateKnightTargets(possibleMoves, colour, bKnight, PIECEBOARDS[bKnight], board, PIECEBOARDS);
+    generateKingTargets(possibleMoves, colour, bKing, PIECEBOARDS[bKing], board, PIECEBOARDS, flags);
+    generateRookTargets(possibleMoves, colour, bRook, PIECEBOARDS[bRook], board, PIECEBOARDS);
+    generateBishopTargets(possibleMoves, colour, bBishop, PIECEBOARDS[bBishop], board, PIECEBOARDS);
+    generateQueenTargets(possibleMoves, colour, bQueen, PIECEBOARDS[bQueen], board, PIECEBOARDS);
+ 
 }
 
-for(int i = 0; i < possibleMoves.size(); i++){
-    System.out.println(Integer.toBinaryString(possibleMoves.get(i)));
-}
-    
+int[] movesArray = new int[possibleMoves.size()];
+
+for(int i = 0; i < movesArray.length; i++){
+    movesArray[i] = possibleMoves.get(i);
 }
 
-public void generatePawnTargets(ArrayList moves, int Colour, int pieceType, long pawns){
+return movesArray;
+
+}
+
+public void generatePawnTargets(ArrayList moves, int Colour, int pieceType, long pawns, int[] board, long[] PIECEBOARDS, byte flags){
     
     long pawnPush, pawnDoublePush, promotions, attackTargets, attacks, epAttacks, promotionAttacks;
     
@@ -203,33 +391,30 @@ public void generatePawnTargets(ArrayList moves, int Colour, int pieceType, long
     
     int diff = pushDiff[Colour];
     
-    long freeSquares = 0;
+    long freeSquares = Constants.ALL_SET;
     for(long piece : PIECEBOARDS){
-        freeSquares |= ~(piece);
+        freeSquares &= (~piece);
     }
     
     long enemyPieces = 0;
     for(int j = (pieceType + 6)%12; j < (pieceType + 6)%12 + 6; j++){
         enemyPieces |= PIECEBOARDS[j];
     }
+
     
-    
-    long enPassantTargetSquare = Constants.FILES[flags & 0b00001110] & enPassantMask[Colour];
+    long enPassantTargetSquare = Constants.FILES[(flags & 0b00001110) >>> 1] & enPassantMask[Colour];
     
     //Single Pushes
     pawnPush = circularLeftShift(pawns, diff) & freeSquares;
-    generatePawnMoves(pawnPush, diff, pieceType, moves, 0);
-    System.out.println(moves.size());
+    generatePawnMoves(pawnPush, diff, pieceType, moves, 0, board);
     
     //Promotions
     promotions = pawnPush & promotionMask[Colour];
-    generatePawnPromotionMoves(promotions, diff, pieceType, moves);
-    System.out.println(moves.size());
+    generatePawnPromotionMoves(promotions, diff, pieceType, moves, board);
     
     //Double Pushes
     pawnDoublePush = circularLeftShift(pawnPush & doublePushMask[Colour],diff) & freeSquares;
-    generatePawnMoves(pawnDoublePush, diff+diff, pieceType, moves, 0);
-    System.out.println(moves.size());
+    generatePawnMoves(pawnDoublePush, diff+diff, pieceType, moves, 0, board);
     
     //Attacks
     for(int dir = 0; dir < 2; dir++){
@@ -239,22 +424,22 @@ public void generatePawnTargets(ArrayList moves, int Colour, int pieceType, long
         
         //Simple Attacks
         attacks = attackTargets & enemyPieces;
-        generatePawnMoves(attacks, diff, pieceType, moves, 0);
+        generatePawnMoves(attacks, diff, pieceType, moves, 0, board);
         
         //En Passant Attacks
         epAttacks = attackTargets & enPassantTargetSquare;
         if((flags & 1) == 1){
-            generatePawnMoves(epAttacks, diff, pieceType, moves, Constants.moveFlagEnPassant);
+            generatePawnMoves(epAttacks, diff, pieceType, moves, Constants.moveFlagEnPassant, board);
         }
         
         //Promotion Attacks
         promotionAttacks = attacks & promotionMask[Colour];
-        generatePawnPromotionMoves(promotionAttacks, diff, pieceType, moves);
+        generatePawnPromotionMoves(promotionAttacks, diff, pieceType, moves, board);
     }
     
 }
 
-public void generateKnightTargets(ArrayList moves, int Colour, int pieceType, long knights){
+public void generateKnightTargets(ArrayList moves, int Colour, int pieceType, long knights, int[] board, long[] PIECEBOARDS){
     
     long targets;
     
@@ -266,16 +451,21 @@ public void generateKnightTargets(ArrayList moves, int Colour, int pieceType, lo
     while(knights > 0){
         int fromSq = Long.numberOfTrailingZeros(knights);
         targets = Constants.KnightMoves[fromSq] & ~friendlyPieces;
-        generateMoves(fromSq, targets, pieceType, moves, 0);
+        generateMoves(fromSq, targets, pieceType, moves, 0, board);
         knights &= knights - 1;
     }
     
 }
 
-public void generateKingTargets(ArrayList moves, int Colour, int pieceType, long king){
+public void generateKingTargets(ArrayList moves, int Colour, int pieceType, long king, int[] board, long[] PIECEBOARDS, byte flags){
     
     long targets;
     
+    long allPieces = 0;
+    for(int i = 0; i < 12; i++){
+        allPieces |= PIECEBOARDS[i];
+    }
+
     long friendlyPieces = 0;
     for(int j = Colour*6; j < Colour*6 + 6; j++){
         friendlyPieces |= PIECEBOARDS[j];
@@ -283,14 +473,121 @@ public void generateKingTargets(ArrayList moves, int Colour, int pieceType, long
     
     int fromSq = Long.numberOfTrailingZeros(king);
     targets = Constants.KingMoves[fromSq] & ~friendlyPieces;
-    generateMoves(fromSq, targets, pieceType, moves, 0);
-
+    generateMoves(fromSq, targets, pieceType, moves, 0, board);
     
+    if(Colour == WHITE){
+        if((flags & (1 << 6)) != 0 && (allPieces & Constants.queenCastleSquares[WHITE]) == 0){
+            generateMoves(fromSq, 0x20L, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
+        }
+        if((flags & (1 << 7)) != 0 && (allPieces & Constants.kingCastleSquares[WHITE]) == 0){
+            generateMoves(fromSq, 0x2L, pieceType, moves, Constants.moveFlagKingSideCastle, board);
+        }  
+    }
+    else{
+        if((flags & (1 << 4)) != 0 && (allPieces & Constants.queenCastleSquares[BLACK]) == 0){
+            generateMoves(fromSq, 0x2000000000000000L, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
+        }
+        if((flags & (1 << 5)) != 0 && (allPieces & Constants.kingCastleSquares[BLACK]) == 0){
+            generateMoves(fromSq, 0x200000000000000L, pieceType, moves, Constants.moveFlagKingSideCastle, board);
+        }
+    }
 }
 
-public void generateMoves(int from, long Targets, int pieceType, ArrayList moveList, int flags){
+public void generateRookTargets(ArrayList moves, int Colour, int pieceType, long rooks, int[] board, long[] PIECEBOARDS){
+
+    long allPieces, friendlyPieces, targets;
+    int i, j, fromSq, index;
     
-    while(Targets > 0){
+    allPieces = 0;
+    for(i = 0; i < 12; i++){
+        allPieces |= PIECEBOARDS[i];
+    }
+    
+    friendlyPieces = 0;
+    for(j = Colour*6; j < Colour*6 + 6; j++){
+        friendlyPieces |= PIECEBOARDS[j];
+    }
+    
+    while(rooks != 0){
+        fromSq = Long.numberOfTrailingZeros(rooks);
+
+        index = (int) (((allPieces & Constants.RookMaskOnSquare[fromSq])*
+                    Constants.magicNumberRook[fromSq]) >>>
+                    Constants.magicShiftsRook[fromSq]);
+
+        targets = Constants.magicMovesRook[fromSq][index] & (~friendlyPieces);
+        generateMoves(fromSq, targets, pieceType, moves, 0, board);
+        
+        rooks &= rooks -1;
+    }
+}
+
+public void generateBishopTargets(ArrayList moves, int Colour, int pieceType, long bishops, int[] board, long[] PIECEBOARDS){
+
+    long allPieces, friendlyPieces, targets;
+    int i, j, fromSq, index;
+    
+    allPieces = 0;
+    for(i = 0; i < 12; i++){
+        allPieces |= PIECEBOARDS[i];
+    }
+    
+    friendlyPieces = 0;
+    for(j = Colour*6; j < Colour*6 + 6; j++){
+        friendlyPieces |= PIECEBOARDS[j];
+    }
+    
+    while(bishops != 0){
+        fromSq = Long.numberOfTrailingZeros(bishops);
+
+        index = (int) (((allPieces & Constants.BishopMaskOnSquare[fromSq])*
+                    Constants.magicNumberBishop[fromSq]) >>>
+                    Constants.magicShiftsBishop[fromSq]);
+
+        targets = Constants.magicMovesBishop[fromSq][index] & (~friendlyPieces);
+        generateMoves(fromSq, targets, pieceType, moves, 0, board);
+        
+        bishops &= bishops -1;
+    }
+}
+
+public void generateQueenTargets(ArrayList moves, int Colour, int pieceType, long queens, int[] board, long[] PIECEBOARDS){
+
+    long allPieces, friendlyPieces, targets;
+    int i, j, fromSq, rookIndex, bishopIndex;
+    
+    allPieces = 0;
+    for(i = 0; i < 12; i++){
+        allPieces |= PIECEBOARDS[i];
+    }
+    
+    friendlyPieces = 0;
+    for(j = Colour*6; j < Colour*6 + 6; j++){
+        friendlyPieces |= PIECEBOARDS[j];
+    }
+    
+    while(queens != 0){
+        fromSq = Long.numberOfTrailingZeros(queens);
+
+        rookIndex = (int) (((allPieces & Constants.RookMaskOnSquare[fromSq])*
+                    Constants.magicNumberRook[fromSq]) >>>
+                    Constants.magicShiftsRook[fromSq]);
+        
+        bishopIndex = (int) (((allPieces & Constants.BishopMaskOnSquare[fromSq])*
+                    Constants.magicNumberBishop[fromSq]) >>>
+                    Constants.magicShiftsBishop[fromSq]);
+
+        targets = (Constants.magicMovesBishop[fromSq][bishopIndex] | Constants.magicMovesRook[fromSq][rookIndex])
+                  & (~friendlyPieces);
+        generateMoves(fromSq, targets, pieceType, moves, 0, board);
+        
+        queens &= queens -1;
+    }
+}
+
+public void generateMoves(int from, long Targets, int pieceType, ArrayList moveList, int flags, int[] board){
+    
+    while(Targets != 0){
         
         int toSq = Long.numberOfTrailingZeros(Targets);
         int capture = board[toSq];
@@ -298,10 +595,11 @@ public void generateMoves(int from, long Targets, int pieceType, ArrayList moveL
         moveList.add(move);
         Targets &= Targets - 1;
         
+        
     }
 }
 
-public void generatePawnMoves(long Targets, int moveDiff, int pieceType, ArrayList moveList, int flags){
+public void generatePawnMoves(long Targets, int moveDiff, int pieceType, ArrayList moveList, int flags, int[] board){
 
     /*Move Flags
     parameter name: flags
@@ -315,7 +613,7 @@ public void generatePawnMoves(long Targets, int moveDiff, int pieceType, ArrayLi
     */
 
     
-    while(Targets > 0){
+    while(Targets != 0){
         
         int toSq = Long.numberOfTrailingZeros(Targets);
         int fromSq = Integer.remainderUnsigned(toSq - moveDiff, 64);
@@ -327,9 +625,9 @@ public void generatePawnMoves(long Targets, int moveDiff, int pieceType, ArrayLi
     }
 }
 
-public void generatePawnPromotionMoves(long Targets, int moveDiff, int pieceType, ArrayList moveList){
+public void generatePawnPromotionMoves(long Targets, int moveDiff, int pieceType, ArrayList moveList, int[] board){
     
-    while(Targets > 0){
+    while(Targets != 0){
         int toSq = Long.numberOfTrailingZeros(Targets);
         int fromSq = Integer.remainderUnsigned(toSq - moveDiff, 64);
         int capture = board[toSq];
@@ -356,70 +654,32 @@ public long circularLeftShift(long bitBoard, int shift){
     return bitBoard << shift | bitBoard >> (64 - shift);
 }
 
-public void makeMove(int[] oldPos, int[] newPos){
+public void makeMove(int[] oldPos, int[] newPos, int moveFlags){
 
 int oldIndex = getIndex(oldPos);
 int newIndex = getIndex(newPos);
 
-//NEEDS TO GET UPDATED WITH PIECEBOARDS[PIECETYPE]
-//TOO LAZY TO DO IT RIGHT NOW
-//REMEMBER THIS!
-    if((wPawn & BITSQUARES[oldIndex]) != 0){
-        wPawn ^= BITSQUARES[oldIndex];
-        wPawn |= BITSQUARES[newIndex];
-    }
-    else if((wRook & BITSQUARES[oldIndex]) != 0){
-        wRook ^= BITSQUARES[oldIndex];
-        wRook |= BITSQUARES[newIndex];
-    }
-    else if((wKnight & BITSQUARES[oldIndex]) != 0){
-        wKnight ^= BITSQUARES[oldIndex];
-        wKnight |= BITSQUARES[newIndex];
-    }
-    else if((wBishop & BITSQUARES[oldIndex]) != 0){
-        wBishop ^= BITSQUARES[oldIndex];
-        wBishop |= BITSQUARES[newIndex];
-    }
-    else if((wQueen & BITSQUARES[oldIndex]) != 0){
-        wQueen ^= BITSQUARES[oldIndex];
-        wQueen |= BITSQUARES[newIndex];
-    }
-    else if((wKing & BITSQUARES[oldIndex]) != 0){
-        wKing ^= BITSQUARES[oldIndex];
-        wKing |= BITSQUARES[newIndex];
-    }
-    
-    else if((bPawn & BITSQUARES[oldIndex]) != 0){
-        bPawn ^= BITSQUARES[oldIndex];
-        bPawn |= BITSQUARES[newIndex];
-    }
-    else if((bRook & BITSQUARES[oldIndex]) != 0){
-        bRook ^= BITSQUARES[oldIndex];
-        bRook |= BITSQUARES[newIndex];
-    }
-    else if((bKnight & BITSQUARES[oldIndex]) != 0){
-        bKnight ^= BITSQUARES[oldIndex];
-        bKnight |= BITSQUARES[newIndex];
-    }
-    else if((bBishop & BITSQUARES[oldIndex]) != 0){
-        bBishop ^= BITSQUARES[oldIndex];
-        bBishop |= BITSQUARES[newIndex];
-    }
-    else if((bQueen & BITSQUARES[oldIndex]) != 0){
-        bQueen ^= BITSQUARES[oldIndex];
-        bQueen |= BITSQUARES[newIndex];
-    }
-    else if((bKing & BITSQUARES[oldIndex]) != 0){
-        bKing ^= BITSQUARES[oldIndex];
-        bKing |= BITSQUARES[newIndex];
-    }
-    
+int piece =          gameBoard[oldIndex];
+int capturedPiece =  gameBoard[newIndex];
+int fromSq =         oldIndex;
+int toSq =           newIndex;
+
+int move = piece << 28 | capturedPiece << 24 | fromSq << 16 | toSq << 8 | moveFlags;
+
+int[] moveInfo = parseMove(move);
+
+updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
+ 
 }
 
 public int getIndex(int[] Position){
     int row = Position[0];
     int column = Position[1];
     return 8*row + column;
+}
+
+public int numSet(long l){
+    return Long.bitCount(l);
 }
 
 public void printAsBitBoard(long l){
@@ -433,6 +693,16 @@ public void printAsBitBoard(long l){
     for(int i = 0; i < 8; i++){
         System.out.println(new StringBuilder(bits.substring(i*8, i*8+8)).reverse().toString());
         
+    }
+}
+
+public void printBoardArray(int[] b){
+    
+    for(int i = 56; i > -1; i-=8){
+        System.out.println(b[i] + "  " + b[i+1] + "  " +
+                         b[i+2] + "  " + b[i+3] + "  " +
+                         b[i+4] + "  " + b[i+5] + "  " +
+                         b[i+6] + "  " + b[i+7] + "  ");  
     }
 }
  

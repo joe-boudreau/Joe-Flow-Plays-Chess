@@ -13,6 +13,7 @@ import java.util.Random;
 public class Constants {
 
 public long[] BITSQUARES =           new long[64];
+public long ALL_SET =                0xffffffffffffffffL;
 
 public long RANK_1 =                 0xffL;
 public long RANK_2 =                 0xff00L;
@@ -42,9 +43,14 @@ public long[] KingMoves =            new long[64];
 public long[] RookMaskOnSquare =     new long[64];
 public long[] BishopMaskOnSquare =   new long[64];
 
+public int moveFlagPromotedPiece =   0b00001111;
+public int moveFlagPromotion =       0b00010000;
 public int moveFlagEnPassant =       0b00100000;
 public int moveFlagQueenSideCastle = 0b01000000;
 public int moveFlagKingSideCastle =  0b10000000;
+
+public long[] queenCastleSquares =   new long[]{0xe, 0xe00000000000000L};
+public long[] kingCastleSquares =    new long[]{0x60, 0x6000000000000000L};
 
 public long[][] occupancyVariation = new long[64][];
 public long[][] occupancyAttackSet = new long[64][];
@@ -315,12 +321,11 @@ private int[] getIndexOfSetBits(long l){
         setBits.add(Long.numberOfTrailingZeros(l));
         l &= l-1;
     }
-    Integer[] sB = new Integer[setBits.size()];
+    
     int[] sBi = new int[setBits.size()];
     
-    setBits.toArray(sB);
-    for(int i = 0; i < sB.length; i++){
-        sBi[i] = sB[i];
+    for(int i = 0; i < sBi.length; i++){
+        sBi[i] = setBits.get(i);
     }   
     return sBi;
 }
