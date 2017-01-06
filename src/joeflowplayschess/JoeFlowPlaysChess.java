@@ -339,10 +339,6 @@ public class JoeFlowPlaysChess extends JFrame {
         int nextRow, nextCol, prevRow, prevCol;
         int[] rowDelta, colDelta;
         
-        if(pieceIsPinned(cP)){
-            return new BoardTile[]{};
-        }
-        
         ArrayList<BoardTile> validBoardList = new ArrayList();
         
         switch(cP.getType()){
@@ -566,13 +562,25 @@ public class JoeFlowPlaysChess extends JFrame {
             break;
             
         }
+        
+        chessPiece pinPiece = pieceIsPinned(cP);
+        if(pinPiece != null){
+            for(int i = 0; i < validBoardList.size(); i++){
+                
+                if(validBoardList.get(i).getPiece() == pinPiece){
+                    return new BoardTile[]{validBoardList.get(i)};
+                }
+                
+            }
+        }
+        
 
         BoardTile[] vbt = new BoardTile[validBoardList.size()];
         validBoardList.toArray(vbt);
         return vbt;
     }
     
-    public boolean pieceIsPinned(chessPiece cP){
+    public chessPiece pieceIsPinned(chessPiece cP){
         
         chessPiece[] blackPieces = getPiecesOnBoard(BLACK);
 
@@ -601,7 +609,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(nextRow < 8 && boardSquares[nextRow][pieceCol].getPiece().getType().equals("King") &&
                                       boardSquares[nextRow][pieceCol].getPiece().getColour() == WHITE) {
-                        return true;
+                        return bP;
                     }
                 }
                 
@@ -615,7 +623,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(nextCol < 8 && boardSquares[pieceRow][nextCol].getPiece().getType().equals("King") &&
                                       boardSquares[pieceRow][nextCol].getPiece().getColour() == WHITE) {
-                        return true;
+                        return bP;
                     }
                 }
                 
@@ -629,7 +637,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(prevRow > -1 && boardSquares[prevRow][pieceCol].getPiece().getType().equals("King") &&
                                       boardSquares[prevRow][pieceCol].getPiece().getColour() == WHITE) {
-                        return true;
+                        return bP;
                     }
                 }
                 
@@ -643,7 +651,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(prevCol > -1 && boardSquares[pieceRow][prevCol].getPiece().getType().equals("King") &&
                                       boardSquares[pieceRow][prevCol].getPiece().getColour() == WHITE) {
-                        return true;
+                        return bP;
                     }
                 }
                 
@@ -666,7 +674,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].getPiece().getType().equals("King") &&
                                                      boardSquares[nextRow][nextCol].getPiece().getColour() == WHITE){
-                        return true;
+                        return bP;
                     }
                 }
                 
@@ -681,7 +689,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].getPiece().getType().equals("King") &&
                                                      boardSquares[prevRow][prevCol].getPiece().getColour() == WHITE){
-                        return true;
+                        return bP;
                     }
                 }
 
@@ -700,7 +708,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].getPiece().getType().equals("King") &&
                                                      boardSquares[nextRow][prevCol].getPiece().getColour() == WHITE){
-                        return true;
+                       return bP;
                     }
                 }
                 
@@ -714,13 +722,13 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     if(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].getPiece().getType().equals("King") &&
                                                      boardSquares[prevRow][nextCol].getPiece().getColour() == WHITE){
-                        return true;
+                        return bP;
                     }
                 }
             }
         }
         
-        return false;
+        return null;
     }
     
     public int[] getPosition(chessPiece cP){

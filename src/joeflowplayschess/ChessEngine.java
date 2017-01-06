@@ -126,11 +126,16 @@ public int[] selectMove(int colour){
     
 int[] bestMove, moveInfo;
 
-bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, 1);
+bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, 4);
 
 moveInfo = parseMove(bestMove[0]);
 
-updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
+gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
+
+System.out.println("Best Move Score For Black:");
+System.out.println(bestMove[1]);
+System.out.println("Game Flags:");
+System.out.println(Integer.toBinaryString(Byte.toUnsignedInt(gameFlags)));
 
 return moveInfo;
 
@@ -139,7 +144,7 @@ return moveInfo;
 private int[] chooseBestMove(int[] currBoard, long[] pieceBoards, byte flags, int colour, int depth){
 
 int i;
-int[] moves, moveInfo, moveScore, tempBoard, bestMove;
+int[] moves, moveScore, tempBoard, bestMove;
 long[] tempPieceBoards;
 byte tempFlags;
 
@@ -147,7 +152,6 @@ ArrayList<int[]> bestMoves = new ArrayList();
 
 moves = generateAllMoves(colour, currBoard, pieceBoards, flags);
 
-moveInfo = new int[5];
 
 for(i = 0; i < moves.length; i++){
     
@@ -155,13 +159,33 @@ for(i = 0; i < moves.length; i++){
     tempPieceBoards = Arrays.copyOf(pieceBoards, 12);
     tempFlags = flags;
     
-    moveInfo = parseMove(moves[i]);
+    
+    
+    
+    tempFlags = updateGame(parseMove(moves[i]), tempBoard, tempPieceBoards, tempFlags);
+    
+    
 
-    updateGame(moveInfo, tempBoard, tempPieceBoards, tempFlags);
     
-    moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards)};
+    if(depth > 0){
+        moveScore = new int[]{moves[i], chooseBestMove(tempBoard, tempPieceBoards, tempFlags, 1-colour, depth - 1)[1]};
+    }
+    else{
+        moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards)};
+    }
     
-    if(bestMoves.isEmpty() || bestMoves.get(0)[1] < moveScore[1]){
+    //System.out.println(colour == WHITE ? "WHITE" : "BLACK------------------");
+    //System.out.println(moveScore[1]);
+    
+    if(bestMoves.isEmpty()){
+        bestMoves.add(moveScore);        
+    }
+    
+    else if(colour == BLACK && bestMoves.get(0)[1] < moveScore[1]){
+        bestMoves.clear();
+        bestMoves.add(moveScore);
+    }
+    else if(colour == WHITE && bestMoves.get(0)[1] > moveScore[1]){
         bestMoves.clear();
         bestMoves.add(moveScore);
     }
@@ -182,6 +206,8 @@ return bestMove;
 
 }
 
+//, int[] moveToMake;
+
 public int evaluateGameScore(long[] PIECEBOARDS){
 
 int materialScore = (numSet(PIECEBOARDS[bPawn]) - numSet(PIECEBOARDS[wPawn])) +
@@ -191,7 +217,14 @@ int materialScore = (numSet(PIECEBOARDS[bPawn]) - numSet(PIECEBOARDS[wPawn])) +
                     9*(numSet(PIECEBOARDS[bQueen]) - numSet(PIECEBOARDS[wQueen])) +   
                     10000000*(numSet(PIECEBOARDS[bKing]) - numSet(PIECEBOARDS[wKing]));  
 
+
+
 return materialScore;
+}
+
+public int numPiecesAttackedBy(int colour){
+    
+    return 0;
 }
 
 public void printMovesAsStrings(int[] moves){
@@ -245,7 +278,7 @@ public int[] parseMove(int move){
     return new int[]{piece, capturedPiece, fromSq, toSq, moveFlags};
 }
 
-public void updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
+public byte updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
     
     int piece =         move[0];
     int capturedPiece = move[1];
@@ -308,7 +341,7 @@ public void updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
             PIECEBOARDS[capturedPiece] &= (~(1L << toSq)); //remove captured piece
     }
     
-    if((flags & 0b11110000) > 0){
+    if((flags & 0b11110000) != 0){
         if(colour == WHITE){
             if(piece == wKing){
                 flags &= 0b00111111;
@@ -338,6 +371,8 @@ public void updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
     if((piece == wPawn || piece == bPawn) && Math.abs(toSq - fromSq) == 16){ //en passant possible
         flags = (byte) (flags | (toSq%8 << 1) | 1);
     }
+    
+    return flags;
     
 }
 
@@ -377,6 +412,8 @@ return movesArray;
 }
 
 public void generatePawnTargets(ArrayList moves, int Colour, int pieceType, long pawns, int[] board, long[] PIECEBOARDS, byte flags){
+    
+    if(pawns == 0) return;
     
     long pawnPush, pawnDoublePush, promotions, attackTargets, attacks, epAttacks, promotionAttacks;
     
@@ -441,6 +478,8 @@ public void generatePawnTargets(ArrayList moves, int Colour, int pieceType, long
 
 public void generateKnightTargets(ArrayList moves, int Colour, int pieceType, long knights, int[] board, long[] PIECEBOARDS){
     
+    if(knights == 0) return;
+    
     long targets;
     
     long friendlyPieces = 0;
@@ -458,6 +497,8 @@ public void generateKnightTargets(ArrayList moves, int Colour, int pieceType, lo
 }
 
 public void generateKingTargets(ArrayList moves, int Colour, int pieceType, long king, int[] board, long[] PIECEBOARDS, byte flags){
+    
+    if(king == 0) return;
     
     long targets;
     
@@ -495,6 +536,8 @@ public void generateKingTargets(ArrayList moves, int Colour, int pieceType, long
 
 public void generateRookTargets(ArrayList moves, int Colour, int pieceType, long rooks, int[] board, long[] PIECEBOARDS){
 
+    if(rooks == 0) return;
+    
     long allPieces, friendlyPieces, targets;
     int i, j, fromSq, index;
     
@@ -524,6 +567,8 @@ public void generateRookTargets(ArrayList moves, int Colour, int pieceType, long
 
 public void generateBishopTargets(ArrayList moves, int Colour, int pieceType, long bishops, int[] board, long[] PIECEBOARDS){
 
+    if(bishops == 0) return;
+    
     long allPieces, friendlyPieces, targets;
     int i, j, fromSq, index;
     
@@ -552,7 +597,9 @@ public void generateBishopTargets(ArrayList moves, int Colour, int pieceType, lo
 }
 
 public void generateQueenTargets(ArrayList moves, int Colour, int pieceType, long queens, int[] board, long[] PIECEBOARDS){
-
+    
+    if(queens == 0) return;
+    
     long allPieces, friendlyPieces, targets;
     int i, j, fromSq, rookIndex, bishopIndex;
     
@@ -668,7 +715,7 @@ int move = piece << 28 | capturedPiece << 24 | fromSq << 16 | toSq << 8 | moveFl
 
 int[] moveInfo = parseMove(move);
 
-updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
+gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
  
 }
 
