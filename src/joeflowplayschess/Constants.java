@@ -134,6 +134,69 @@ generateMoveDatabase(false);
 
 }
 
+public long getRay(int A, int B){
+    
+    long ray = 0;
+    
+    if( A%8 == B%8 ){ //Same Vertical column
+        if(A > B){
+            while(B+8 < A){
+                ray |= 1L << (B+8);
+                B+=8;
+            }
+        }
+        else{
+            while(B-8 > A){
+                ray |= 1L << (B-8);
+                B-=8;
+            }
+        }
+    }
+    else if( (int)(A - A%8)/8 == (int)(B - B%8)/8 ){ //Same Row
+        if(A > B){
+            while(B+1 < A){
+                ray |= 1L << (B+1);
+                B++;
+            }
+        }
+        else{
+            while(B-1 > A){
+                ray |= 1L << (B-1);
+                B--;
+            }
+        }    
+    }
+    else if( A > B ){
+        if(A%8 > B%8){
+            while(B+9 < A){
+                ray |= 1L << (B+9);
+                B+=9;
+            }
+        }
+        else{
+            while(B+7 < A){
+                ray |= 1L << (B+7);
+                B+=7;
+            }            
+        }
+    }
+    else{
+        if(A%8 > B%8){
+            while(B-7 > A){
+                ray |= 1L << (B-7);
+                B-=7;
+            }
+        }
+        else{
+            while(B-9 > A){
+                ray |= 1L << (B-9);
+                B-=9;
+            }
+        }
+    }
+    
+    return ray;
+}
 @SuppressWarnings("empty-statement")
 private void generateOccupancyVariations(boolean isRook){
     

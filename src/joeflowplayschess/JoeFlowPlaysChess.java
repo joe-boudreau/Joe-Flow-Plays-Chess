@@ -30,11 +30,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -81,8 +85,13 @@ public class JoeFlowPlaysChess extends JFrame {
     public int moveFlagQueenSideCastle = 0b01000000;
     public int moveFlagKingSideCastle =  0b10000000;
     
-    private boolean checkmate = false;
-    private boolean confirmNeeded = false;
+    public boolean enPassantFlag =       false;
+    public int enPassantColumn =         0;
+    
+    private boolean whiteCheckmate =     false;
+    private boolean blackCheckmate =     false;    
+    private boolean draw =               false;
+    private boolean confirmNeeded =      false;
     
     String[] pieceTypes = {"Pawn", "Rook", "Knight", "Bishop", "Queen", "King",
                            "Pawn", "Rook", "Knight", "Bishop", "Queen", "King"};
@@ -128,10 +137,8 @@ public class JoeFlowPlaysChess extends JFrame {
         
         whiteTurnListener();
         whiteTurn = true;
-        long[] gamePosition = new long[12];
-        int flags = 0x0000;
         
-        while(!checkmate){
+        while(!(whiteCheckmate | blackCheckmate | draw)){
 
         synchronized(LOCK) {
             while(whiteTurn) {
@@ -143,10 +150,25 @@ public class JoeFlowPlaysChess extends JFrame {
             }
         }
         
+        enPassantFlag = false;
+        enPassantColumn = 0;
+        
         makeBlackMove();
         whiteTurn = true;
+        
         }
         
+        if(whiteCheckmate){
+            JOptionPane.showMessageDialog(this, "YOU WIN!");
+        }
+        else if(blackCheckmate){
+            JOptionPane.showMessageDialog(this, "JOE FLOW WINS! LONG LIVE OUR ROBOT OVERLORDS");
+    
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "YOU TIED THE COMPUTER! THE SINGULARITY HAS BEEN REACHED!");
+
+        }
     }
     
     public void makeBlackMove(){
@@ -159,6 +181,29 @@ public class JoeFlowPlaysChess extends JFrame {
                    bit 7: Queen Side Capture
                    bit 8: King Side Capture
         */
+        
+        if(blackMove[0] == -1){
+            //White checkmate or stalemate
+            if(blackMove[1] == -1){
+                whiteCheckmate = true;
+            }
+            else{
+                draw = true;
+            }
+            return; //Black has no move; exit function
+        }
+        
+        if(blackMove.length > 5){
+            //Black wins or stalemate
+            if(blackMove[5] == 0){
+                //black wins
+                blackCheckmate = true;
+            }
+            else{
+                draw = true;
+            }
+        }
+        
         
         int capturedPiece = blackMove[1];
         int fromSq = blackMove[2];
@@ -211,9 +256,13 @@ public class JoeFlowPlaysChess extends JFrame {
         boardSquares[toRow][toCol].setPiece(pieceToMove);
         pieceToMove.setLocation(getRow(toRow), getColumn(toCol));
         
-        
-    }
+        if(pieceToMove.getType() == "Pawn" && (fromRow - toRow) == 2){
+            enPassantFlag = true;
+            enPassantColumn = toCol;
+        }
     
+    }
+
     public void whiteTurnListener(){
         
         board.addMouseListener(new MouseListener() {
@@ -224,7 +273,7 @@ public class JoeFlowPlaysChess extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
               
-                if(!confirmNeeded){  
+                if(!confirmNeeded && whiteTurn){  
                     screenX = e.getXOnScreen();
                     screenY = e.getYOnScreen();
 
@@ -266,13 +315,34 @@ public class JoeFlowPlaysChess extends JFrame {
                             valid = true;
                         }
                     }
+                    
+                    if(valid){
+                        
+                        int[] legalMoves = JoeFlow.whiteInCheckMoves();
+                        if(legalMoves.length > 0){  //white is in Check
+                            
+                            int oldSquareIndex = oldPos[0]*8 + oldPos[1];
+                            int newSquareIndex = newPos[0]*8 + newPos[1];
+                            
+                            for(int legalMove : legalMoves){
+                                
+                                if((oldSquareIndex == ((legalMove << 8) >>> 24))&&
+                                    newSquareIndex == ((legalMove << 16) >>> 24)){
+                                    valid = true;
+                                    System.out.println("valid");
+                                    break;
+                                }
+                                valid = false;
+                            }
+                        }
+                    }
+                    
                     if(valid){
                         
                         if(!newSquare.isEmpty()){
                             boardSquares[newPos[0]][newPos[1]].getPiece().setVisible(false);
                         }
-                        
-                        if(currPiece.getType().equals("King")){
+                        else if(currPiece.getType().equals("King")){
                             
                             if(oldPos[1] == getIndex('e') && newPos[1] == getIndex('g')){
                                 boardSquares[getIndex(1)][getIndex('h')].getPiece().setLocation(1, 'f');
@@ -283,6 +353,12 @@ public class JoeFlowPlaysChess extends JFrame {
                                 castleFlag = true;
                             }
                         }
+                        else if(currPiece.getType().equals("Pawn") && enPassantFlag && newPos[0] == 5 
+                                && newPos[1] == enPassantColumn){
+                            boardSquares[4][enPassantColumn].getPiece().setVisible(false);
+                        }
+                        
+                        
                         
                         
                         getComponentInContainer(infoMsgPanel, "Yes").setVisible(true);
@@ -317,7 +393,7 @@ public class JoeFlowPlaysChess extends JFrame {
             
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(!confirmNeeded && currPiece != null && currPiece.getColour() == WHITE){
+                if(!confirmNeeded && whiteTurn && currPiece != null && currPiece.getColour() == WHITE){
                     int deltaX = e.getXOnScreen() - screenX;
                     int deltaY = e.getYOnScreen() - screenY;
 
@@ -341,15 +417,18 @@ public class JoeFlowPlaysChess extends JFrame {
         
         ArrayList<BoardTile> validBoardList = new ArrayList();
         
+        
+        
         switch(cP.getType()){
             
             case "Pawn":
                 if(boardSquares[pieceRow+1][pieceCol].isEmpty()){
                     validBoardList.add(boardSquares[pieceRow+1][pieceCol]);
+                    if(!cP.hasMoved() && boardSquares[pieceRow+2][pieceCol].isEmpty()){
+                        validBoardList.add(boardSquares[pieceRow+2][pieceCol]);
+                    }
                 }
-                if(!cP.hasMoved() && boardSquares[pieceRow+2][pieceCol].isEmpty()){
-                    validBoardList.add(boardSquares[pieceRow+2][pieceCol]);
-                }
+                
                 if(pieceCol<7 && !boardSquares[pieceRow+1][pieceCol+1].isEmpty() 
                               && boardSquares[pieceRow+1][pieceCol+1].getPiece().getColour() == BLACK){
                     validBoardList.add(boardSquares[pieceRow+1][pieceCol+1]);
@@ -357,6 +436,11 @@ public class JoeFlowPlaysChess extends JFrame {
                 if(pieceCol>0 && !boardSquares[pieceRow+1][pieceCol-1].isEmpty() 
                               && boardSquares[pieceRow+1][pieceCol-1].getPiece().getColour() == BLACK){
                     validBoardList.add(boardSquares[pieceRow+1][pieceCol-1]);
+                }
+                if(enPassantFlag && pieceRow == 4){
+                    if(pieceRow == 4 && (pieceCol == enPassantColumn+1 || pieceCol == enPassantColumn-1)){
+                        validBoardList.add(boardSquares[pieceRow+1][enPassantColumn]);
+                    }
                 }
             break;
                 
@@ -545,14 +629,16 @@ public class JoeFlowPlaysChess extends JFrame {
                         
                     }
                 }
-                if(!cP.hasMoved() && boardSquares[getIndex(1)][getIndex('a')].getPiece().getType().equals("Rook") &&
+                if(!cP.hasMoved() && boardSquares[getIndex(1)][getIndex('a')].getPiece() != null &&
+                                     boardSquares[getIndex(1)][getIndex('a')].getPiece().getType().equals("Rook") &&
                                      !boardSquares[getIndex(1)][getIndex('a')].getPiece().hasMoved() &&
                                      boardSquares[getIndex(1)][getIndex('b')].isEmpty() &&
                                      boardSquares[getIndex(1)][getIndex('c')].isEmpty() &&
                                      boardSquares[getIndex(1)][getIndex('d')].isEmpty()){
                     validBoardList.add(boardSquares[getIndex(1)][getIndex('c')]);
                 }
-                if(!cP.hasMoved() && boardSquares[getIndex(1)][getIndex('h')].getPiece().getType().equals("Rook") &&
+                if(!cP.hasMoved() && boardSquares[getIndex(1)][getIndex('h')].getPiece() != null &&
+                                     boardSquares[getIndex(1)][getIndex('h')].getPiece().getType().equals("Rook") &&
                                      !boardSquares[getIndex(1)][getIndex('h')].getPiece().hasMoved() &&
                                      boardSquares[getIndex(1)][getIndex('f')].isEmpty() &&
                                      boardSquares[getIndex(1)][getIndex('g')].isEmpty()){
@@ -567,11 +653,12 @@ public class JoeFlowPlaysChess extends JFrame {
         if(pinPiece != null){
             for(int i = 0; i < validBoardList.size(); i++){
                 
-                if(validBoardList.get(i).getPiece() == pinPiece){
+                if(validBoardList.get(i).getPiece() != null && validBoardList.get(i).getPiece().equals(pinPiece)){
                     return new BoardTile[]{validBoardList.get(i)};
                 }
                 
             }
+            return new BoardTile[]{};
         }
         
 
@@ -844,13 +931,25 @@ public class JoeFlowPlaysChess extends JFrame {
     
     public void setUpInfoMsgPanel(){
         
+        Action buttListen = new ButtonAction();
+        
         JButton yConfirm = new JButton("Yes");
+        
+        yConfirm.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke('y'), "Anything1");      //Map to y button
+        yConfirm.getActionMap().put("Anything1", buttListen);
+        
         yConfirm.setName("Yes");
-        yConfirm.addActionListener(new ButtonAction());
+        yConfirm.addActionListener(buttListen);
         
         JButton nConfirm = new JButton("No");
+        
+        nConfirm.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke('n'), "Anything2");      //Map to y button
+        nConfirm.getActionMap().put("Anything2", buttListen);
+
         nConfirm.setName("No");
-        nConfirm.addActionListener(new ButtonAction());
+        nConfirm.addActionListener(buttListen);
         
         JPanel buttPanel = new JPanel();
         buttPanel.setLayout(new BoxLayout(buttPanel, BoxLayout.X_AXIS));
@@ -1090,7 +1189,7 @@ public class JoeFlowPlaysChess extends JFrame {
                 case "Yes":
                     currPiece.setMoved();
                     confirmNeeded = false;
-                    
+
                     if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
                         
                         chessPiece deadPiece = boardSquares[newPos[0]][newPos[1]].getPiece();
@@ -1115,6 +1214,14 @@ public class JoeFlowPlaysChess extends JFrame {
                         castleFlag = false;
                     }
                     
+                    if(currPiece.getType().equals("Pawn") && enPassantFlag && newPos[0] == 5 && newPos[1] == enPassantColumn){
+                        chessPiece deadPiece = boardSquares[4][newPos[1]].getPiece();
+                        addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
+                        boardSquares[4][newPos[1]].setPiece(null);
+                        moveFlags = moveFlagEnPassant;
+                        System.out.println("en passant");
+                    }
+                    
                     if(currPiece.getType().equals("Pawn") && newPos[0] == getIndex(8)){
                             promotionOptions.setVisible(true);
                             confirmNeeded = true;
@@ -1136,7 +1243,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     
                 case "No":
                     confirmNeeded = false;
-                    
+
                     if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
                         boardSquares[newPos[0]][newPos[1]].getPiece().setVisible(true);
                     }
@@ -1149,6 +1256,9 @@ public class JoeFlowPlaysChess extends JFrame {
                              boardSquares[getIndex(1)][getIndex('a')].getPiece().setLocation(1, 'a');
                         }  
                         castleFlag = false;
+                    }
+                    if(currPiece.getType().equals("Pawn") && enPassantFlag && newPos[0] == 5 && newPos[1] == enPassantColumn){
+                        boardSquares[4][enPassantColumn].getPiece().setVisible(true);
                     }
                     
                     currPiece.setLocation(getRow(oldPos[0]), getColumn(oldPos[1]));

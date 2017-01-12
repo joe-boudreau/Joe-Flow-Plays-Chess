@@ -30,6 +30,8 @@ private int bKing = 11;
 
 private int empty = 0xE;
 
+private int searchDepth = 3;
+
 private byte gameFlags;
 
 private long[] gamePieceBoards;
@@ -126,9 +128,23 @@ public int[] selectMove(int colour){
     
 int[] bestMove, moveInfo;
 
-bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, 4);
+bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, searchDepth);
 
 moveInfo = parseMove(bestMove[0]);
+
+if(bestMove[0] == -1){
+    //White wins or stalemate
+    return bestMove;
+}
+else if(bestMove[1] == (searchDepth-1)*1000000){
+    //Black wins
+    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], 0};
+}
+
+else if(bestMove[1] == (searchDepth-1)*-1000000){
+    //Black stalemate
+    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], -1};
+}
 
 gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
 
@@ -148,10 +164,15 @@ int[] moves, moveScore, tempBoard, bestMove;
 long[] tempPieceBoards;
 byte tempFlags;
 
+boolean check = false;
+
 ArrayList<int[]> bestMoves = new ArrayList();
 
 moves = generateAllMoves(colour, currBoard, pieceBoards, flags);
 
+if(inCheck(colour, currBoard, pieceBoards, flags)){
+    check = true;
+}
 
 for(i = 0; i < moves.length; i++){
     
@@ -159,38 +180,34 @@ for(i = 0; i < moves.length; i++){
     tempPieceBoards = Arrays.copyOf(pieceBoards, 12);
     tempFlags = flags;
     
-    
-    
-    
     tempFlags = updateGame(parseMove(moves[i]), tempBoard, tempPieceBoards, tempFlags);
     
-    
+    if(!inCheck(colour, tempBoard, tempPieceBoards, tempFlags)){
+        
+        if(depth > 0){
+            
+            int[] theirMove = chooseBestMove(tempBoard, tempPieceBoards, tempFlags, 1-colour, depth - 1);
+            moveScore = new int[]{moves[i], theirMove[1]};
+            
+        }
+        else{
+            moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards)};
+        }
 
-    
-    if(depth > 0){
-        moveScore = new int[]{moves[i], chooseBestMove(tempBoard, tempPieceBoards, tempFlags, 1-colour, depth - 1)[1]};
-    }
-    else{
-        moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards)};
-    }
-    
-    //System.out.println(colour == WHITE ? "WHITE" : "BLACK------------------");
-    //System.out.println(moveScore[1]);
-    
-    if(bestMoves.isEmpty()){
-        bestMoves.add(moveScore);        
-    }
-    
-    else if(colour == BLACK && bestMoves.get(0)[1] < moveScore[1]){
-        bestMoves.clear();
-        bestMoves.add(moveScore);
-    }
-    else if(colour == WHITE && bestMoves.get(0)[1] > moveScore[1]){
-        bestMoves.clear();
-        bestMoves.add(moveScore);
-    }
-    else if(bestMoves.get(0)[1] == moveScore[1]){
-        bestMoves.add(moveScore);
+        if(bestMoves.isEmpty()){
+            bestMoves.add(moveScore);        
+        }
+        else if(colour == BLACK && bestMoves.get(0)[1] < moveScore[1]){
+            bestMoves.clear();
+            bestMoves.add(moveScore);
+        }
+        else if(colour == WHITE && bestMoves.get(0)[1] > moveScore[1]){
+            bestMoves.clear();
+            bestMoves.add(moveScore);
+        }
+        else if(bestMoves.get(0)[1] == moveScore[1]){
+            bestMoves.add(moveScore);
+        }
     }
 }
 
@@ -198,24 +215,32 @@ if(bestMoves.size() > 1){
     int randInt = r.nextInt(bestMoves.size());
     bestMove = bestMoves.get(randInt);
 }
-else{
+else if(bestMoves.size() == 1){
     bestMove = bestMoves.get(0);
-}    
+}
+else{
+    
+    if(check){
+        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
+    }
+    else{
+        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
+    }
+    
+}
 
 return bestMove;
 
 }
 
-//, int[] moveToMake;
 
 public int evaluateGameScore(long[] PIECEBOARDS){
 
 int materialScore = (numSet(PIECEBOARDS[bPawn]) - numSet(PIECEBOARDS[wPawn])) +
                     3*(numSet(PIECEBOARDS[bKnight]) - numSet(PIECEBOARDS[wKnight])) +
                     3*(numSet(PIECEBOARDS[bBishop]) - numSet(PIECEBOARDS[wBishop])) +   
-                    5*(numSet(PIECEBOARDS[bRook]) - numSet(PIECEBOARDS[wRook])) +   
-                    9*(numSet(PIECEBOARDS[bQueen]) - numSet(PIECEBOARDS[wQueen])) +   
-                    10000000*(numSet(PIECEBOARDS[bKing]) - numSet(PIECEBOARDS[wKing]));  
+                    5*(numSet(PIECEBOARDS[bRook]) - numSet(PIECEBOARDS[wRook])) +
+                    9*(numSet(PIECEBOARDS[bQueen]) - numSet(PIECEBOARDS[wQueen]));  
 
 
 
@@ -280,6 +305,7 @@ public int[] parseMove(int move){
 
 public byte updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
     
+    
     int piece =         move[0];
     int capturedPiece = move[1];
     int fromSq =        move[2];
@@ -287,7 +313,9 @@ public byte updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
     int moveFlags =     move[4];
     
     int colour = piece < 6 ? WHITE : BLACK;
-    
+    if(piece > 11){
+    System.out.println(move[0]);
+    }
     PIECEBOARDS[piece] &= (~(1L << fromSq)); //Remove moving piece from old square
     board[fromSq] = empty;
     
@@ -374,6 +402,59 @@ public byte updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
     
     return flags;
     
+}
+
+public boolean inCheck(int colour, int[] board, long[] PIECEBOARDS, byte flags){
+
+int[] moves = generateAllMoves(1 - colour, board, PIECEBOARDS, flags);
+
+for(int move : moves){
+    if( ((move << 4) >>> 28) == (colour*6 + 5)) return true;
+}
+return false;
+    
+}
+
+public int[] whiteInCheckMoves(){
+    
+ArrayList<Integer> legalList = new ArrayList();
+int[] blackMoves, whiteMoves, legalMoves, tempBoard;
+long[] tempPieceBoards;
+byte tempFlags;
+boolean inCheck;
+
+blackMoves = generateAllMoves(BLACK, gameBoard, gamePieceBoards, gameFlags);
+inCheck = false;
+
+for(int bmove : blackMoves){
+    if( ((bmove << 4) >>> 28) == wKing) inCheck = true;
+}
+
+if(!inCheck) return new int[]{};
+
+whiteMoves = generateAllMoves(WHITE, gameBoard, gamePieceBoards, gameFlags);
+
+for(int wmove : whiteMoves){
+    
+    tempBoard = Arrays.copyOf(gameBoard, 64);
+    tempPieceBoards = Arrays.copyOf(gamePieceBoards, 12);
+    tempFlags = gameFlags;
+    
+    tempFlags = updateGame(parseMove(wmove), tempBoard, tempPieceBoards, tempFlags);
+    
+    if(!inCheck(WHITE, tempBoard, tempPieceBoards, tempFlags)){
+        legalList.add(wmove);
+    } 
+}
+
+legalMoves = new int[legalList.size()];
+
+for(int i = 0; i < legalMoves.length; i++){
+    legalMoves[i] = legalList.get(i);
+}
+
+return legalMoves;
+
 }
 
 public int[] generateAllMoves(int colour, int[] board, long[] PIECEBOARDS, byte flags){
@@ -715,6 +796,7 @@ int move = piece << 28 | capturedPiece << 24 | fromSq << 16 | toSq << 8 | moveFl
 
 int[] moveInfo = parseMove(move);
 
+System.out.println(Arrays.toString(moveInfo));
 gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
  
 }

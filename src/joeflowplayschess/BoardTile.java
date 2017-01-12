@@ -43,6 +43,13 @@ public class BoardTile extends JLabel{
         return new int[]{Row - 1, (int) Col - 97};
     }
     
+    public int getSquareIndex(){
+        
+        int[] rowCol = ANtoArrayIndex(R, C);
+        
+        return rowCol[0]*8 + rowCol[1];
+    }
+    
     public void setPiece(chessPiece cP){
         pieceOnTile = cP;
     }
