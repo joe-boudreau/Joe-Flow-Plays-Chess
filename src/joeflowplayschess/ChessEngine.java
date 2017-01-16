@@ -39,6 +39,8 @@ private long[] BITSQUARES;
 
 private int[] gameBoard;
 
+private int nodeCount;
+
 Constants Constants = new Constants();
 Random r = new Random();
     
@@ -128,7 +130,11 @@ public int[] selectMove(int colour){
     
 int[] bestMove, moveInfo;
 
-bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, searchDepth);
+nodeCount = 0;
+
+bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+System.out.println("Nodes traversed: " + nodeCount);
 
 moveInfo = parseMove(bestMove[0]);
 
@@ -157,7 +163,7 @@ return moveInfo;
 
 }
 
-private int[] chooseBestMove(int[] currBoard, long[] pieceBoards, byte flags, int colour, int depth){
+private int[] chooseBestMove(int[] currBoard, long[] pieceBoards, byte flags, int colour, int depth, int alpha, int beta){
 
 int i;
 int[] moves, moveScore, tempBoard, bestMove;
@@ -176,6 +182,7 @@ if(inCheck(colour, currBoard, pieceBoards, flags)){
 
 for(i = 0; i < moves.length; i++){
     
+    nodeCount++;
     tempBoard = Arrays.copyOf(currBoard, 64);
     tempPieceBoards = Arrays.copyOf(pieceBoards, 12);
     tempFlags = flags;
@@ -185,28 +192,42 @@ for(i = 0; i < moves.length; i++){
     if(!inCheck(colour, tempBoard, tempPieceBoards, tempFlags)){
         
         if(depth > 0){
-            
-            int[] theirMove = chooseBestMove(tempBoard, tempPieceBoards, tempFlags, 1-colour, depth - 1);
+            int[] theirMove = chooseBestMove(tempBoard, tempPieceBoards, tempFlags, 1-colour, depth - 1, alpha, beta);
             moveScore = new int[]{moves[i], theirMove[1]};
             
         }
         else{
-            moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards)};
+            moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards, tempBoard, tempFlags)};
         }
-
+        
+        
         if(bestMoves.isEmpty()){
-            bestMoves.add(moveScore);        
-        }
-        else if(colour == BLACK && bestMoves.get(0)[1] < moveScore[1]){
-            bestMoves.clear();
-            bestMoves.add(moveScore);
-        }
-        else if(colour == WHITE && bestMoves.get(0)[1] > moveScore[1]){
-            bestMoves.clear();
-            bestMoves.add(moveScore);
+                bestMoves.add(moveScore);        
         }
         else if(bestMoves.get(0)[1] == moveScore[1]){
-            bestMoves.add(moveScore);
+                bestMoves.add(moveScore);
+        }
+        
+        if(colour == BLACK){
+            alpha = Math.max(alpha, moveScore[1]);
+            
+            if(bestMoves.get(0)[1] < moveScore[1]){
+                bestMoves.clear();
+                bestMoves.add(moveScore);   
+            }
+            
+        }
+        else{
+            beta = Math.min(beta, moveScore[1]);
+            
+            if(bestMoves.get(0)[1] > moveScore[1]){
+                bestMoves.clear();
+                bestMoves.add(moveScore);
+            } 
+        }
+        
+        if(beta < alpha){
+                break; //Beta or alpha cut-off
         }
     }
 }
@@ -233,23 +254,89 @@ return bestMove;
 
 }
 
+public int evaluateGameScore(long[] PIECEBOARDS, int[] currBoard, byte flags){
 
-public int evaluateGameScore(long[] PIECEBOARDS){
+int overallScore;
+    
+overallScore = 2*(numSet(PIECEBOARDS[bPawn]) - numSet(PIECEBOARDS[wPawn])) +
+                    7*(numSet(PIECEBOARDS[bKnight]) - numSet(PIECEBOARDS[wKnight])) +
+                    6*(numSet(PIECEBOARDS[bBishop]) - numSet(PIECEBOARDS[wBishop])) +   
+                    10*(numSet(PIECEBOARDS[bRook]) - numSet(PIECEBOARDS[wRook])) +
+                    18*(numSet(PIECEBOARDS[bQueen]) - numSet(PIECEBOARDS[wQueen]));  
 
-int materialScore = (numSet(PIECEBOARDS[bPawn]) - numSet(PIECEBOARDS[wPawn])) +
-                    3*(numSet(PIECEBOARDS[bKnight]) - numSet(PIECEBOARDS[wKnight])) +
-                    3*(numSet(PIECEBOARDS[bBishop]) - numSet(PIECEBOARDS[wBishop])) +   
-                    5*(numSet(PIECEBOARDS[bRook]) - numSet(PIECEBOARDS[wRook])) +
-                    9*(numSet(PIECEBOARDS[bQueen]) - numSet(PIECEBOARDS[wQueen]));  
+overallScore = 3*(overallScore) + 2*(numDoubledPawns(wPawn) - numDoubledPawns(bPawn));
 
+overallScore = 2*(overallScore) + positionScore(BLACK, currBoard, PIECEBOARDS, flags) - 
+                                  positionScore(WHITE, currBoard, PIECEBOARDS, flags);
 
+int whiteCastles =  (flags >>> 7) + ((flags << 1) >>> 7);
+int blackCastles =  ((flags << 2) >>> 7) + ((flags << 3) >>> 7);
 
-return materialScore;
+overallScore = overallScore + blackCastles - whiteCastles + pawnsInCentre(BLACK) - pawnsInCentre(WHITE);
+
+overallScore = 4*(overallScore) + advancementScore(PIECEBOARDS, BLACK) - advancementScore(PIECEBOARDS, WHITE);
+
+return overallScore;
+
 }
 
-public int numPiecesAttackedBy(int colour){
+public int advancementScore(long[] currPieceBoards, int colour){
     
-    return 0;
+    int[] rankScore = new int[8];
+    int advancement = 0;
+    
+    for(int i = 0; i < 8; i++){
+        for(int j = colour*6; j < colour*6+6; j++){
+            rankScore[i] += numSet(currPieceBoards[j] & Constants.RANKS[i]);
+        }
+        advancement += rankScore[i]*(i + (7-i)*colour);
+    }
+    
+    return advancement;
+}
+
+public int pawnsInCentre(long pawns){
+    
+    return numSet(pawns & Constants.CENTER_4);
+}
+
+public int positionScore(int colour, int[] currBoard, long[] currPieceBoards, byte currFlags){
+    
+    int[] yourMoves = generateAllMoves(colour, currBoard, currPieceBoards, currFlags);
+    int piecesAttacked = 0, piecesPinned = 0;
+    
+    int[] tempBoard;
+    long[] tempPieceBoards;
+    byte tempFlags;
+    
+    for(int move : yourMoves){
+        if(((move << 4) >>> 28) > 0){
+            piecesAttacked++;
+        }
+        
+        tempBoard = Arrays.copyOf(currBoard, 64);
+        tempPieceBoards = Arrays.copyOf(currPieceBoards, 12);
+        tempFlags = currFlags;
+        
+        tempFlags = updateGame(parseMove(move), tempBoard, tempPieceBoards, tempFlags);
+        if(inCheck(colour, tempBoard, tempPieceBoards, tempFlags)){
+            piecesPinned++;
+        }
+    }
+    
+    return 2*(piecesAttacked - piecesPinned) + yourMoves.length;
+}
+
+public int numDoubledPawns(long pawns){
+    
+    int dubs = 0;
+    
+    while(pawns > 0){
+        int pawn = Long.numberOfTrailingZeros(pawns);
+        if((pawns & (1L << (pawn+8))) < 0){ dubs++;}
+        pawns &= (pawns-1);
+    }
+    return dubs;
 }
 
 public void printMovesAsStrings(int[] moves){

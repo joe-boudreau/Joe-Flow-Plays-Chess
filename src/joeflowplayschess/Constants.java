@@ -37,6 +37,8 @@ public long FILE_H =                 0x8080808080808080L;
 
 public long[] FILES =                new long[]{FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H};
 
+public long CENTER_4 =               0x1818000000L;
+
 public long[] KnightMoves =          new long[64];
 public long[] KingMoves =            new long[64];
 

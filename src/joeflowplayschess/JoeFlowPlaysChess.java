@@ -184,7 +184,7 @@ public class JoeFlowPlaysChess extends JFrame {
         
         if(blackMove[0] == -1){
             //White checkmate or stalemate
-            if(blackMove[1] == -1){
+            if(blackMove[1] < 0){
                 whiteCheckmate = true;
             }
             else{
