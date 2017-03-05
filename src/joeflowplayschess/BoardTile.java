@@ -19,8 +19,7 @@ public class BoardTile extends JLabel{
     chessPiece pieceOnTile;
     int R;
     char C;
-    private Color transparent;
-    private Color validSq;
+    private Color moveSq;
     
     public BoardTile(chessPiece cP, int Row, char Col){
         
@@ -28,14 +27,15 @@ public class BoardTile extends JLabel{
         C = Col;
         pieceOnTile = cP;
         
-        /*
-        validSq = new Color(100, 10, 15, 50);
-        transparent = new Color(0, 0, 0, 0);
-        */
+        
+        moveSq = new Color(100, 10, 15, 50);
+        
         int[] rowCol = ANtoArrayIndex(Row, Col);
         setBounds(100*(rowCol[1]), 780 - 100*(rowCol[0]), 100, 100);
-
         
+        //setBorder(new LineBorder(Color.BLACK, 2));
+
+
     }
     
     private int[] ANtoArrayIndex(int Row, char Col){
@@ -62,16 +62,24 @@ public class BoardTile extends JLabel{
         return getPiece() == null;
     }
     
-    /*
-    public void lightUp(){
-        setBackground(validSq);
+    
+    public void lightUp(int colour){
+        
+        if(colour == 0){
+            setBorder(new LineBorder(Color.cyan, 2));
+        }
+        else{
+            setBorder(new LineBorder(Color.MAGENTA, 2));
+        }
     }
     
     public void lightDown(){
-        setVisible(false);
+        //setBorder(new LineBorder(Color.BLACK, 2));
+
+        setBorder(null);
     }
     
-    
+    /*
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(validSq);

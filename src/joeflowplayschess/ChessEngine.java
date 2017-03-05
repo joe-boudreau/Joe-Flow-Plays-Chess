@@ -15,22 +15,26 @@ private int WHITE = 0;
 private int BLACK = 1;    
     
 private int wPawn = 0;
-private int wRook = 1;
-private int wKnight = 2;
-private int wBishop = 3;
+private int wKnight = 1;
+private int wBishop = 2;
+private int wRook = 3;
 private int wQueen = 4;
 private int wKing = 5;
 
 private int bPawn = 6;
-private int bRook = 7;
-private int bKnight = 8;
-private int bBishop = 9;
+private int bKnight = 7;
+private int bBishop = 8;
+private int bRook = 9;
 private int bQueen = 10;
 private int bKing = 11;
 
+private int[] king = new int[]{wKing, bKing};
+private int[] initKingPos = new int[]{4, 60};
+
+
 private int empty = 0xE;
 
-private int searchDepth = 3;
+private int searchDepth = 4;
 
 private byte gameFlags;
 
@@ -166,15 +170,20 @@ return moveInfo;
 private int[] chooseBestMove(int[] currBoard, long[] pieceBoards, byte flags, int colour, int depth, int alpha, int beta){
 
 int i;
-int[] moves, moveScore, tempBoard, bestMove;
+int[] moves, moveScore, tempBoard, bestMove, parsedMove;
+int[][] parsedMoves, parsedMoves1;
 long[] tempPieceBoards;
 byte tempFlags;
 
 boolean check = false;
+boolean legal = true;
 
 ArrayList<int[]> bestMoves = new ArrayList();
 
 moves = generateAllMoves(colour, currBoard, pieceBoards, flags);
+
+//parsedMoves = sortAndParseMoves(colour, moves);
+
 
 if(inCheck(colour, currBoard, pieceBoards, flags)){
     check = true;
@@ -187,11 +196,22 @@ for(i = 0; i < moves.length; i++){
     tempPieceBoards = Arrays.copyOf(pieceBoards, 12);
     tempFlags = flags;
     
-    tempFlags = updateGame(parseMove(moves[i]), tempBoard, tempPieceBoards, tempFlags);
+    parsedMove = parseMove(moves[i]);
+    //parsedMove = parsedMoves[i];
     
-    if(!inCheck(colour, tempBoard, tempPieceBoards, tempFlags)){
+    tempFlags = updateGame(parsedMove, tempBoard, tempPieceBoards, tempFlags);
+    
+    if(parsedMove[0] == king[colour] && parsedMove[2] == initKingPos[colour] && parsedMove[3] == initKingPos[colour] + 2){
+        legal = castleIsLegal(colour, tempBoard, tempPieceBoards, tempFlags, false); // king side castle
+    }
+    if(parsedMove[0] == king[colour] && parsedMove[2] == initKingPos[colour] && parsedMove[3] == initKingPos[colour] - 2){
+        legal = castleIsLegal(colour, tempBoard, tempPieceBoards, tempFlags, true); // Queen side castle
+    }
+    
+    if(legal && !inCheck(colour, tempBoard, tempPieceBoards, tempFlags)){
         
         if(depth > 0){
+            
             int[] theirMove = chooseBestMove(tempBoard, tempPieceBoards, tempFlags, 1-colour, depth - 1, alpha, beta);
             moveScore = new int[]{moves[i], theirMove[1]};
             
@@ -209,27 +229,28 @@ for(i = 0; i < moves.length; i++){
         }
         
         if(colour == BLACK){
-            alpha = Math.max(alpha, moveScore[1]);
             
             if(bestMoves.get(0)[1] < moveScore[1]){
                 bestMoves.clear();
                 bestMoves.add(moveScore);   
             }
+            alpha = Math.max(alpha, bestMoves.get(0)[1]);
             
         }
         else{
-            beta = Math.min(beta, moveScore[1]);
             
             if(bestMoves.get(0)[1] > moveScore[1]){
                 bestMoves.clear();
                 bestMoves.add(moveScore);
             } 
+            beta = Math.min(beta, bestMoves.get(0)[1]);
         }
         
         if(beta < alpha){
                 break; //Beta or alpha cut-off
         }
     }
+    legal = true;
 }
 
 if(bestMoves.size() > 1){
@@ -264,15 +285,14 @@ overallScore = 2*(numSet(PIECEBOARDS[bPawn]) - numSet(PIECEBOARDS[wPawn])) +
                     10*(numSet(PIECEBOARDS[bRook]) - numSet(PIECEBOARDS[wRook])) +
                     18*(numSet(PIECEBOARDS[bQueen]) - numSet(PIECEBOARDS[wQueen]));  
 
-overallScore = 3*(overallScore) + 2*(numDoubledPawns(wPawn) - numDoubledPawns(bPawn));
+overallScore = 2*(overallScore) + centreControlScore(PIECEBOARDS);
+
+overallScore = 3*(overallScore) + 2*(pawnStructureScore(bPawn) - pawnStructureScore(wPawn));
 
 overallScore = 2*(overallScore) + positionScore(BLACK, currBoard, PIECEBOARDS, flags) - 
                                   positionScore(WHITE, currBoard, PIECEBOARDS, flags);
 
-int whiteCastles =  (flags >>> 7) + ((flags << 1) >>> 7);
-int blackCastles =  ((flags << 2) >>> 7) + ((flags << 3) >>> 7);
 
-overallScore = overallScore + blackCastles - whiteCastles + pawnsInCentre(BLACK) - pawnsInCentre(WHITE);
 
 overallScore = 4*(overallScore) + advancementScore(PIECEBOARDS, BLACK) - advancementScore(PIECEBOARDS, WHITE);
 
@@ -289,21 +309,31 @@ public int advancementScore(long[] currPieceBoards, int colour){
         for(int j = colour*6; j < colour*6+6; j++){
             rankScore[i] += numSet(currPieceBoards[j] & Constants.RANKS[i]);
         }
+        
         advancement += rankScore[i]*(i + (7-i)*colour);
     }
     
     return advancement;
 }
 
-public int pawnsInCentre(long pawns){
+public int centreControlScore(long[] PIECEBOARDS){
     
-    return numSet(pawns & Constants.CENTER_4);
+    long blackCentre = 0, whiteCentre = 0;
+    
+    for(int i = 0; i < 6; i++){
+        whiteCentre |= (PIECEBOARDS[i] & Constants.CENTER_4);
+    }
+    for(int j = 6; j < 12; j++){
+        blackCentre |= (PIECEBOARDS[j] & Constants.CENTER_4);
+    }
+    
+    return numSet(blackCentre) - numSet(whiteCentre);
 }
 
 public int positionScore(int colour, int[] currBoard, long[] currPieceBoards, byte currFlags){
     
     int[] yourMoves = generateAllMoves(colour, currBoard, currPieceBoards, currFlags);
-    int piecesAttacked = 0, piecesPinned = 0;
+    int piecesAttacked = 0;
     
     int[] tempBoard;
     long[] tempPieceBoards;
@@ -313,37 +343,51 @@ public int positionScore(int colour, int[] currBoard, long[] currPieceBoards, by
         if(((move << 4) >>> 28) > 0){
             piecesAttacked++;
         }
-        
-        tempBoard = Arrays.copyOf(currBoard, 64);
-        tempPieceBoards = Arrays.copyOf(currPieceBoards, 12);
-        tempFlags = currFlags;
-        
-        tempFlags = updateGame(parseMove(move), tempBoard, tempPieceBoards, tempFlags);
-        if(inCheck(colour, tempBoard, tempPieceBoards, tempFlags)){
-            piecesPinned++;
-        }
     }
     
-    return 2*(piecesAttacked - piecesPinned) + yourMoves.length;
+    return 2*(piecesAttacked) + yourMoves.length;
 }
 
-public int numDoubledPawns(long pawns){
+public int pawnStructureScore(long pawns){
     
-    int dubs = 0;
+    long tPawns;
+    int dubs = 0, isos = 0;
+    int file;
     
-    while(pawns > 0){
-        int pawn = Long.numberOfTrailingZeros(pawns);
-        if((pawns & (1L << (pawn+8))) < 0){ dubs++;}
-        pawns &= (pawns-1);
+    tPawns = pawns;
+    while(tPawns > 0){
+        int pawn = Long.numberOfTrailingZeros(tPawns);
+        if((pawns & (1L << (pawn+8))) != 0){ dubs++;}
+        tPawns &= (tPawns-1);
     }
-    return dubs;
+    
+    tPawns = pawns;
+    while(tPawns > 0){
+        int pawn = Long.numberOfTrailingZeros(tPawns);
+        file = pawn%8;
+        
+        switch (file) {
+            case 7:
+                if((pawns & Constants.FILES[file-1]) == 0) { isos++;}
+                break;
+            case 0:
+                if((pawns & Constants.FILES[file+1]) == 0) { isos++;}
+                break;
+            default:
+                if(((pawns & Constants.FILES[file+1]) == 0) && ((pawns & Constants.FILES[file-1]) == 0)) { isos++;}
+                break;
+        }
+        tPawns &= (tPawns-1);
+    }
+    
+    return -1*(dubs+isos);
 }
 
 public void printMovesAsStrings(int[] moves){
     
     int piece, capturedPiece, fromSq, toSq, moveFlags, fromRow, fromCol, toRow, toCol;
-    String[] pieceTypes = {"wPawn", "wRook", "wKnight", "wBishop", "wQueen", "wKing",
-                           "bPawn", "bRook", "bKnight", "bBishop", "bQueen", "bKing", "", "", "None"};
+    String[] pieceTypes = {"wPawn", "wKnight", "wBishop", "wRook", "wQueen", "wKing",
+                           "bPawn", "bKnight", "bBishop", "bRook", "bQueen", "bKing", "", "", "None"};
     String[] rowNumber = {"1", "2", "3", "4", "5", "6", "7", "8"};
     String[] colNumber = {"a", "b", "c", "d", "e", "f", "g", "h"};
     
@@ -388,6 +432,52 @@ public int[] parseMove(int move){
     byte moveFlags =    (byte) move;
     
     return new int[]{piece, capturedPiece, fromSq, toSq, moveFlags};
+}
+
+public int[][] sortAndParseMoves(int colour, int[] moves){
+    
+    int[][] sortedParsedMoves = new int[moves.length][5];    
+    int[][] parsedMoves = new int[moves.length][5];
+    int[] moveScores = new int[moves.length];
+    int[] bestMove, rowDel;
+    int fromSq, toSq;
+
+    for(int i = 0; i < moves.length; i++){
+        
+        parsedMoves[i] = parseMove(moves[i]);
+        
+        fromSq = parsedMoves[i][2];
+        toSq = parsedMoves[i][3];
+        
+        rowDel = new int[]{(int)((toSq - toSq%8)/8) - (int)((fromSq - fromSq%8)/8), 
+                           (int)((fromSq - fromSq%8)/8) - (int)((toSq - toSq%8)/8)};
+        
+        if(parsedMoves[i][1] != empty){
+            moveScores[i] = 2*(4*(parsedMoves[i][1]%6) - (parsedMoves[i][0]%6));
+        }
+        
+        moveScores[i] += rowDel[colour];
+    }
+    
+    bestMove = new int[2];
+    
+    for(int j = 0; j < moves.length; j++){
+        bestMove[0] = 0;
+        bestMove[1] = moveScores[0];
+        
+        for(int k = 1; k < moves.length; k++){
+            
+            if(moveScores[k] > bestMove[1]){ 
+                bestMove[0] = k;
+                bestMove[1] = moveScores[k];
+            }
+        }
+        sortedParsedMoves[j] = parsedMoves[bestMove[0]];
+        moveScores[bestMove[0]] = Integer.MIN_VALUE;
+    }
+    
+    return sortedParsedMoves;
+    
 }
 
 public byte updateGame(int[] move, int[] board, long[] PIECEBOARDS, byte flags){
@@ -498,26 +588,59 @@ int[] moves = generateAllMoves(1 - colour, board, PIECEBOARDS, flags);
 for(int move : moves){
     if( ((move << 4) >>> 28) == (colour*6 + 5)) return true;
 }
+
 return false;
-    
+
 }
 
-public int[] whiteInCheckMoves(){
+public boolean castleIsLegal(int colour, int[] board, long[] PIECEBOARDS, byte flags, boolean queenSide){
+    
+if(inCheck(colour, board, PIECEBOARDS, flags)){ return false;}
+
+int[] tempBoard = Arrays.copyOf(board, 64);
+long[] tempPieceBoards = Arrays.copyOf(PIECEBOARDS, 12);
+
+tempBoard[initKingPos[colour]] = empty;
+
+if(queenSide){
+    
+    for(int i = 1; i <= 2; i++){
+        tempBoard[initKingPos[colour]-i] = king[colour];
+        tempPieceBoards[king[colour]] <<= 1;
+        
+        if(inCheck(colour, tempBoard, tempPieceBoards, flags)){ return false;}
+        
+        tempBoard[initKingPos[colour]-i] = empty;
+    }
+}
+else{
+    
+    for(int i = 1; i <= 2; i++){
+        tempBoard[initKingPos[colour]+i] = king[colour];
+        tempPieceBoards[king[colour]] >>= 1;
+        
+        if(inCheck(colour, tempBoard, tempPieceBoards, flags)){ return false;}
+        
+        tempBoard[initKingPos[colour]+i] = empty;
+    }
+    
+}
+ 
+return true;
+}
+
+public boolean castleIsLegal(boolean queenSide){
+
+return castleIsLegal(WHITE, gameBoard, gamePieceBoards, gameFlags, queenSide);
+
+}
+
+public int[] whiteLegalMoves(){
     
 ArrayList<Integer> legalList = new ArrayList();
-int[] blackMoves, whiteMoves, legalMoves, tempBoard;
+int[] whiteMoves, legalMoves, tempBoard;
 long[] tempPieceBoards;
 byte tempFlags;
-boolean inCheck;
-
-blackMoves = generateAllMoves(BLACK, gameBoard, gamePieceBoards, gameFlags);
-inCheck = false;
-
-for(int bmove : blackMoves){
-    if( ((bmove << 4) >>> 28) == wKing) inCheck = true;
-}
-
-if(!inCheck) return new int[]{};
 
 whiteMoves = generateAllMoves(WHITE, gameBoard, gamePieceBoards, gameFlags);
 
@@ -686,18 +809,18 @@ public void generateKingTargets(ArrayList moves, int Colour, int pieceType, long
     
     if(Colour == WHITE){
         if((flags & (1 << 6)) != 0 && (allPieces & Constants.queenCastleSquares[WHITE]) == 0){
-            generateMoves(fromSq, 0x20L, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
+            generateMoves(fromSq, 0x4L, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
         }
         if((flags & (1 << 7)) != 0 && (allPieces & Constants.kingCastleSquares[WHITE]) == 0){
-            generateMoves(fromSq, 0x2L, pieceType, moves, Constants.moveFlagKingSideCastle, board);
+            generateMoves(fromSq, 0x40L, pieceType, moves, Constants.moveFlagKingSideCastle, board);
         }  
     }
     else{
         if((flags & (1 << 4)) != 0 && (allPieces & Constants.queenCastleSquares[BLACK]) == 0){
-            generateMoves(fromSq, 0x2000000000000000L, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
+            generateMoves(fromSq, 0x400000000000000L, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
         }
         if((flags & (1 << 5)) != 0 && (allPieces & Constants.kingCastleSquares[BLACK]) == 0){
-            generateMoves(fromSq, 0x200000000000000L, pieceType, moves, Constants.moveFlagKingSideCastle, board);
+            generateMoves(fromSq, 0x4000000000000000L, pieceType, moves, Constants.moveFlagKingSideCastle, board);
         }
     }
 }

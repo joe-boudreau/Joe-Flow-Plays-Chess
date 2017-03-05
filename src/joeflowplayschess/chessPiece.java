@@ -33,7 +33,7 @@ public class chessPiece
     
     int[] rowCol = ANtoArrayIndex(Row, Col);
     setBounds(100*(rowCol[1]), 780 - 100*(rowCol[0]), 100, 100);
-    
+    setBackground(new Color(0, 0, 0, 0));
     
   }
   
