@@ -5,6 +5,43 @@
  */
 package joeflowplayschess;
 
+/*
+|   Joe Flow Plays Chess
+|   This package contains chess engine along with an interface to play against
+|   the engine, named "Joe Flow". Developed over the course of November 2016 to
+|   March 2017. Features a game board with drag-and-drop pieces, move legality
+|   checking for both user and computer, and a visual piece capture history table.
+|   User always plays as white, and therefore always has first move.
+|   
+|   The main java file, JoeFlowPlaysChess.java, handles all the user interactions
+|   and GUI updating. It also does the user-side move legality checking, with a
+|   little help from some methods available from the engine class instance. In 
+|   retrospect, I should built all the game decisions into the engine class, 
+|   including the user move legality checking. This could be something I could
+|   fix in the future as right now there is some duplicated game logic between the
+|   two java classes.
+|   
+|   The other main file, ChessEngine.java, is the engine which decides the moves
+|   for black. The architecture is based on bit-board game representation, which
+|   allows for rapid computations of game information and efficient memory usage.
+|   The move generation uses fairly common techniques, including magic-bitboards
+|   for the move generation of sliding pieces (rooks, bishops, queen). Move
+|   selection is made using a recursive search through the move tree with alpha
+|   beta pruning techniques. The board evaluation is a minimax score based 
+|   function which uses a material score calculation as the primary factor for
+|   board advantage, with heuristic evaluation factors as well if there is no
+|   material advantage found. Factors such as pawn structure, centre control,
+|   piece advancement, and piece mobility are looked at.
+|   
+|   The main goal of this project was to make a chess engine smart enough to beat
+|   its creator. This goal was realized.   
+|   
+|   Version: 1.0
+|   Date: 04/03/17
+|   
+*/
+
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.EventQueue;
@@ -50,34 +87,34 @@ import javax.swing.border.TitledBorder;
 public class JoeFlowPlaysChess extends JFrame {
     
     //declarations
-    private ChessEngine JoeFlow;
-    private Container pane;
-    private JLabel board;
-    private JPanel chessBoard;
-    private JPanel infoMsgPanel;
-    private JPanel footerPanel;
-    private JPanel promotionOptions;
-    private chessPiece[] wPieces;
-    private chessPiece[] bPieces;
-    private BoardTile[][] boardSquares;
-    private BoardTile[] validSquares;
-    private chessPiece currPiece;
-    private boolean whiteTurn;
-    private int[] newPos;
-    private int[] oldPos;
-    private boolean castleFlag;
+    private ChessEngine     JoeFlow;
+    private Container       pane;
+    private JLabel          board;
+    private JPanel          chessBoard;
+    private JPanel          infoMsgPanel;
+    private JPanel          footerPanel;
+    private JPanel          promotionOptions;
+    private chessPiece[]    wPieces;
+    private chessPiece[]    bPieces;
+    private BoardTile[][]   boardSquares;
+    private BoardTile[]     validSquares;
+    private chessPiece      currPiece;
+    private boolean         whiteTurn;
+    private int[]           newPos;
+    private int[]           oldPos;
+    private boolean         castleFlag;
     
     //declarations + initializations
-    private int WHITE = 0;
-    private int BLACK = 1;
+    private int WHITE =                  0;
+    private int BLACK =                  1;
     
-    private int numWTaken = 0;
-    private int numBTaken = 0;
+    private int numWTaken =              0;
+    private int numBTaken =              0;
     
-    private volatile int screenX = 0;
-    private volatile int screenY = 0;
-    private volatile int myX = 0;
-    private volatile int myY = 0;
+    private volatile int screenX =       0;
+    private volatile int screenY =       0;
+    private volatile int myX =           0;
+    private volatile int myY =           0;
     
     public int moveFlagPromotedPiece =   0b00001111;
     public int moveFlagPromotion =       0b00010000;
@@ -96,17 +133,24 @@ public class JoeFlowPlaysChess extends JFrame {
     String[] pieceTypes = {"Pawn", "Rook", "Knight", "Bishop", "Queen", "King",
                            "Pawn", "Rook", "Knight", "Bishop", "Queen", "King"};
 
-    char[] columns = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-    int[] rows = {1, 2, 3, 4, 5, 6, 7, 8};
+    char[] columns =      {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+    int[] rows =          {1, 2, 3, 4, 5, 6, 7, 8};
     
     Object LOCK = new Object();
     
     
     public JoeFlowPlaysChess(){
         initUI();
-       
     }
     
+    /**
+     * Initializing function for GUI and game
+     * 
+     * Calls an instance of the ChessEngine class, sets up the chessboard and the
+     * associated pieces. Adds the chessboard to the main content pane. Starts a 
+     * new thread to handle the game flow instructions.
+     * 
+    */
     public void initUI(){
   
         pane = getContentPane();
@@ -133,9 +177,14 @@ public class JoeFlowPlaysChess extends JFrame {
         
     }    
     
+    /**
+     * Main game controller. Alternates white and black turns and checks for
+     * checkmate or draw after each move
+     * 
+     */
     public void startGame(){
         
-        whiteTurnListener();
+        whiteTurnListener();    //enable event listeners and associated action logic
         whiteTurn = true;
         
         while(!(whiteCheckmate | blackCheckmate | draw)){
@@ -143,15 +192,15 @@ public class JoeFlowPlaysChess extends JFrame {
         synchronized(LOCK) {
             while(whiteTurn) {
 
-                try { LOCK.wait(); }
+                try { LOCK.wait(); }    //LOCK is notified when a move is confirmed by user
                 catch (InterruptedException e) {
                     break;
                 }
             }
         }
         
+        //clear en Passant flag for white after every move
         enPassantFlag = false;
-        enPassantColumn = 0;
         
         makeBlackMove();
         whiteTurn = true;
@@ -171,6 +220,22 @@ public class JoeFlowPlaysChess extends JFrame {
         }
     }
     
+    /**
+     * Calls the selectMove method of the chess Engine, which chooses black's next
+     * move and returns the move as a 32-bit encoded int. The move encoding is as
+     * follows:
+     * 
+     * move (MSB --> LSB):
+     * pieceMoving (4) | capturedPiece(4) | fromSq(8) | toSq(8) | flags(8)
+     * 
+     * flags (MSB --> LSB):
+     * King Side Castle (1) | Queen Side Castle (1) | en-passant Capture (1) | promotion flag (1) | promoted piece (4)
+     * 
+     * The returned move is then parsed and the game information and GUI are
+     * updated accordingly
+     * 
+     * 
+     */
     public void makeBlackMove(){
         
         int[] blackMove = JoeFlow.selectMove(BLACK);
@@ -178,8 +243,8 @@ public class JoeFlowPlaysChess extends JFrame {
         /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
                    bit 5: promotion flag
                    bit 6: en-passant capture flag
-                   bit 7: Queen Side Capture
-                   bit 8: King Side Capture
+                   bit 7: Queen Side Castle
+                   bit 8: King Side Castle
         */
         
         if(blackMove[0] == -1){
@@ -194,7 +259,7 @@ public class JoeFlowPlaysChess extends JFrame {
         }
         
         if(blackMove.length > 5){
-            //Black wins or stalemate
+            //Black checkmate or stalemate
             if(blackMove[5] == 0){
                 //black wins
                 blackCheckmate = true;
@@ -215,15 +280,15 @@ public class JoeFlowPlaysChess extends JFrame {
         int flags = blackMove[4];
         
         chessPiece pieceToMove = boardSquares[fromRow][fromCol].getPiece();
-        boardSquares[fromRow][fromCol].setPiece(null);
+        boardSquares[fromRow][fromCol].setPiece(null); //remove piece from old board Square
         
-        if((flags & moveFlagPromotion) != 0){
+        if((flags & moveFlagPromotion) != 0){ //pawn promoted
             
             int newPiece = flags & moveFlagPromotedPiece;
             pieceToMove.setType(pieceTypes[newPiece]);
         }
         
-        else if((flags & moveFlagKingSideCastle) != 0){
+        else if((flags & moveFlagKingSideCastle) != 0){ //King side castle
             
             chessPiece rook = boardSquares[getIndex(8)][getIndex('h')].getPiece();
             boardSquares[getIndex(8)][getIndex('f')].setPiece(rook);
@@ -231,14 +296,14 @@ public class JoeFlowPlaysChess extends JFrame {
             rook.setLocation(8, 'f');
         }
         
-        else if((flags & moveFlagQueenSideCastle) != 0){
+        else if((flags & moveFlagQueenSideCastle) != 0){ //Queen side castle
             
             chessPiece rook = boardSquares[getIndex(8)][getIndex('a')].getPiece();
             boardSquares[getIndex(8)][getIndex('d')].setPiece(rook);
             boardSquares[getIndex(8)][getIndex('a')].setPiece(null);
             rook.setLocation(8, 'd');
         }
-        else if((flags & moveFlagEnPassant) != 0){
+        else if((flags & moveFlagEnPassant) != 0){ //En passant capture
             
             chessPiece deadPiece = boardSquares[toRow+1][toCol].getPiece();
             addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
@@ -246,23 +311,66 @@ public class JoeFlowPlaysChess extends JFrame {
             boardSquares[toRow+1][toCol].setPiece(null);
         }
         
-        if(capturedPiece != 0xE){
+        if(capturedPiece != 0xE){ //0xE == EMTPY (No piece)
             
             chessPiece deadPiece = boardSquares[toRow][toCol].getPiece();
-            addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
+            addToTakenPieces(deadPiece.getColour(), deadPiece.getType()); //Add to piece capture history row
             deadPiece.setVisible(false);
         }
         
-        boardSquares[toRow][toCol].setPiece(pieceToMove);
-        pieceToMove.setLocation(getRow(toRow), getColumn(toCol));
+        boardSquares[toRow][toCol].setPiece(pieceToMove); //update game board with new piece position
+        pieceToMove.setLocation(getRow(toRow), getColumn(toCol)); //update GUI
         
         if(pieceToMove.getType() == "Pawn" && (fromRow - toRow) == 2){
+            //Set en-passant possibility for white if it was a double pawn push
             enPassantFlag = true;
             enPassantColumn = toCol;
         }
+        
+        
+        //turn off last move visual indicators
+        for(BoardTile[] bTs : boardSquares){
+            for(BoardTile bT : bTs){
+                bT.lightDown();
+            }
+        }
+        
+        //turn on this move visual indicators
+        boardSquares[fromRow][fromCol].lightUp(BLACK);
+        boardSquares[toRow][toCol].lightUp(BLACK);
+            
     
     }
 
+    /**
+     * Assigns event listeners to white's pieces and defines their event instructions
+     * 
+     * From a high level, if a valid white piece is pressed then the mousePressed()
+     * event will determine its current coordinates and also call the valid moves
+     * function to calculate the legal moves for that piece.
+     * 
+     * The mouseDragged() event under the mouseMotionListener will take care of updating
+     * the piece's position as it is dragged across the board.
+     * 
+     * Finally, the mouseReleased() event will trigger when the dragged piece is dropped 
+     * somewhere. It will automatically adjust and "lock" the pieces location to the nearest
+     * square it was dropped on. Once the new square is determined it will be checked for
+     * legality in multiple stages. 
+     * 
+     * The first check is if the square is in the list of valid moves calculated
+     * during the mouseClicked() event.
+     * The next check calls the whiteLegalMoves() method of the chess engine, which
+     * considers if white is in check or if the move would put it in check, and
+     * the returned list is checked against the proposed move.
+     * The final check is in the case white is trying to castle, in which case
+     * the chess engine is consulted by calling the castleIsLegal() method, to
+     * make sure white would not be skipping over or landing on any potential checks.
+     * 
+     * After these legality checks are performed, if the move is valid then
+     * the GUI is updated with the move and a confirm dialog is displayed. If the
+     * move is not legal, the piece is automatically returned to its initial square.
+     * 
+     */
     public void whiteTurnListener(){
         
         board.addMouseListener(new MouseListener() {
@@ -280,23 +388,20 @@ public class JoeFlowPlaysChess extends JFrame {
                     myX = e.getX();
                     myY = e.getY();
 
-                    int rowIndex = (int)(800-myY)/100;
+                    /*
+                    Each square is 100x100 px. The rows are from y=[800,0] and the
+                    columns are from x=[0,800]
+                    */
+                    int rowIndex = (int)(800-myY)/100; 
                     int colIndex = (int)(myX)/100;
 
                     currPiece = boardSquares[rowIndex][colIndex].getPiece();
                     if(currPiece != null && currPiece.getColour() == WHITE){
-
+                      
                       myX = currPiece.getX();
                       myY = currPiece.getY();
                       currPiece.printInfo();
                       validSquares = generateValidMoves(currPiece);
-
-                      /*
-                      for(BoardTile bT : validSquares){
-                          bT.lightUp();
-                          //chessBoard.repaint();
-                      }
-                      */
 
                     }
 
@@ -305,78 +410,84 @@ public class JoeFlowPlaysChess extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if(currPiece != null  && currPiece.getColour() == WHITE){
-                    newPos = returnNewLocation(currPiece);
+                
+                if(currPiece != null  && currPiece.getColour() == WHITE && whiteTurn){
+                    newPos = returnNewLocation(currPiece); //adjusts and locks piece to a particular square
                     oldPos = getPosition(currPiece);
                     BoardTile newSquare = boardSquares[newPos[0]][newPos[1]];
                     boolean valid = false;
+                    
                     for(BoardTile sq : validSquares){
                         if(sq.equals(newSquare)){
                             valid = true;
                         }
                     }
                     
+                    int oldSquareIndex = oldPos[0]*8 + oldPos[1];
+                    int newSquareIndex = newPos[0]*8 + newPos[1];
+                    
                     if(valid){
                         
-                        int[] legalMoves = JoeFlow.whiteInCheckMoves();
-                        if(legalMoves.length > 0){  //white is in Check
-                            
-                            int oldSquareIndex = oldPos[0]*8 + oldPos[1];
-                            int newSquareIndex = newPos[0]*8 + newPos[1];
+                        int[] legalMoves = JoeFlow.whiteLegalMoves();
                             
                             for(int legalMove : legalMoves){
                                 
-                                if((oldSquareIndex == ((legalMove << 8) >>> 24))&&
+                                if((oldSquareIndex == ((legalMove << 8) >>> 24)) &&
                                     newSquareIndex == ((legalMove << 16) >>> 24)){
                                     valid = true;
-                                    System.out.println("valid");
                                     break;
                                 }
                                 valid = false;
                             }
                         }
+                    
+                    if(valid){
+                          
+                        if(currPiece.getType().equals("King") && oldSquareIndex == 4 && newSquareIndex == 6){
+                            valid = JoeFlow.castleIsLegal(false); // king side castle
+                        }
+                        else if(currPiece.getType().equals("King") && oldSquareIndex == 4 && newSquareIndex == 2){
+                            valid = JoeFlow.castleIsLegal(true); // Queen side castle
+                        }
                     }
                     
                     if(valid){
                         
-                        if(!newSquare.isEmpty()){
+                        if(!newSquare.isEmpty()){ //capturing a piece
                             boardSquares[newPos[0]][newPos[1]].getPiece().setVisible(false);
                         }
                         else if(currPiece.getType().equals("King")){
                             
                             if(oldPos[1] == getIndex('e') && newPos[1] == getIndex('g')){
+                                //King side castle
                                 boardSquares[getIndex(1)][getIndex('h')].getPiece().setLocation(1, 'f');
                                 castleFlag = true;
                             }
                             else if(oldPos[1] == getIndex('e') && newPos[1] == getIndex('c')){
+                                //Queen side castle
                                 boardSquares[getIndex(1)][getIndex('a')].getPiece().setLocation(1, 'd');
                                 castleFlag = true;
                             }
                         }
                         else if(currPiece.getType().equals("Pawn") && enPassantFlag && newPos[0] == 5 
                                 && newPos[1] == enPassantColumn){
+                            //en passant capture
                             boardSquares[4][enPassantColumn].getPiece().setVisible(false);
                         }
                         
                         
                         
-                        
+                        //Display confirmation dialogs
                         getComponentInContainer(infoMsgPanel, "Yes").setVisible(true);
                         getComponentInContainer(infoMsgPanel, "No").setVisible(true);
                         getComponentInContainer(infoMsgPanel, "confirmText").setVisible(true);
                         confirmNeeded = true;
-                        
                     }
                     else{
-                        
+                        //Return piece to old square
                         currPiece.setLocation(getRow(oldPos[0]), getColumn(oldPos[1]));
                         
                     }
-                    /*
-                    for(BoardTile bT : validSquares){
-                        bT.lightDown();
-                    }
-                    */
                 }
             }
 
@@ -393,10 +504,11 @@ public class JoeFlowPlaysChess extends JFrame {
             
             @Override
             public void mouseDragged(MouseEvent e) {
+                
                 if(!confirmNeeded && whiteTurn && currPiece != null && currPiece.getColour() == WHITE){
                     int deltaX = e.getXOnScreen() - screenX;
                     int deltaY = e.getYOnScreen() - screenY;
-
+                    //update piece location continously as this event is called
                     currPiece.setLocation(myX + deltaX, myY + deltaY);  
                 }    
             }
@@ -406,6 +518,14 @@ public class JoeFlowPlaysChess extends JFrame {
         });
     }
     
+    /**
+     * Calculates the quasi-legal moves for a chessPiece based off the current board
+     * and game flags, without considering checks
+     * 
+     * 
+     * @param cP    the piece to calculate valid moves for
+     * @return      an array of valid BoardTiles to land on
+     */
     public BoardTile[] generateValidMoves(chessPiece cP){
         
         int[] piecePos = getPosition(cP);
@@ -416,30 +536,30 @@ public class JoeFlowPlaysChess extends JFrame {
         int[] rowDelta, colDelta;
         
         ArrayList<BoardTile> validBoardList = new ArrayList();
-        
-        
+       
         
         switch(cP.getType()){
             
             case "Pawn":
                 if(boardSquares[pieceRow+1][pieceCol].isEmpty()){
-                    validBoardList.add(boardSquares[pieceRow+1][pieceCol]);
+                    validBoardList.add(boardSquares[pieceRow+1][pieceCol]); //pawn push
+                    
                     if(!cP.hasMoved() && boardSquares[pieceRow+2][pieceCol].isEmpty()){
-                        validBoardList.add(boardSquares[pieceRow+2][pieceCol]);
+                        validBoardList.add(boardSquares[pieceRow+2][pieceCol]); //double pawn push
                     }
                 }
                 
                 if(pieceCol<7 && !boardSquares[pieceRow+1][pieceCol+1].isEmpty() 
                               && boardSquares[pieceRow+1][pieceCol+1].getPiece().getColour() == BLACK){
-                    validBoardList.add(boardSquares[pieceRow+1][pieceCol+1]);
+                    validBoardList.add(boardSquares[pieceRow+1][pieceCol+1]); //pawn capture right
                 }
                 if(pieceCol>0 && !boardSquares[pieceRow+1][pieceCol-1].isEmpty() 
                               && boardSquares[pieceRow+1][pieceCol-1].getPiece().getColour() == BLACK){
-                    validBoardList.add(boardSquares[pieceRow+1][pieceCol-1]);
+                    validBoardList.add(boardSquares[pieceRow+1][pieceCol-1]); //pawn capture left
                 }
                 if(enPassantFlag && pieceRow == 4){
                     if(pieceRow == 4 && (pieceCol == enPassantColumn+1 || pieceCol == enPassantColumn-1)){
-                        validBoardList.add(boardSquares[pieceRow+1][enPassantColumn]);
+                        validBoardList.add(boardSquares[pieceRow+1][enPassantColumn]); //en passant capture
                     }
                 }
             break;
@@ -450,6 +570,7 @@ public class JoeFlowPlaysChess extends JFrame {
                 prevRow = pieceRow-1;
                 prevCol = pieceCol-1;
                 
+                //Sliding up
                 while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
                     validBoardList.add(boardSquares[nextRow++][pieceCol]);
                 }
@@ -457,6 +578,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[nextRow][pieceCol]);
                 }
                 
+                //Sliding right
                 while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
                     validBoardList.add(boardSquares[pieceRow][nextCol++]);
                 }
@@ -464,6 +586,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[pieceRow][nextCol]);
                 }
                 
+                //Sliding down
                 while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
                     validBoardList.add(boardSquares[prevRow--][pieceCol]);
                 }
@@ -471,6 +594,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[prevRow][pieceCol]);
                 }
                 
+                //Sliding left
                 while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
                     validBoardList.add(boardSquares[pieceRow][prevCol--]);
                 }
@@ -483,7 +607,7 @@ public class JoeFlowPlaysChess extends JFrame {
                 rowDelta = new int[]{-2, -2, -1, -1, 1, 1, 2, 2};
                 colDelta = new int[]{-1, 1, -2, 2, -2, 2, -1, 1};
                 
-                for(int j = 0; j < 8; j++){
+                for(int j = 0; j < 8; j++){ //eight possible landing sites to check
                     if(pieceRow+rowDelta[j] <= 7 &&
                        pieceRow+rowDelta[j] >= 0 &&
                        pieceCol+colDelta[j] <= 7 &&
@@ -504,6 +628,7 @@ public class JoeFlowPlaysChess extends JFrame {
                 prevRow = pieceRow-1;
                 prevCol = pieceCol-1;
                 
+                //Sliding up-right
                 while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
                     validBoardList.add(boardSquares[nextRow++][nextCol++]);
                 }
@@ -511,6 +636,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[nextRow][nextCol]);
                 }
                 
+                //Sliding down-left
                 while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
                     validBoardList.add(boardSquares[prevRow--][prevCol--]);
                 }
@@ -518,11 +644,13 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[prevRow][prevCol]);
                 }
                 
+                //reset variables
                 nextRow = pieceRow+1;
                 nextCol = pieceCol+1;
                 prevRow = pieceRow-1;
                 prevCol = pieceCol-1;
                 
+                //Sliding up-left
                 while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
                     validBoardList.add(boardSquares[nextRow++][prevCol--]);
                 }
@@ -530,6 +658,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[nextRow][prevCol]);
                 }
                 
+                //Sliding down-right
                 while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
                     validBoardList.add(boardSquares[prevRow--][nextCol++]);
                 }
@@ -544,6 +673,7 @@ public class JoeFlowPlaysChess extends JFrame {
                 prevRow = pieceRow-1;
                 prevCol = pieceCol-1;
                 
+                //Sliding up
                 while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
                     validBoardList.add(boardSquares[nextRow++][pieceCol]);
                 }
@@ -551,6 +681,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[nextRow][pieceCol]);
                 }
                 
+                //Sliding right
                 while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
                     validBoardList.add(boardSquares[pieceRow][nextCol++]);
                 }
@@ -558,6 +689,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[pieceRow][nextCol]);
                 }
                 
+                //Sliding down
                 while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
                     validBoardList.add(boardSquares[prevRow--][pieceCol]);
                 }
@@ -565,6 +697,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[prevRow][pieceCol]);
                 }
                 
+                //Sliding left
                 while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
                     validBoardList.add(boardSquares[pieceRow][prevCol--]);
                 }
@@ -572,11 +705,13 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[pieceRow][prevCol]);
                 }
                 
+                //reset variables
                 nextRow = pieceRow+1;
                 nextCol = pieceCol+1;
                 prevRow = pieceRow-1;
                 prevCol = pieceCol-1;
                 
+                //Sliding up-right
                 while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
                     validBoardList.add(boardSquares[nextRow++][nextCol++]);
                 }
@@ -584,6 +719,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[nextRow][nextCol]);
                 }
                 
+                //Sliding down-left
                 while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
                     validBoardList.add(boardSquares[prevRow--][prevCol--]);
                 }
@@ -591,11 +727,13 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[prevRow][prevCol]);
                 }
                 
+                //reset variables
                 nextRow = pieceRow+1;
                 nextCol = pieceCol+1;
                 prevRow = pieceRow-1;
                 prevCol = pieceCol-1;
                 
+                //Sliding up-left
                 while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
                     validBoardList.add(boardSquares[nextRow++][prevCol--]);
                 }
@@ -603,6 +741,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     validBoardList.add(boardSquares[nextRow][prevCol]);
                 }
                 
+                //Sliding down-right
                 while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
                     validBoardList.add(boardSquares[prevRow--][nextCol++]);
                 }
@@ -616,7 +755,7 @@ public class JoeFlowPlaysChess extends JFrame {
                 rowDelta = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
                 colDelta = new int[]{-1, 0, 1, -1, 1, -1, 0, 1};
                 
-                for(int j = 0; j < 8; j++){
+                for(int j = 0; j < 8; j++){ //eight possible squares to check
                     if(pieceRow+rowDelta[j] <= 7 &&
                        pieceRow+rowDelta[j] >= 0 &&
                        pieceCol+colDelta[j] <= 7 &&
@@ -635,6 +774,7 @@ public class JoeFlowPlaysChess extends JFrame {
                                      boardSquares[getIndex(1)][getIndex('b')].isEmpty() &&
                                      boardSquares[getIndex(1)][getIndex('c')].isEmpty() &&
                                      boardSquares[getIndex(1)][getIndex('d')].isEmpty()){
+                    //Queen side castle is legal
                     validBoardList.add(boardSquares[getIndex(1)][getIndex('c')]);
                 }
                 if(!cP.hasMoved() && boardSquares[getIndex(1)][getIndex('h')].getPiece() != null &&
@@ -642,182 +782,26 @@ public class JoeFlowPlaysChess extends JFrame {
                                      !boardSquares[getIndex(1)][getIndex('h')].getPiece().hasMoved() &&
                                      boardSquares[getIndex(1)][getIndex('f')].isEmpty() &&
                                      boardSquares[getIndex(1)][getIndex('g')].isEmpty()){
+                    //King side castle is legal
                     validBoardList.add(boardSquares[getIndex(1)][getIndex('g')]);
-                }
-                
+                }   
             break;
-            
         }
-        
-        chessPiece pinPiece = pieceIsPinned(cP);
-        if(pinPiece != null){
-            for(int i = 0; i < validBoardList.size(); i++){
-                
-                if(validBoardList.get(i).getPiece() != null && validBoardList.get(i).getPiece().equals(pinPiece)){
-                    return new BoardTile[]{validBoardList.get(i)};
-                }
-                
-            }
-            return new BoardTile[]{};
-        }
-        
 
         BoardTile[] vbt = new BoardTile[validBoardList.size()];
         validBoardList.toArray(vbt);
         return vbt;
     }
     
-    public chessPiece pieceIsPinned(chessPiece cP){
-        
-        chessPiece[] blackPieces = getPiecesOnBoard(BLACK);
-
-        int nextRow, nextCol, prevRow, prevCol;
-        
-        for (chessPiece bP : blackPieces){
-            
-            int[] piecePos = getPosition(bP);
-            int pieceRow = piecePos[0];
-            int pieceCol = piecePos[1];
-            
-            if(bP.getType().equals("Rook") || bP.getType().equals("Queen")){
-                
-                nextRow = pieceRow+1;
-                nextCol = pieceCol+1;
-                prevRow = pieceRow-1;
-                prevCol = pieceCol-1;
-                
-                while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
-                    nextRow++;
-                }
-                if(nextRow < 8 && boardSquares[nextRow][pieceCol].getPiece().equals(cP)){
-                    nextRow++;
-                    while(nextRow < 8 && boardSquares[nextRow][pieceCol].isEmpty()){
-                        nextRow++;
-                    }
-                    if(nextRow < 8 && boardSquares[nextRow][pieceCol].getPiece().getType().equals("King") &&
-                                      boardSquares[nextRow][pieceCol].getPiece().getColour() == WHITE) {
-                        return bP;
-                    }
-                }
-                
-                while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
-                    nextCol++;
-                }
-                if(nextCol < 8 && boardSquares[pieceRow][nextCol].getPiece().equals(cP)){
-                    nextCol++;
-                    while(nextCol < 8 && boardSquares[pieceRow][nextCol].isEmpty()){
-                        nextCol++;
-                    }
-                    if(nextCol < 8 && boardSquares[pieceRow][nextCol].getPiece().getType().equals("King") &&
-                                      boardSquares[pieceRow][nextCol].getPiece().getColour() == WHITE) {
-                        return bP;
-                    }
-                }
-                
-                while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
-                    prevRow--;
-                }
-                if(prevRow > -1 && boardSquares[prevRow][pieceCol].getPiece().equals(cP)){
-                    prevRow--;
-                    while(prevRow > -1 && boardSquares[prevRow][pieceCol].isEmpty()){
-                        prevRow--;
-                    }
-                    if(prevRow > -1 && boardSquares[prevRow][pieceCol].getPiece().getType().equals("King") &&
-                                      boardSquares[prevRow][pieceCol].getPiece().getColour() == WHITE) {
-                        return bP;
-                    }
-                }
-                
-                while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
-                    prevCol--;
-                }
-                if(prevCol > -1 && boardSquares[pieceRow][prevCol].getPiece().equals(cP)){
-                    prevCol--;
-                    while(prevCol > -1 && boardSquares[pieceRow][prevCol].isEmpty()){
-                        prevCol--;
-                    }
-                    if(prevCol > -1 && boardSquares[pieceRow][prevCol].getPiece().getType().equals("King") &&
-                                      boardSquares[pieceRow][prevCol].getPiece().getColour() == WHITE) {
-                        return bP;
-                    }
-                }
-                
-            }
-                
-            if(bP.getType().equals("Bishop") || bP.getType().equals("Queen")){ 
-                
-                nextRow = pieceRow+1;
-                nextCol = pieceCol+1;
-                prevRow = pieceRow-1;
-                prevCol = pieceCol-1;
-                                
-                while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
-                    nextRow++; nextCol++;
-                }
-                if(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].getPiece().equals(cP)){
-                    nextRow++; nextCol++;
-                    while(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].isEmpty()){
-                        nextRow++; nextCol++;
-                    }
-                    if(nextRow < 8 && nextCol < 8 && boardSquares[nextRow][nextCol].getPiece().getType().equals("King") &&
-                                                     boardSquares[nextRow][nextCol].getPiece().getColour() == WHITE){
-                        return bP;
-                    }
-                }
-                
-                while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
-                    prevRow--; prevCol--;
-                }
-                if(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].getPiece().equals(cP)){
-                    prevRow--; prevCol--;
-
-                    while(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].isEmpty()){
-                        prevRow--; prevCol--;
-                    }
-                    if(prevRow > -1 && prevCol > -1 && boardSquares[prevRow][prevCol].getPiece().getType().equals("King") &&
-                                                     boardSquares[prevRow][prevCol].getPiece().getColour() == WHITE){
-                        return bP;
-                    }
-                }
-
-                nextRow = pieceRow+1;
-                nextCol = pieceCol+1;
-                prevRow = pieceRow-1;
-                prevCol = pieceCol-1;
-                
-                while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
-                    nextRow++; prevCol--;
-                }
-                if(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].getPiece().equals(cP)){
-                    nextRow++; prevCol--;
-                    while(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].isEmpty()){
-                        nextRow++; prevCol--;
-                    }
-                    if(nextRow < 8 && prevCol > -1 && boardSquares[nextRow][prevCol].getPiece().getType().equals("King") &&
-                                                     boardSquares[nextRow][prevCol].getPiece().getColour() == WHITE){
-                       return bP;
-                    }
-                }
-                
-                while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
-                    prevRow--; nextCol++;
-                }
-                if(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].getPiece().equals(cP)){
-                    prevRow--; nextCol++;
-                    while(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].isEmpty()){
-                        prevRow--; nextCol++;
-                    }
-                    if(prevRow > -1 && nextCol < 8 && boardSquares[prevRow][nextCol].getPiece().getType().equals("King") &&
-                                                     boardSquares[prevRow][nextCol].getPiece().getColour() == WHITE){
-                        return bP;
-                    }
-                }
-            }
-        }
-        
-        return null;
-    }
     
+    /**
+     * Scans the 64-squares of the chessboard until the square which holds the
+     * piece in question is found, and then returns the location
+     * 
+     * 
+     * @param cP    the piece whose location is returned
+     * @return      an int array with 2 elements, the row and the column index
+     */
     public int[] getPosition(chessPiece cP){
         for(int r : rows){
             for(char c : columns){
@@ -830,9 +814,15 @@ public class JoeFlowPlaysChess extends JFrame {
         return new int[]{0,0};
     }
     
+    /**
+     * Initializes the layout of the chess board and all the associated elements
+     * and returns a JPanel container which consists of the entire GUI
+     * 
+     * @return  the game panel to display within the JFrame window
+     */
     public JPanel setUpChessBoard(){
         
-        JPanel  chessPanel = new JPanel ();
+        JPanel chessPanel = new JPanel();
         
         chessPanel.setLayout(new BorderLayout());
         
@@ -847,7 +837,6 @@ public class JoeFlowPlaysChess extends JFrame {
         infoMsgPanel.setBorder(new LineBorder(Color.BLACK));
         
         footerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        //footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.X_AXIS));
         footerPanel.setBounds(0, 880, 800, 120);
         
         board = new JLabel(new ImageIcon(getClass().getResource("/resources/board.png")));
@@ -908,8 +897,6 @@ public class JoeFlowPlaysChess extends JFrame {
         bishop.addActionListener(BA);
         rook.addActionListener(BA);
         
-        
-        
         makeCustomButton(queen, "/resources/wqueenSmall.png", "/resources/wqueenSmallPressed.png");
         makeCustomButton(knight, "/resources/wknightSmall.png", "/resources/wknightSmallPressed.png");
         makeCustomButton(bishop, "/resources/wbishopSmall.png", "/resources/wbishopSmallPressed.png");
@@ -929,10 +916,15 @@ public class JoeFlowPlaysChess extends JFrame {
         return chessPanel;
     }
     
+    /**
+     * Configures the JPanel which sits above the chess board and contains the
+     * confirm dialog for moves. Adds keyboard shortcuts for the confirm buttons
+     */
     public void setUpInfoMsgPanel(){
         
         Action buttListen = new ButtonAction();
         
+        //Yes button
         JButton yConfirm = new JButton("Yes");
         
         yConfirm.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -942,6 +934,7 @@ public class JoeFlowPlaysChess extends JFrame {
         yConfirm.setName("Yes");
         yConfirm.addActionListener(buttListen);
         
+        //No button
         JButton nConfirm = new JButton("No");
         
         nConfirm.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -960,23 +953,32 @@ public class JoeFlowPlaysChess extends JFrame {
         buttPanel.add(nConfirm);
         buttPanel.add(Box.createHorizontalStrut(150));
         
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.X_AXIS));
+        
         JLabel confirmText = new JLabel("Are you sure?");
         confirmText.setName("confirmText");
         confirmText.setAlignmentX(CENTER_ALIGNMENT);
         confirmText.setFont(new Font("Arial", Font.BOLD, 25));
         
+        infoPanel.add(confirmText);
+        
         infoMsgPanel.add(Box.createVerticalStrut(5));
-        infoMsgPanel.add(confirmText);
+        infoMsgPanel.add(infoPanel);
         infoMsgPanel.add(Box.createVerticalGlue());
         infoMsgPanel.add(buttPanel);
         
-        
+        //Set to non-visible
         yConfirm.setVisible(false);
         nConfirm.setVisible(false);
         confirmText.setVisible(false);
         
     }
     
+    /**
+     * Configures the footer JPanel, which sits below the chessboard and contains
+     * the captured piece "graveyards" for both players
+     */
     public void setUpFooterPanel(){
         
         JPanel whiteTaken = new JPanel();
@@ -1007,63 +1009,62 @@ public class JoeFlowPlaysChess extends JFrame {
         
     }
     
+    /**
+     * Adjusts the location  of a chessPiece after it is dragged by the user so
+     * it resides directly over a board square
+     * 
+     * @param cP    the chessPiece whose location needs to be adjusted
+     * @return      an int array with 2 elements: the row index and column index
+     */
     public int[] returnNewLocation(chessPiece cP){
         
         int x = cP.getLocation().x;
         int y = cP.getLocation().y;
         
-        boolean rowFound = false;
-        int rowStartX = 700;
-        
-        while(!rowFound){
-            if(x+50 >= rowStartX){
-                    x = rowStartX;
-                    rowFound = true;
-                    break;
-            }
-            rowStartX = rowStartX - 100;
-            if(rowStartX == 0){
-                x = rowStartX;
-                rowFound = true;
-            }
-        }
-        
         boolean colFound = false;
-        int colStartY = 780;
+        int colStartX = 700;
         
+        //Scan through columns until column pixel range contains the current x location
         while(!colFound){
-            if(y+50 >= colStartY){
-                    y = colStartY;
+            if(x+50 >= colStartX){
+                    x = colStartX;
                     colFound = true;
                     break;
             }
-            colStartY = colStartY - 100;
-            if(colStartY == 100){
-                y = colStartY;
+            colStartX = colStartX - 100;
+            if(colStartX == 0){
+                x = colStartX;
                 colFound = true;
+            }
+        }
+        
+        boolean rowFound = false;
+        int rowStartY = 780;
+        
+        //Scan through rows until row pixel range contains the current y location
+        while(!rowFound){
+            if(y+50 >= rowStartY){
+                    y = rowStartY;
+                    rowFound = true;
+                    break;
+            }
+            rowStartY = rowStartY - 100;
+            if(rowStartY == 100){
+                y = rowStartY;
+                rowFound = true;
             }
         }
         
         cP.setLocation(x,y);
         return new int[]{(int)(780-y)/100, (int)(x)/100};
-        /*
-        newRow = (int)(800-y)/100 + 1;
-        newCol = (int)(x)/100 + 1;
-        
-        String move = moveType(colour, type, newRow, newCol, r, c);
-        
-        if(move.equals("INVALID")){
-            movePiece(r, c);
-        }
-        else{
-            System.out.println("VALID");
-            hasMoved = true;
-            movePiece(newRow, newCol);
-            isACapture = move.equals("CAPTURE") ? true : false;   
-            }
-        */
     }
     
+    /**
+     * Configures the initial chess piece set up for the start of the game
+     * 
+     * @param colour    Colour to set-up (WHITE=0, BLACK=1)
+     * @return          A 16-element array containing the configured chess pieces 
+     */
     public chessPiece[] setUpPieces(int colour){
         
         chessPiece[] pieces = new chessPiece[16];
@@ -1108,10 +1109,17 @@ public class JoeFlowPlaysChess extends JFrame {
 
     }
     
+    /**
+     * Returns an array containing all the active pieces of a particular colour
+     * 
+     * @param colour    the colour of piece to return
+     * @return          an array containing all the active chess pieces
+     */
     public chessPiece[] getPiecesOnBoard(int colour){
         ArrayList<chessPiece> piecesLst = new ArrayList();
         
         BoardTile bt;
+        //Scan through every BoardTile on the board
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 bt = boardSquares[i][j];
@@ -1120,12 +1128,17 @@ public class JoeFlowPlaysChess extends JFrame {
                 }
             }
         }
-        
+
         chessPiece[] pieces = new chessPiece[piecesLst.size()];
         piecesLst.toArray(pieces);
         return pieces;
     }
     
+    /**
+     * Configures the 64 BoardTile instances which cover the 64 squares on the board
+     * 
+     * @return      an 8x8 matrix array of the 64 BoardTiles
+     */
     public BoardTile[][] setUpTiles(){
         
         BoardTile[][] bT = new BoardTile[8][8];
@@ -1139,10 +1152,17 @@ public class JoeFlowPlaysChess extends JFrame {
         return bT;
     }
     
+    /**
+     * Adds a captured piece to the "graveyard" in the footerPanel
+     * 
+     * @param colour    the colour of the piece to be added
+     * @param type      the type of the piece, represented by a capitalized name (e.g "Knight" or "Pawn")
+     */
     public void addToTakenPieces(int colour, String type){
     
         JPanel takenPanel;
         JLabel newDeadPiece;
+        
         if(colour == WHITE){
             
             takenPanel = (JPanel) footerPanel.getComponent(0);
@@ -1159,22 +1179,56 @@ public class JoeFlowPlaysChess extends JFrame {
         }
     }
     
+    /**
+     * Returns the index of the row (0-7) relative to the standard board representation of the rows (1-8)
+     * @param row   the row in question
+     * @return      the index of the row
+     */
     public static int getIndex(int row){
         return row - 1;
     }
     
+    /**
+     * Returns the index of the column (0-7) relative to the standard board representation of the columns (a-h)
+     * @param col   the column in question
+     * @return      the index of the column
+     */
     public static int getIndex(char col){
         return ((int) col) - 97;
     }
     
+    /**
+     * Returns the standard board representation of a row (1-8) relative to its in-game index(0-7)
+     * @param rowIndex  the row in question
+     * @return          the row number
+     */
     public static int getRow(int rowIndex){
         return rowIndex + 1;
     }
     
+    /**
+     * Returns the standard board representation of a column (a-h) relative to its in-game index(0-7)
+     * @param columnIndex   the column in question
+     * @return              the column (a-h)
+     */
     public static char getColumn(int columnIndex){
         return (char) (columnIndex + 97);
     }
     
+    /**
+     * Defines the instructions to take when a button is pressed. The buttons
+     * defined in this game are:
+     * 
+     * Confirm Options:
+     * "Yes"    - User confirms move
+     * "No"     - User rescinds moves
+     * 
+     * Promotion Options:
+     * "Queen"
+     * "Bishop"
+     * "Rook"
+     * "Knight"
+     */
     public class ButtonAction extends AbstractAction{
         
         
@@ -1191,14 +1245,14 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
 
                     if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
-                        
+                        //Piece is captured by move
                         chessPiece deadPiece = boardSquares[newPos[0]][newPos[1]].getPiece();
                         addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
                         
                     }
                     
-                    boardSquares[newPos[0]][newPos[1]].setPiece(currPiece);
-                    boardSquares[oldPos[0]][oldPos[1]].setPiece(null);
+                    boardSquares[newPos[0]][newPos[1]].setPiece(currPiece); //move piece to new square
+                    boardSquares[oldPos[0]][oldPos[1]].setPiece(null);      //remove piece from old square
                     
                     if(castleFlag){
                         if(getColumn(newPos[1]) == 'g'){
@@ -1223,15 +1277,17 @@ public class JoeFlowPlaysChess extends JFrame {
                     }
                     
                     if(currPiece.getType().equals("Pawn") && newPos[0] == getIndex(8)){
+                            //Pawn promoted - display promotion options modal box for user to choose piece
                             promotionOptions.setVisible(true);
                             confirmNeeded = true;
-                            
                             break;
                     }
                     else{
+                        //Update the chess engine with the move information
                         JoeFlow.makeMove(oldPos, newPos, moveFlags);
                         
                         whiteTurn = false;
+                        //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
                         synchronized(LOCK){
                             LOCK.notifyAll();
                         }
@@ -1245,6 +1301,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
 
                     if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
+                        //undo captured piece disappearing
                         boardSquares[newPos[0]][newPos[1]].getPiece().setVisible(true);
                     }
                     
@@ -1261,6 +1318,7 @@ public class JoeFlowPlaysChess extends JFrame {
                         boardSquares[4][enPassantColumn].getPiece().setVisible(true);
                     }
                     
+                    //return to old position
                     currPiece.setLocation(getRow(oldPos[0]), getColumn(oldPos[1]));
                     break;
                     
@@ -1270,9 +1328,11 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 4;
                     
+                    //Update the chess engine with the move information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
+                    //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
                         synchronized(LOCK){
                             LOCK.notifyAll();
                         }
@@ -1284,9 +1344,12 @@ public class JoeFlowPlaysChess extends JFrame {
                     promotionOptions.setVisible(false);
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 2;
+                    
+                    //Update the chess engine with the move information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
+                    //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
                         synchronized(LOCK){
                             LOCK.notifyAll();
                         }
@@ -1297,9 +1360,12 @@ public class JoeFlowPlaysChess extends JFrame {
                     promotionOptions.setVisible(false);
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 3;
+                    
+                    //Update the chess engine with the move information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
+                    //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
                         synchronized(LOCK){
                             LOCK.notifyAll();
                         }
@@ -1310,9 +1376,12 @@ public class JoeFlowPlaysChess extends JFrame {
                     promotionOptions.setVisible(false);
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 1;
+                    
+                    //Update the chess engine with the move information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
+                    //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
                         synchronized(LOCK){
                             LOCK.notifyAll();
                         }
@@ -1322,12 +1391,34 @@ public class JoeFlowPlaysChess extends JFrame {
                     break;
             }
             
+            if(buttonName != "No"){
+                
+                //turn off last move visual indicators
+                for(BoardTile[] bTs : boardSquares){
+                    for(BoardTile bT : bTs){
+                        bT.lightDown();
+                    }
+                }
+                //turn on this move's visual indicators
+                boardSquares[oldPos[0]][oldPos[1]].lightUp(WHITE);
+                boardSquares[newPos[0]][newPos[1]].lightUp(WHITE);
+            }
+            
+            //Stop displaying the confirm dialog
             getComponentInContainer(infoMsgPanel, "Yes").setVisible(false);
             getComponentInContainer(infoMsgPanel, "No").setVisible(false);
             getComponentInContainer(infoMsgPanel, "confirmText").setVisible(false);
         }
     }
     
+    /**
+     * Recursively searches a Container, and all its nested Containers for a
+     * component based off the name provided
+     * 
+     * @param c     the Container to search
+     * @param name  the name of the Component to find
+     * @return      the found component, casted to a JComponent object
+     */
     public static JComponent getComponentInContainer(Container c, String name){
         int num = c.getComponentCount();
 
@@ -1336,10 +1427,14 @@ public class JoeFlowPlaysChess extends JFrame {
         for(int i = 0; i < num; i++){
             jC = c.getComponent(i);
             
-            if(c.getClass().isInstance(jC)){
-                returnedComp = getComponentInContainer((Container)jC, name);
+            if(c.getClass().isInstance(jC)){                                 //if the component c is a container itself
+                returnedComp = getComponentInContainer((Container)jC, name); //search that container
+                if(returnedComp != null){
+                    break;
+                }
             }
             else if(jC.getName() != null && jC.getName().equals(name)){
+                //found it
                 returnedComp = (JComponent) jC;
                 break;
             }
@@ -1347,10 +1442,18 @@ public class JoeFlowPlaysChess extends JFrame {
         return returnedComp;
     }
     
+    /**
+     * Configures the custom look and feel of a JButton object
+     * 
+     * @param butt          the JButton to customize
+     * @param unpressed     URI pathname of the icon to represent the unpressed state of the button
+     * @param pressed       URI pathname of the icon to represent button when it is pressed
+     */
     public void makeCustomButton(JButton butt, String unpressed, String pressed){
         butt.setIcon(new ImageIcon(getClass().getResource(unpressed)));
         butt.setPressedIcon(new ImageIcon(getClass().getResource(pressed)));
         butt.setDisabledIcon(new ImageIcon(getClass().getResource(unpressed)));
+        
         butt.setOpaque(false);              //let unpainted areas of button show
                                             //the image below it
         butt.setContentAreaFilled(false);   //do not paint the entire JButton background
@@ -1360,6 +1463,12 @@ public class JoeFlowPlaysChess extends JFrame {
         
     }
     
+    /**
+     * Start an instance of the JoeFlowPlaysChess class, which is an extension
+     * of the JFrame class. Set it to visible.
+     * 
+     * @param args Not used
+     */
     public static void main(String[] args) {        
         
         SwingUtilities.invokeLater(new Runnable() {
