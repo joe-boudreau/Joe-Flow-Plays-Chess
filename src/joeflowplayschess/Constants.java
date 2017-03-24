@@ -8,12 +8,45 @@ package joeflowplayschess;
 import java.util.ArrayList;
 import java.util.Random;
 
-
+/**
+ * Pre-computed values used in ChessEngine class. Some are for convenience, but
+ * this class is depended on by ChessEngine to compute the necessary attack sets
+ * for sliding piece move generation. Most of the code for that, which involves
+ * something referred to as "magic bitboards", is based off a perfact hashing
+ * algorithm for quick efficient move sets. I got the algorithm from the following
+ * blog:
+ * http://www.afewmorelines.com/understanding-magic-bitboards-in-chess-programming/
+ * But there were a number of changes I needed to make to the code for it to run
+ * in my framework.
+ * 
+ * Everything here is based off the following bitboard representation:
+ * 
+ * 56 57 58 59 60 61 62 63
+ * 48 49 50 51 52 53 54 55
+ * 40 41 42 43 44 45 46 47
+ * 32 33 34 35 36 37 38 39
+ * 24 25 26 27 28 29 30 31
+ * 16 17 18 19 20 21 22 23
+ * 8  9  10 11 12 13 14 15
+ * 0  1  2  3  4  5  6  7
+ * 
+ * where the 64-bits in the long represent the following:
+ * 
+ * MSb [63, 62, 61 .. 0] LSb
+ * 
+ * For example, all the squares in the bottom row, a.k.a Rank 1, could be represent
+ * as long 0xff, or binary 0b11111111, since those are the 8 least significant
+ * digits
+ * 
+ * 
+ * 
+ * @author thejoeflow
+ */
 
 public class Constants {
 
-public long[] BITSQUARES =           new long[64];
-public long ALL_SET =                0xffffffffffffffffL;
+public long[] BITSQUARES =           new long[64]; //these will be the same as just doing (1L >> index of square) but I didn't know that earlier when building this class. oh well. 
+public long ALL_SET =                0xffffffffffffffffL; //all 64 squares
 
 public long RANK_1 =                 0xffL;
 public long RANK_2 =                 0xff00L;
@@ -42,18 +75,18 @@ public long CENTER_4 =               0x1818000000L;
 public long[] KnightMoves =          new long[64];
 public long[] KingMoves =            new long[64];
 
-public long[] RookMaskOnSquare =     new long[64];
-public long[] BishopMaskOnSquare =   new long[64];
-
-public int moveFlagPromotedPiece =   0b00001111;
+//Used when setting moveFlags. Makes for easier code and less mistakes
+public int moveFlagPromotedPiece =   0b00001111; 
 public int moveFlagPromotion =       0b00010000;
 public int moveFlagEnPassant =       0b00100000;
 public int moveFlagQueenSideCastle = 0b01000000;
 public int moveFlagKingSideCastle =  0b10000000;
 
+//The squares in between the castling squares which need to be checked for potential checks
 public long[] queenCastleSquares =   new long[]{0xe, 0xe00000000000000L};
 public long[] kingCastleSquares =    new long[]{0x60, 0x6000000000000000L};
 
+//All the following arrays are used in the magic bitboard generation
 public long[][] occupancyVariation = new long[64][];
 public long[][] occupancyAttackSet = new long[64][];
 
@@ -66,17 +99,45 @@ public int[] magicShiftsBishop =     new int[64];
 public long[][] magicMovesRook =     new long[64][];
 public long[][] magicMovesBishop =   new long[64][];
 
+public long[] RookMaskOnSquare =     new long[64];
+public long[] BishopMaskOnSquare =   new long[64];
+
 public Constants(){
     
-    BITSQUARES[0] = 1;    
-
+    //BITSQUARES is a 64 element array of longs representing each square on the board
+    BITSQUARES[0] = 1;
     for(int i =  1; i < 64; i++){
         BITSQUARES[i] = BITSQUARES[i-1] << 1;
     }
-
+    
+    /*KingMoves and KnightMoves are 64-element long arrays which represent the
+    possible destination squares for kings and knights at each square on the board.
+    They are built by initially defining the 35th square and bitshifting in either
+    direction to define squares 34 --> 0 and 36 --> 63. Then the wrap-around 
+    overflow must be masked out for the edge files in the following for loop.
+    */
     KingMoves[35] = 0x1c141c000000L;
+    /*
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 1 1 1 0 0 0
+    0 0 1 0 1 0 0 0
+    0 0 1 1 1 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    */
     KnightMoves[35] = 0x14220022140000L;
-
+    /*
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 1 0 1 0 0 0
+    0 1 0 0 0 1 0 0
+    0 0 0 0 0 0 0 0
+    0 1 0 0 0 1 0 0
+    0 0 1 0 1 0 0 0
+    0 0 0 0 0 0 0 0
+    */
     for(int i = 36; i<64; i++){
         KingMoves[i] = KingMoves[i-1] << 1;
         KnightMoves[i] = KnightMoves[i-1] << 1;
@@ -86,7 +147,8 @@ public Constants(){
         KingMoves[j] = KingMoves[j+1] >> 1;
         KnightMoves[j] = KnightMoves[j+1] >> 1;
     }
-
+    
+    //Mask out wrap-around overflows as a result of the bitshifting
     for(int k = 0; k<64; k++){
         if( k%8 == 7){ KingMoves[k] &= ~(FILE_A);}
         if( k%8 == 0){ KingMoves[k] &= ~(FILE_H);}
@@ -96,29 +158,56 @@ public Constants(){
         if( k%8 == 1){ KnightMoves[k] &= ~(FILE_H);}
     }
     
+    /*
+    The following code builds the RookMaskOnSquare and BishopMaskOnSquare arrays.
+    These are 64-element long arrays which represent the destination squares for
+    rooks and bishops assuming an empty board. 
     
+    For example, for a rook on square 35:
+        0 0 0 0 0 0 0 0
+        0 0 0 1 0 0 0 0
+        0 0 0 1 0 0 0 0
+        0 0 0 1 0 0 0 0
+        0 1 1 0 1 1 1 0
+        0 0 0 1 0 0 0 0
+        0 0 0 1 0 0 0 0
+        0 0 0 0 0 0 0 0
+    
+    The boundary squares are not set within the mask because these will always
+    be blocking squares for sliding piece movement, they do not need to be checked
+    for piece occupancy when determining the attack sets.
+    
+    These arrays will be used in the three functions which build the magic
+    bitboards for sliding move piece generation.
+    */
+    
+    //ray directions for rooks and bishops
     int[] rookDelta = new int[]{-1, 1, -8, 8};
     int[] bishopDelta = new int[]{-9, 7, 9, -7};
     
+    //terminating files/ranks for the respective rays
     long[] rookTerminator = new long[]{FILE_A, FILE_H, RANK_1, RANK_8};
     long[] bishopTerminator = new long[]{RANK_1, FILE_A, RANK_8, FILE_H};
     
     int square;
-    for(int i = 0; i < 64; i++){
+    for(int i = 0; i < 64; i++){ //for each square
         RookMaskOnSquare[i] = 0;
         
-        for(int j = 0; j < 4; j++){
-            square = i;
+        for(int j = 0; j < 4; j++){ //for each ray direction
+            square = i; //start at the origin square
             while((BITSQUARES[square] & rookTerminator[j]) == 0){
                 RookMaskOnSquare[i] |= BITSQUARES[square];
                 square += rookDelta[j];
             }
             square = i;
+            //diagonal rays can be terminated by either a file or rank, so both conditions must be checked
             while((BITSQUARES[square] & bishopTerminator[j]) == 0 && (BITSQUARES[square] & bishopTerminator[(j+1)%4]) == 0){
                 BishopMaskOnSquare[i] |= BITSQUARES[square];
                 square +=  bishopDelta[j];
             }
         }
+        
+        //remove the origin square since it would not be a destination square
         RookMaskOnSquare[i] ^= BITSQUARES[i];
         BishopMaskOnSquare[i] ^= BITSQUARES[i];   
     }
@@ -136,69 +225,74 @@ generateMoveDatabase(false);
 
 }
 
-public long getRay(int A, int B){
+
+/**
+ * Generates every occupancy variation for a particular square for both bishops
+ * and rooks, and then generates each corresponding attack set for every
+ * occupancy variation.
+ * 
+ * For example, the following are two possible occupancy variations for a rook
+ * on square 2:
+ * 
+ * Variation 1 (Rook - square 2)   
+    0 0 1 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 1 R 0 1 0 1 0
+
+*   Variation 2 (Rook - square 2)
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    1 1 R 0 1 0 0 0
     
-    long ray = 0;
+    However, both these occupancy variations produce the same resulting attack
+    set for rooks, which is shown below
     
-    if( A%8 == B%8 ){ //Same Vertical column
-        if(A > B){
-            while(B+8 < A){
-                ray |= 1L << (B+8);
-                B+=8;
-            }
-        }
-        else{
-            while(B-8 > A){
-                ray |= 1L << (B-8);
-                B-=8;
-            }
-        }
-    }
-    else if( (int)(A - A%8)/8 == (int)(B - B%8)/8 ){ //Same Row
-        if(A > B){
-            while(B+1 < A){
-                ray |= 1L << (B+1);
-                B++;
-            }
-        }
-        else{
-            while(B-1 > A){
-                ray |= 1L << (B-1);
-                B--;
-            }
-        }    
-    }
-    else if( A > B ){
-        if(A%8 > B%8){
-            while(B+9 < A){
-                ray |= 1L << (B+9);
-                B+=9;
-            }
-        }
-        else{
-            while(B+7 < A){
-                ray |= 1L << (B+7);
-                B+=7;
-            }            
-        }
-    }
-    else{
-        if(A%8 > B%8){
-            while(B-7 > A){
-                ray |= 1L << (B-7);
-                B-=7;
-            }
-        }
-        else{
-            while(B-9 > A){
-                ray |= 1L << (B-9);
-                B-=9;
-            }
-        }
-    }
+    Attack set (Rook - square 2)
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0
+    0 1 R 0 1 0 0 0
     
-    return ray;
-}
+    The purpose of the attack set is to define the boundaries of the rays for the
+    sliding piece in every direction based off the positions of all the other
+    pieces on the board. Once this is determined, the blocking pieces which define
+    the boundaries of the attack set just need to be checked to find out if they
+    are capturable or not, or in other words if they are enemy pieces or friendly
+    pieces.
+ * 
+ * The number of occupancy variations for a particular piece on a square is just
+ * the total number of different permutations of pieces existing on the possible
+ * destination squares for a piece on a square. This is simply 2^(number of 
+ * destination squares on the mask). For example, for the rook on Square 2, the
+ * destination square mask looks like this:
+ *  0 0 0 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 1 R 1 1 1 1 0
+ * 
+ * Since this mask has 11 bits set in it, the amount of different occupancy
+ * variations for this square will be 2^11.
+ * 
+ * @param isRook true if rook; false if bishop
+ */
 @SuppressWarnings("empty-statement")
 private void generateOccupancyVariations(boolean isRook){
     
