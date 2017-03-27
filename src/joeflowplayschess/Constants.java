@@ -291,7 +291,7 @@ generateMoveDatabase(false);
  * Since this mask has 11 bits set in it, the amount of different occupancy
  * variations for this square will be 2^11.
  * 
- * @param isRook true if rook; false if bishop
+ * @param isRook    true if rook; false if bishop
  */
 @SuppressWarnings("empty-statement")
 private void generateOccupancyVariations(boolean isRook){
@@ -304,10 +304,13 @@ private void generateOccupancyVariations(boolean isRook){
     
     for(square = 0; square < 64; square++){
         
+        /*mask is a bitboard representing the possible destination squares
+        for the rook or bishop on a particular square
+        */
         mask = isRook? RookMaskOnSquare[square] : BishopMaskOnSquare[square];
         setBitsInMask = getIndexOfSetBits(mask);
-        bitCount[square] = Long.bitCount(mask);
-        variationCount = (int)(1L << bitCount[square]);
+        bitCount[square] = Long.bitCount(mask); //Number of set bits in the mask
+        variationCount = (int)(1L << bitCount[square]); //2^bitCount[square]
         
         occupancyVariation[square] = new long[variationCount];
         occupancyAttackSet[square] = new long[variationCount];
@@ -316,13 +319,21 @@ private void generateOccupancyVariations(boolean isRook){
             
             occupancyVariation[square][i] = 0;
             
+            /*Map the bits set in the index (0 - 2^N-1) to the bits set in the
+            mask in order to loop through every occupancy variation possible
+            */
             setBitsInIndex = getIndexOfSetBits(i);
-            
             for(j = 0; j < setBitsInIndex.length; j++){
                 
                 occupancyVariation[square][i] |= (1L << setBitsInMask[setBitsInIndex[j]]);
             }
             
+            /*Build the corresponding Attack Set for the particular occupancy variation
+            Essentially, loop through in each of the 4 ray directions until you hit a set bit
+            or a border on the board. If it is not a border of the board, then set the bit in
+            the square that the loop was terminated on. This will be the bounding square that
+            the piece is able to move to.
+            */            
             if(isRook){
             
                 for(j = square+8; j<64 && (occupancyVariation[square][i] & (1L << j)) == 0; j+=8);
@@ -338,6 +349,8 @@ private void generateOccupancyVariations(boolean isRook){
                 if ((j%8 + 8)%8!=7) occupancyAttackSet[square][i] |= (1L << j);
                   
             }
+            //For bishops, the diagonal rays can be terminated by either of two borders, so two 
+            //boundary conditions need to be checked
             else{
             
                 for(j = square+9; j%8!=0 && j<64 && (occupancyVariation[square][i] & (1L << j)) == 0; j+=9);
@@ -357,6 +370,18 @@ private void generateOccupancyVariations(boolean isRook){
     }
 }
 
+/**
+ * Magic Numbers are generated using a perfect hashing technique. Every occupancy
+ * variation is mapped to its corresponding attack set through operations involving
+ * a "magic number" which is specific to each square. This function searches for
+ * and stores the magic numbers which will be used during move generation for this
+ * purpose. Given the occupancy of pieces on the board, perform the operations using
+ * the magic number to instantly return the attack set that represents the possible
+ * squares the sliding piece can move to.
+ * 
+ * 
+ * @param isRook    true if rook; false if bishop
+ */
 private void generateMagicNumbers(boolean isRook){
     
     int i, j, square, variationCount;
