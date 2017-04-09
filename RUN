@@ -1,0 +1,3 @@
+cd workspace
+cd Joe-Flow-Plays-Chess
+java -jar jfpc.jar

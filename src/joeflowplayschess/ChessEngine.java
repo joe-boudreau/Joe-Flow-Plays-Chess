@@ -9,44 +9,58 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * The ChessEngine class computes all the decision making for the engine, which plays
+ * as black exclusively. 
+ * 
+ * The architecture is based on bit-board game representation, which
+ *  allows for rapid computations of game information and efficient memory usage.
+ * The move generation uses fairly common techniques, including magic-bitboards
+ *  for the move generation of sliding pieces (rooks, bishops, queen). Move
+ *  selection is made using a recursive search through the move tree with alpha
+ *  beta pruning techniques. The board evaluation is a minimax score based 
+ *  function which uses a material score calculation as the primary factor for
+ *  board advantage, with heuristic evaluation factors as well if there is no
+ *  material advantage found. Factors such as pawn structure, centre control,
+ *  piece advancement, and piece mobility are looked at.
+ * 
+ * 
+ */
 public class ChessEngine {
-    
-private int WHITE = 0;
-private int BLACK = 1;    
-    
-private int wPawn = 0;
-private int wKnight = 1;
-private int wBishop = 2;
-private int wRook = 3;
-private int wQueen = 4;
-private int wKing = 5;
 
-private int bPawn = 6;
-private int bKnight = 7;
-private int bBishop = 8;
-private int bRook = 9;
-private int bQueen = 10;
-private int bKing = 11;
-
-private int[] king = new int[]{wKing, bKing};
-private int[] initKingPos = new int[]{4, 60};
-
-
-private int empty = 0xE;
-
-private int searchDepth = 4;
-
-private byte gameFlags;
-
-private long[] gamePieceBoards;
-private long[] BITSQUARES;
-
-private int[] gameBoard;
-
-private int nodeCount;
-
-Constants Constants = new Constants();
-Random r = new Random();
+	//declarations
+	private byte 	gameFlags;
+	private long[] 	gamePieceBoards;
+	private long[] 	BITSQUARES;
+	private int[] 	gameBoard;
+	private int 	nodeCount;
+	
+	//declarations + initializations
+	private int WHITE = 			0;
+	private int BLACK =				1;    
+	    
+	private int wPawn = 			0;
+	private int wKnight = 			1;
+	private int wBishop = 			2;
+	private int wRook = 			3;
+	private int wQueen = 			4;
+	private int wKing = 			5;
+	
+	private int bPawn = 			6;
+	private int bKnight = 			7;
+	private int bBishop = 			8;
+	private int bRook = 			9;
+	private int bQueen = 			10;
+	private int bKing = 			11;
+	
+	private int[] king = 			new int[]{wKing, bKing};
+	private int[] initKingPos =		new int[]{4, 60};
+	
+	private int empty = 			0xE;
+	private int searchDepth = 		4;
+	
+	Constants Constants = 			new Constants();
+	Random r = 						new Random();
     
 public ChessEngine(){
 
@@ -65,83 +79,115 @@ bit 7: White Queen Side Castle possible (Rook on square 0)
 bit 8: White King Side Castle possible  (Rook on square 7)
   
 */
-gameFlags = (byte) 0b11110000;
+gameFlags = (byte) 0b11110000; //Initialize with all castling rights
 
-gamePieceBoards = new long[12];
-gameBoard = new int[64];
-
-for(int sq = 0; sq < 64; sq++){
-    
-    //White Pieces
-    if(sq == 0 || sq == 7){
-        gamePieceBoards[wRook] = gamePieceBoards[wRook] | BITSQUARES[sq];
-        gameBoard[sq] = wRook;
-    }
-    if(sq == 1 || sq == 6){
-        gamePieceBoards[wKnight] = gamePieceBoards[wKnight] | BITSQUARES[sq];
-        gameBoard[sq] = wKnight;
-    }
-    if(sq == 2 || sq == 5){
-        gamePieceBoards[wBishop] = gamePieceBoards[wBishop] | BITSQUARES[sq];
-        gameBoard[sq] = wBishop;
-    }
-    if(sq == 3){
-        gamePieceBoards[wQueen] = gamePieceBoards[wQueen] | BITSQUARES[sq];
-        gameBoard[sq] = wQueen;
-    }
-    if(sq == 4){
-        gamePieceBoards[wKing] = gamePieceBoards[wKing] | BITSQUARES[sq];
-        gameBoard[sq] = wKing;
-    }
-    if(sq > 7 && sq < 16){
-        gamePieceBoards[wPawn] = gamePieceBoards[wPawn] | BITSQUARES[sq];
-        gameBoard[sq] = wPawn;
-    }
-    
-    if(sq > 15 && sq < 48){
-        gameBoard[sq] = empty;
-    }
-    //Black pieces
-    if(sq == 56 || sq == 63){
-        gamePieceBoards[bRook] = gamePieceBoards[bRook] | BITSQUARES[sq];
-        gameBoard[sq] = bRook;
-    }
-    if(sq == 57 || sq == 62){
-        gamePieceBoards[bKnight] = gamePieceBoards[bKnight] | BITSQUARES[sq];
-        gameBoard[sq] = bKnight;
-    }
-    if(sq == 58 || sq == 61){
-        gamePieceBoards[bBishop] = gamePieceBoards[bBishop] | BITSQUARES[sq];
-        gameBoard[sq] = bBishop;
-    }
-    if(sq == 59){
-        gamePieceBoards[bQueen] = gamePieceBoards[bQueen] | BITSQUARES[sq];
-        gameBoard[sq] = bQueen;
-    }
-    if(sq == 60){
-        gamePieceBoards[bKing] = gamePieceBoards[bKing] | BITSQUARES[sq];
-        gameBoard[sq] = bKing;
-    }
-    if(sq > 47 && sq < 56){
-        gamePieceBoards[bPawn] = gamePieceBoards[bPawn] | BITSQUARES[sq];
-        gameBoard[sq] = bPawn;
-    }
-}
+setUpInitialBoard(); //set up board for beginning of game
 
 }
 
+/**
+ * Utility function to set up the game board with the initial positions of all the pieces.
+ * 
+ * Game board information is stored in two distinct structures:
+ * 	1. An array of 12 longs, that represent the bitboards for the 12 different types
+ * 	of chess pieces found on a board
+ * 
+ *  2. An array of 64 integers, that represent the 64 squares on the board and the values
+ *  correspond to the piece types located on each square, if any. The values are based off the
+ *  fields declared in the class declarations. Note that an empty square is represented by the
+ *  number 14, or E in hexidecimal (for empty)
+ */
+public void setUpInitialBoard(){
+	
+	gamePieceBoards = new long[12];
+	gameBoard = new int[64];
+	
+	for(int sq = 0; sq < 64; sq++){
+	    
+	    //White Pieces
+	    if(sq == 0 || sq == 7){
+	        gamePieceBoards[wRook] = gamePieceBoards[wRook] | BITSQUARES[sq];
+	        gameBoard[sq] = wRook;
+	    }
+	    if(sq == 1 || sq == 6){
+	        gamePieceBoards[wKnight] = gamePieceBoards[wKnight] | BITSQUARES[sq];
+	        gameBoard[sq] = wKnight;
+	    }
+	    if(sq == 2 || sq == 5){
+	        gamePieceBoards[wBishop] = gamePieceBoards[wBishop] | BITSQUARES[sq];
+	        gameBoard[sq] = wBishop;
+	    }
+	    if(sq == 3){
+	        gamePieceBoards[wQueen] = gamePieceBoards[wQueen] | BITSQUARES[sq];
+	        gameBoard[sq] = wQueen;
+	    }
+	    if(sq == 4){
+	        gamePieceBoards[wKing] = gamePieceBoards[wKing] | BITSQUARES[sq];
+	        gameBoard[sq] = wKing;
+	    }
+	    if(sq > 7 && sq < 16){
+	        gamePieceBoards[wPawn] = gamePieceBoards[wPawn] | BITSQUARES[sq];
+	        gameBoard[sq] = wPawn;
+	    }
+	    
+	    if(sq > 15 && sq < 48){
+	        gameBoard[sq] = empty;
+	    }
+	    
+	    //Black pieces
+	    if(sq == 56 || sq == 63){
+	        gamePieceBoards[bRook] = gamePieceBoards[bRook] | BITSQUARES[sq];
+	        gameBoard[sq] = bRook;
+	    }
+	    if(sq == 57 || sq == 62){
+	        gamePieceBoards[bKnight] = gamePieceBoards[bKnight] | BITSQUARES[sq];
+	        gameBoard[sq] = bKnight;
+	    }
+	    if(sq == 58 || sq == 61){
+	        gamePieceBoards[bBishop] = gamePieceBoards[bBishop] | BITSQUARES[sq];
+	        gameBoard[sq] = bBishop;
+	    }
+	    if(sq == 59){
+	        gamePieceBoards[bQueen] = gamePieceBoards[bQueen] | BITSQUARES[sq];
+	        gameBoard[sq] = bQueen;
+	    }
+	    if(sq == 60){
+	        gamePieceBoards[bKing] = gamePieceBoards[bKing] | BITSQUARES[sq];
+	        gameBoard[sq] = bKing;
+	    }
+	    if(sq > 47 && sq < 56){
+	        gamePieceBoards[bPawn] = gamePieceBoards[bPawn] | BITSQUARES[sq];
+	        gameBoard[sq] = bPawn;
+	    }
+	}
+}
+
+//--Decision Making Logic----------------------------------------------------------------------
+
+/**
+ * Top-level decision controller which initiates the move selection process for black.
+ * 
+ * This function is called by the main JoeFlowPlaysChess class when it is black's turn.
+ * The function returns an int[] array which is the standard 32 bit move encoding, split into
+ * a 5 or 6 element array. A standard move will return a 5 element array, which is just the move
+ * information. If the move results in black winning, or a black stalemate, then the array returned
+ * will have 6 elements.  The first 5 elements of the array are the move information, and the last 
+ * element will be a flag signifying a black checkmate (0) or a stalemate caused by black's move (-1)
+ * 
+ * @param colour	Always BLACK, which is 1
+ * @return 			array of ints containing move and game information
+ */
 public int[] selectMove(int colour){
-    
+
 int[] bestMove, moveInfo;
 
 nodeCount = 0;
 
 bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-System.out.println("Nodes traversed: " + nodeCount);
-
 moveInfo = parseMove(bestMove[0]);
 
+//Special cases
 if(bestMove[0] == -1){
     //White wins or stalemate
     return bestMove;
@@ -156,8 +202,11 @@ else if(bestMove[1] == (searchDepth-1)*-1000000){
     return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], -1};
 }
 
+//Update game information now that the move has been completed
 gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
 
+//Print some relevant infomation to the console
+System.out.println("Nodes traversed: " + nodeCount);
 System.out.println("Best Move Score For Black:");
 System.out.println(bestMove[1]);
 System.out.println("Game Flags:");
@@ -167,6 +216,16 @@ return moveInfo;
 
 }
 
+/**
+ * Move Selection function which uses recursion to search the possible move space to a specified depth
+ * 
+ * This is the primary decision making function for the engine. It calls the generateAllMoves() function
+ * to generate a list of every possible move, and then for each possible move a copy of the game state is 
+ * updated with the results of the move, and then this function is called again from the perspective of the
+ * opposing player and the process is repeated. This is done until a specified depth is reached (determined 
+ * by the value of class field 'searchdepth' and then the board at that state is evaluated using an evaluation
+ * function. The results of the evaluation 
+ */
 private int[] chooseBestMove(int[] currBoard, long[] pieceBoards, byte flags, int colour, int depth, int alpha, int beta){
 
 int i;
@@ -300,6 +359,13 @@ return overallScore;
 
 }
 
+//---------------------------------------------------------------------------------------------
+
+
+
+
+//-- Board Evaluation Heuristics---------------------------------------------------------------
+
 public int advancementScore(long[] currPieceBoards, int colour){
     
     int[] rankScore = new int[8];
@@ -382,6 +448,15 @@ public int pawnStructureScore(long pawns){
     
     return -1*(dubs+isos);
 }
+
+//---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 public void printMovesAsStrings(int[] moves){
     

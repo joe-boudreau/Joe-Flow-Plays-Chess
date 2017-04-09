@@ -235,58 +235,58 @@ generateMoveDatabase(false);
  * on square 2:
  * 
  * Variation 1 (Rook - square 2)   
-    0 0 1 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 1 R 0 1 0 1 0
-
-*   Variation 2 (Rook - square 2)
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    1 1 R 0 1 0 0 0
-    
-    However, both these occupancy variations produce the same resulting attack
-    set for rooks, which is shown below
-    
-    Attack set (Rook - square 2)
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0
-    0 1 R 0 1 0 0 0
-    
-    The purpose of the attack set is to define the boundaries of the rays for the
-    sliding piece in every direction based off the positions of all the other
-    pieces on the board. Once this is determined, the blocking pieces which define
-    the boundaries of the attack set just need to be checked to find out if they
-    are capturable or not, or in other words if they are enemy pieces or friendly
-    pieces.
+ *   0 0 1 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 1 R 0 1 0 1 0
+ *
+ *   Variation 2 (Rook - square 2)
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   1 1 R 0 1 0 0 0
+ *   
+ *   However, both these occupancy variations produce the same resulting attack
+ *   set for rooks, which is shown below
+ *   
+ *   Attack set (Rook - square 2)
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 1 R 0 1 0 0 0
+ *   
+ *   The purpose of the attack set is to define the boundaries of the rays for the
+ *   sliding piece in every direction based off the positions of all the other
+ *   pieces on the board. Once this is determined, the blocking pieces which define
+ *   the boundaries of the attack set just need to be checked to find out if they
+ *   are capturable or not, or in other words if they are enemy pieces or friendly
+ *   pieces.
  * 
  * The number of occupancy variations for a particular piece on a square is just
  * the total number of different permutations of pieces existing on the possible
  * destination squares for a piece on a square. This is simply 2^(number of 
  * destination squares on the mask). For example, for the rook on Square 2, the
  * destination square mask looks like this:
- *  0 0 0 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 0 1 0 0 0 0 0
-    0 1 R 1 1 1 1 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 1 R 1 1 1 1 0
  * 
  * Since this mask has 11 bits set in it, the amount of different occupancy
  * variations for this square will be 2^11.
@@ -379,6 +379,24 @@ private void generateOccupancyVariations(boolean isRook){
  * the magic number to instantly return the attack set that represents the possible
  * squares the sliding piece can move to.
  * 
+ * There is one magic number for each square and sliding piece type combination (rook
+ * or bishop), which means that in total there are 2 x 64 = 128 magic numbers that need
+ * to be computed.
+ * 
+ * For each of these piece type and square combinations, there is a magic number, M, such
+ * that the following conditions hold:
+ *
+ * For every occupancy variation (v) and corresponding attack set (A) pair, [v, A], which
+ * were computed in the function 'generateoccupancyVariations()' above, the following holds:
+ * 
+ *
+ * F(v, M) --> I
+ * G(I) --> A
+ * 
+ * where F is a function that generates an index, I, and G is an array which returns the correct
+ * attack set A. Note that since multiple occupancy variations can map to the same attack set A,
+ * then if F returns the same I for two different variations v and v', this is acceptable as long
+ * as both v and v' correspond to the same attack set A.
  * 
  * @param isRook    true if rook; false if bishop
  */
@@ -387,44 +405,77 @@ private void generateMagicNumbers(boolean isRook){
     int i, j, square, variationCount;
     boolean fail;
     
-    Random r = new Random();
+    Random r = new Random(); //initialize the random number generator
     long magicNumber = 0;
     int index;
     
     for (square = 0; square < 64; square++){
         
-        int bitCount = Long.bitCount(isRook ? RookMaskOnSquare[square] : BishopMaskOnSquare[square]);
-        variationCount = (int)(1L << bitCount);
+        int bitCount = Long.bitCount(isRook ? RookMaskOnSquare[square] : BishopMaskOnSquare[square]); //Number of bits set in the blank mask
+        variationCount = (int)(1L << bitCount); //Number of variations to look at (2^(Number of bits set))
         long usedBy[] = new long[variationCount];
         
         do{
             
-            magicNumber = r.nextLong() & r.nextLong() & r.nextLong();
+            magicNumber = r.nextLong() & r.nextLong() & r.nextLong(); //magic numbers usually are longs with not many bits set
             
             for(j = 0; j < variationCount; j++) usedBy[j] = 0;
             
             for(i = 0, fail = false; i < variationCount && !fail; i++){
                 
-                index = (int)((occupancyVariation[square][i] * magicNumber) >>> (64 - bitCount));
-                fail = usedBy[index] != 0 && usedBy[index] != occupancyAttackSet[square][i];
-                
-                usedBy[index] = occupancyAttackSet[square][i];
+				//right shift enough so that the index is no larger than the variation count (2 ^ bitCount)
+				//cast to a 32-bit int. No movement mask will ever have more than 15 bits set, so this is a safe operation                
+				index = (int)((occupancyVariation[square][i] * magicNumber) >>> (64 - bitCount));
+				
+				//set fail to true if the index already points to an attack set and that attack set does not match the current occupancy variation		
+	            fail = usedBy[index] != 0 && usedBy[index] != occupancyAttackSet[square][i];
+	            //Add the correct attack set to the index position generated by the current occupancy variation
+	            //This won't matter if the previous fail check evaluated to true, but the loop won't break until the fail condition is checked in the for loop statement
+	            usedBy[index] = occupancyAttackSet[square][i];
             }
         }
-        while(fail);
+        while(fail); //if fail is still false, then all the variations must have been added to the usedBy array successfully with no undesirable collisions, therefore the magic number is found
         
         
         if(isRook){
-            magicNumberRook[square] = magicNumber;
-            magicShiftsRook[square] = 64 - bitCount;
+            magicNumberRook[square] = magicNumber; 		//record the magic number for that square
+            magicShiftsRook[square] = 64 - bitCount; 	//the shifts is directly related to the square and how many bits are set in the blank mask
         }
         else{
-            magicNumberBishop[square] = magicNumber;
-            magicShiftsBishop[square] = 64 - bitCount;
+            magicNumberBishop[square] = magicNumber;	//record the magic number for that square
+            magicShiftsBishop[square] = 64 - bitCount;	//the shifts is directly related to the square and how many bits are set in the blank mask
         }
     }
 }
 
+/**
+ * Generates the valid move bitboard for every square and occupancy variation and stores it at the magic index of the variation. Main difference between
+ * a move bitboard and an attack set is that the edge ranks and files are set to 1 to indicate they are valid moves. For example,
+ * 
+ *   Attack set (Rook - square 2)
+ *   0 0 0 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 1 R 0 1 0 0 0
+ *   
+ *   Equivalent Move Bitboard (Rook - square 2)
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 1 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   0 0 0 0 0 0 0 0
+ *   1 1 R 0 1 0 0 0
+ *   
+ *   In the game logic, the returned move bitboard will be ANDed with the inverse of all friendly pieces on the board (non-capturable pieces) and that will
+ *   return the possible target squares for the sliding piece and take care of the edge squares.
+ *  
+ */
 private void generateMoveDatabase(boolean isRook){
     
     long validMoves;
@@ -451,19 +502,19 @@ private void generateMoveDatabase(boolean isRook){
                 
                 magicIndex = (int)((occupancyVariation[square][i] * magicNumberRook[square]) >>> magicShiftsRook[square]);
                 
-                for(j = square+8; j < 64; j+=8){
-                    validMoves |= (1L << j);
-                    if((occupancyVariation[square][i] & (1L << j)) != 0) break;
+                for(j = square+8; j < 64; j+=8){ //move up
+                    validMoves |= (1L << j); 
+                    if((occupancyVariation[square][i] & (1L << j)) != 0) break; //if square occupied, end there
                 } 
-                for(j = square-8; j > -1; j-=8){
+                for(j = square-8; j > -1; j-=8){ //move down
                     validMoves |= (1L << j);
                     if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                 }
-                for(j = square+1; j%8 != 0; j++){
+                for(j = square+1; j%8 != 0; j++){ //move right
                     validMoves |= (1L << j);
                     if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                 }
-                for(j = square-1; (j%8 + 8)%8 != 7; j--){
+                for(j = square-1; (j%8 + 8)%8 != 7; j--){ //move left
                     validMoves |= (1L << j);
                     if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                 }
@@ -474,19 +525,19 @@ private void generateMoveDatabase(boolean isRook){
                 
                 magicIndex = (int)((occupancyVariation[square][i] * magicNumberBishop[square]) >>> magicShiftsBishop[square]);
                 
-                for(j = square+9; j < 64 && j%8 != 0; j+=9){
+                for(j = square+9; j < 64 && j%8 != 0; j+=9){ //move up and right
                     validMoves |= (1L << j);
                     if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                 }
-                for(j = square-9; j > -1 && (j%8 + 8)%8 != 7; j-=9){
+                for(j = square-9; j > -1 && (j%8 + 8)%8 != 7; j-=9){ //move down and left
                     validMoves |= (1L << j);
                     if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                 }
-                for(j = square+7; j < 64 && j%8 != 7; j+=7){
+                for(j = square+7; j < 64 && j%8 != 7; j+=7){ //move up and left
                     validMoves |= (1L << j);
                     if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                 }
-                for(j = square-7; j > -1 && (j%8 + 8)%8 != 0; j-=7){
+                for(j = square-7; j > -1 && (j%8 + 8)%8 != 0; j-=7){ //move down and right
                     validMoves |= (1L << j);
                     if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                 }
@@ -498,12 +549,18 @@ private void generateMoveDatabase(boolean isRook){
     }
 }
 
+/**
+ * Returns an array representing the position of every bit set in a long, from 0 (LSB) to 63 (MSB)
+ * 
+ * @param l	long to compute the set bits of
+ * @return 	an int[] with the position of every set bit
+ */
 private int[] getIndexOfSetBits(long l){
     ArrayList<Integer> setBits = new ArrayList();
     
     while(l > 0){
-        setBits.add(Long.numberOfTrailingZeros(l));
-        l &= l-1;
+        setBits.add(Long.numberOfTrailingZeros(l)); //get the leading one
+        l &= l-1; 									//mask out the leading one
     }
     
     int[] sBi = new int[setBits.size()];

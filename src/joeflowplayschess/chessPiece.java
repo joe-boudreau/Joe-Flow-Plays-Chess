@@ -37,6 +37,11 @@ public class chessPiece
     type =      typePiece;
     colour =    colourPiece;
     hasMoved =  false;
+	
+    System.out.println(getClass().getClassLoader().getResource("resources/" 
+                                + (colourPiece == 0 ? "w" : "b") 
+                                + typePiece + ".png"));
+	
       
     setIcon(new ImageIcon(getClass().getResource("/resources/" 
                                 + (colourPiece == 0 ? "w" : "b") 
