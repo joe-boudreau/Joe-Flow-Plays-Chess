@@ -22,16 +22,16 @@ package joeflowplayschess;
 |   two java classes.
 |   
 |   The other main file, ChessEngine.java, is the engine which decides the moves
-	|   for black. The architecture is based on bit-board game representation, which
-	|   allows for rapid computations of game information and efficient memory usage.
-	|   The move generation uses fairly common techniques, including magic-bitboards
-	|   for the move generation of sliding pieces (rooks, bishops, queen). Move
-	|   selection is made using a recursive search through the move tree with alpha
-	|   beta pruning techniques. The board evaluation is a minimax score based 
-	|   function which uses a material score calculation as the primary factor for
-	|   board advantage, with heuristic evaluation factors as well if there is no
-	|   material advantage found. Factors such as pawn structure, centre control,
-	|   piece advancement, and piece mobility are looked at.
+|   for black. The architecture is based on bit-board game representation, which
+|   allows for rapid computations of game information and efficient memory usage.
+|   The move generation uses fairly common techniques, including magic-bitboards
+|   for the move generation of sliding pieces (rooks, bishops, queen). Move
+|   selection is made using a recursive search through the move tree with alpha
+|   beta pruning techniques. The board evaluation is a minimax score based 
+|   function which uses a material score calculation as the primary factor for
+|   board advantage, with heuristic evaluation factors as well if there is no
+|   material advantage found. Factors such as pawn structure, centre control,
+|   piece advancement, and piece mobility are looked at.
 |   
 |   The main goal of this project was to make a chess engine smart enough to beat
 |   its creator. This goal was realized.   
