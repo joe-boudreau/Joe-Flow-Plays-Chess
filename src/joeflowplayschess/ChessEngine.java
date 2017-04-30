@@ -316,6 +316,7 @@ for(i = 0; i < moves.length; i++){
                 break; //Beta or alpha cut-off
         }
     }
+    
     legal = true;
 }
 

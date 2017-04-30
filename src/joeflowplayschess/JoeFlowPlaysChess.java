@@ -381,6 +381,8 @@ public class JoeFlowPlaysChess extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
               
+                int[] legalMoves;
+                
                 if(!confirmNeeded && whiteTurn){  
                     screenX = e.getXOnScreen();
                     screenY = e.getYOnScreen();
@@ -404,12 +406,33 @@ public class JoeFlowPlaysChess extends JFrame {
                       validSquares = generateValidMoves(currPiece);
 
                     }
-
+                    
+                    legalMoves = JoeFlow.whiteLegalMoves();
+                    int index, fromSq;
+                    
+                    int clickedSq = rowIndex*8 + colIndex;
+                    
+                    for(int legalMove : legalMoves){
+                        
+                    	index = (legalMove << 16) >>> 24;
+                    	fromSq = (legalMove << 8) >>> 24;
+                    	if(fromSq == clickedSq){
+                    		boardSquares[(int)(index-index%8)/8][index%8].lightUp(0);
+                    	}
+                    }
                 }
+
+                
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                
+                for(int i = 0; i < 8; i++){
+                	for(int j = 0;j < 8; j++){
+                		boardSquares[i][j].lightDown();
+                	}
+                }
                 
                 if(currPiece != null  && currPiece.getColour() == WHITE && whiteTurn){
                     newPos = returnNewLocation(currPiece); //adjusts and locks piece to a particular square
