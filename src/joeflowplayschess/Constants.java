@@ -47,7 +47,6 @@ import java.util.Random;
 
 public class Constants {
 
-public long[] BITSQUARES =           new long[64]; //these will be the same as just doing (1L >> index of square) but I didn't know that earlier when building this class. oh well. 
 public long ALL_SET =                0xffffffffffffffffL; //all 64 squares
 
 public long RANK_1 =                 0xffL;
@@ -104,19 +103,15 @@ public long[][] magicMovesBishop =   new long[64][];
 public long[] RookMaskOnSquare =     new long[64];
 public long[] BishopMaskOnSquare =   new long[64];
 
+public int gameFlagEnPassantMask = 0b00001110;
+
 public Constants(){
-    
-    //BITSQUARES is a 64 element array of longs representing each square on the board
-    BITSQUARES[0] = 1;
-    for(int i =  1; i < 64; i++){
-        BITSQUARES[i] = BITSQUARES[i-1] << 1;
-    }
     
     /*KingMoves and KnightMoves are 64-element long arrays which represent the
     possible destination squares for kings and knights at each square on the board.
     They are built by initially defining the 35th square and bitshifting in either
     direction to define squares 34 --> 0 and 36 --> 63. Then the wrap-around 
-    overflow must be masked out for the edge files in the following for loop.
+    overflow must be masked out for the edge filFes in the following for loop.
     */
     KingMoves[35] = 0x1c141c000000L;
     /*
@@ -196,21 +191,21 @@ public Constants(){
         
         for(int j = 0; j < 4; j++){ //for each ray direction
             square = i; //start at the origin square
-            while((BITSQUARES[square] & rookTerminator[j]) == 0){
-                RookMaskOnSquare[i] |= BITSQUARES[square];
+            while(((1L << square) & rookTerminator[j]) == 0){
+                RookMaskOnSquare[i] |= (1L << square);
                 square += rookDelta[j];
             }
             square = i;
             //diagonal rays can be terminated by either a file or rank, so both conditions must be checked
-            while((BITSQUARES[square] & bishopTerminator[j]) == 0 && (BITSQUARES[square] & bishopTerminator[(j+1)%4]) == 0){
-                BishopMaskOnSquare[i] |= BITSQUARES[square];
+            while(((1L << square) & bishopTerminator[j]) == 0 && ((1L << square) & bishopTerminator[(j+1)%4]) == 0){
+                BishopMaskOnSquare[i] |= (1L << square);
                 square +=  bishopDelta[j];
             }
         }
         
         //remove the origin square since it would not be a destination square
-        RookMaskOnSquare[i] ^= BITSQUARES[i];
-        BishopMaskOnSquare[i] ^= BITSQUARES[i];
+        RookMaskOnSquare[i] ^= (1L << i);
+        BishopMaskOnSquare[i] ^= (1L << i);
 
     }
 

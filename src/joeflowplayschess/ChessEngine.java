@@ -5,9 +5,14 @@
  */
 package joeflowplayschess;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * The ChessEngine class computes all the decision making for the engine, which plays
@@ -24,16 +29,14 @@ import java.util.Random;
  *  material advantage found. Factors such as pawn structure, centre control,
  *  piece advancement, and piece mobility are looked at.
  * 
- * 
+ * +
  */
 public class ChessEngine {
 
 	//declarations
-	private byte 	gameFlags;
-	private long[] 	gamePieceBoards;
-	private long[] 	BITSQUARES;
-	private int[] 	gameBoard;
-	private int 	nodeCount;
+	private int 	  nodeCount;
+	private Constants Constants;
+	private int 	  turn;
 	
 	//declarations + initializations
 	private int WHITE = 			0;
@@ -57,32 +60,41 @@ public class ChessEngine {
 	private int[] initKingPos =		new int[]{4, 60};
 	
 	private int empty = 			0xE;
-	private int searchDepth = 		4;
+	private int defaultDepth = 		3;
 	
-	Constants Constants = 			new Constants();
 	Random r = 						new Random();
-    
-public ChessEngine(){
+	boolean debugMode = 			false;
+	boolean initialized =			false;
+	boolean firstgame = 			true;
 
-BITSQUARES = Constants.BITSQUARES;
+public ChessEngine(){}
 
-/*GAME FLAGS
-variable name: flags
-data type: byte
-
-bit 1: En Passant is possible, there was a pawn double pushed on the last turn
-bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
-
-bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
-bit 6: Black King Side Castle possible  (Rook on square 63)
-bit 7: White Queen Side Castle possible (Rook on square 0)
-bit 8: White King Side Castle possible  (Rook on square 7)
-  
-*/
-gameFlags = (byte) 0b11110000; //Initialize with all castling rights
-
-setUpInitialBoard(); //set up board for beginning of game
-
+public void init(){
+	
+	if(!initialized){
+		if(firstgame){
+			Constants = new Constants();
+			firstgame = false;
+		}
+		
+		/*GAME FLAGS
+		variable name: flags
+		data type: byte
+		
+		bit 1: En Passant is possible, there was a pawn double pushed on the last turn
+		bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
+		
+		bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
+		bit 6: Black King Side Castle possible  (Rook on square 63)
+		bit 7: White Queen Side Castle possible (Rook on square 0)
+		bit 8: White King Side Castle possible  (Rook on square 7)
+		  
+		*/
+		gameFlags = (byte) 0b11110000; //Initialize with all castling rights
+		
+		setUpInitialBoard(); //set up board for beginning of game
+		initialized = true;
+	}
 }
 
 /**
@@ -97,7 +109,7 @@ setUpInitialBoard(); //set up board for beginning of game
  *  fields declared in the class declarations. Note that an empty square is represented by the
  *  number 14, or E in hexidecimal (for empty)
  */
-public void setUpInitialBoard(){
+private void setUpInitialBoard(){
 	
 	gamePieceBoards = new long[12];
 	gameBoard = new int[64];
@@ -106,27 +118,27 @@ public void setUpInitialBoard(){
 	    
 	    //White Pieces
 	    if(sq == 0 || sq == 7){
-	        gamePieceBoards[wRook] = gamePieceBoards[wRook] | BITSQUARES[sq];
+	        gamePieceBoards[wRook] = gamePieceBoards[wRook] | (1L << sq);
 	        gameBoard[sq] = wRook;
 	    }
 	    if(sq == 1 || sq == 6){
-	        gamePieceBoards[wKnight] = gamePieceBoards[wKnight] | BITSQUARES[sq];
+	        gamePieceBoards[wKnight] = gamePieceBoards[wKnight] | (1L << sq);
 	        gameBoard[sq] = wKnight;
 	    }
 	    if(sq == 2 || sq == 5){
-	        gamePieceBoards[wBishop] = gamePieceBoards[wBishop] | BITSQUARES[sq];
+	        gamePieceBoards[wBishop] = gamePieceBoards[wBishop] | (1L << sq);
 	        gameBoard[sq] = wBishop;
 	    }
 	    if(sq == 3){
-	        gamePieceBoards[wQueen] = gamePieceBoards[wQueen] | BITSQUARES[sq];
+	        gamePieceBoards[wQueen] = gamePieceBoards[wQueen] | (1L << sq);
 	        gameBoard[sq] = wQueen;
 	    }
 	    if(sq == 4){
-	        gamePieceBoards[wKing] = gamePieceBoards[wKing] | BITSQUARES[sq];
+	        gamePieceBoards[wKing] = gamePieceBoards[wKing] | (1L << sq);
 	        gameBoard[sq] = wKing;
 	    }
 	    if(sq > 7 && sq < 16){
-	        gamePieceBoards[wPawn] = gamePieceBoards[wPawn] | BITSQUARES[sq];
+	        gamePieceBoards[wPawn] = gamePieceBoards[wPawn] | (1L << sq);
 	        gameBoard[sq] = wPawn;
 	    }
 	    
@@ -136,32 +148,32 @@ public void setUpInitialBoard(){
 	    
 	    //Black pieces
 	    if(sq == 56 || sq == 63){
-	        gamePieceBoards[bRook] = gamePieceBoards[bRook] | BITSQUARES[sq];
+	        gamePieceBoards[bRook] = gamePieceBoards[bRook] | (1L << sq);
 	        gameBoard[sq] = bRook;
 	    }
 	    if(sq == 57 || sq == 62){
-	        gamePieceBoards[bKnight] = gamePieceBoards[bKnight] | BITSQUARES[sq];
+	        gamePieceBoards[bKnight] = gamePieceBoards[bKnight] | (1L << sq);
 	        gameBoard[sq] = bKnight;
 	    }
 	    if(sq == 58 || sq == 61){
-	        gamePieceBoards[bBishop] = gamePieceBoards[bBishop] | BITSQUARES[sq];
+	        gamePieceBoards[bBishop] = gamePieceBoards[bBishop] | (1L << sq);
 	        gameBoard[sq] = bBishop;
 	    }
 	    if(sq == 59){
-	        gamePieceBoards[bQueen] = gamePieceBoards[bQueen] | BITSQUARES[sq];
+	        gamePieceBoards[bQueen] = gamePieceBoards[bQueen] | (1L << sq);
 	        gameBoard[sq] = bQueen;
 	    }
 	    if(sq == 60){
-	        gamePieceBoards[bKing] = gamePieceBoards[bKing] | BITSQUARES[sq];
+	        gamePieceBoards[bKing] = gamePieceBoards[bKing] | (1L << sq);
 	        gameBoard[sq] = bKing;
 	    }
 	    if(sq > 47 && sq < 56){
-	        gamePieceBoards[bPawn] = gamePieceBoards[bPawn] | BITSQUARES[sq];
+	        gamePieceBoards[bPawn] = gamePieceBoards[bPawn] | (1L << sq);
 	        gameBoard[sq] = bPawn;
 	    }
 	}
+	turn = WHITE;
 }
-
 
 
 
@@ -180,43 +192,66 @@ public void setUpInitialBoard(){
  * @param colour	Always BLACK, which is 1
  * @return 			array of ints containing move and game information
  */
-public int[] selectMove(int colour){
+public int[] selectMove(int colour, int searchDepth){
 
 int[] bestMove, moveInfo;
 
 nodeCount = 0;
 
-bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, BLACK, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+bestMove = chooseBestMove(gameBoard, gamePieceBoards, gameFlags, colour, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-moveInfo = parseMove(bestMove[0]);
+return checkForMateAndUpdateBoard(colour, searchDepth, bestMove);
 
-//Special cases
-if(bestMove[0] == -1){
-    //White wins or stalemate
-    return bestMove;
-}
-else if(bestMove[1] == (searchDepth-1)*1000000){
-    //Black wins
-    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], 0};
 }
 
-else if(bestMove[1] == (searchDepth-1)*-1000000){
-    //Black stalemate
-    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], -1};
+public int[] selectMoveRestricted(String[] FENMoves){
+
+int[] bestMove, moveInfo;
+
+nodeCount = 0;
+
+bestMove = chooseBestMoveRestricted(gameBoard, gamePieceBoards, gameFlags, 
+									turn, defaultDepth, Integer.MIN_VALUE, 
+									Integer.MAX_VALUE, 
+									Stream.of(FENMoves).map(s -> convertFENtoMoveInt(s)).mapToInt(Integer::intValue).toArray());
+
+return checkForMateAndUpdateBoard(turn, defaultDepth, bestMove);
+
 }
 
-//Update game information now that the move has been completed
-gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
-
-//Print some relevant infomation to the console
-System.out.println("Nodes traversed: " + nodeCount);
-System.out.println("Best Move Score For Black:");
-System.out.println(bestMove[1]);
-System.out.println("Game Flags:");
-System.out.println(Integer.toBinaryString(Byte.toUnsignedInt(gameFlags)));
-
-return moveInfo;
-
+private int[] checkForMateAndUpdateBoard(int colour, int searchDepth, int[] bestMove) {
+	int[] moveInfo;
+	moveInfo = parseMove(bestMove[0]);
+	
+	//Special cases
+	if(bestMove[0] == -1){
+	    //moving player has lost
+	    return bestMove;
+	}
+	else if(bestMove[1] == (2*colour - 1)*(searchDepth-1)*1000000){
+	    //moving player wins
+	    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], 0};
+	}
+	
+	else if(bestMove[1] == (2*colour - 1)*(searchDepth-1)*-1000000){
+	    //moving player forcing draw
+	    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], -1};
+	}
+	
+	//Update game information now that the move has been completed
+	gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
+	
+	//Print some relevant infomation to the console
+	if(debugMode) {
+		System.out.println("Nodes traversed: " + nodeCount);
+		System.out.println("Best Move Score For Black:");
+		System.out.println(bestMove[1]);
+		System.out.println("Game Flags:");
+		System.out.println(Integer.toBinaryString(Byte.toUnsignedInt(gameFlags)));
+		printBoardArray(gameBoard);
+	}
+	
+	return moveInfo;
 }
 
 /**
@@ -248,6 +283,115 @@ boolean legal = true;
 ArrayList<int[]> bestMoves = new ArrayList();
 
 moves = generateAllMoves(colour, currBoard, pieceBoards, flags);
+
+if(inCheck(colour, currBoard, pieceBoards, flags)){
+    check = true;
+}
+
+for(i = 0; i < moves.length; i++){
+    
+    nodeCount++;
+    tempBoard = Arrays.copyOf(currBoard, 64);
+    tempPieceBoards = Arrays.copyOf(pieceBoards, 12);
+    tempFlags = flags;
+    
+    parsedMove = parseMove(moves[i]);
+    
+    tempFlags = updateGame(parsedMove, tempBoard, tempPieceBoards, tempFlags);
+    
+    if(parsedMove[0] == king[colour] && parsedMove[2] == initKingPos[colour] && parsedMove[3] == initKingPos[colour] + 2){
+        legal = castleIsLegal(colour, tempBoard, tempPieceBoards, tempFlags, false); // king side castle
+    }
+    if(parsedMove[0] == king[colour] && parsedMove[2] == initKingPos[colour] && parsedMove[3] == initKingPos[colour] - 2){
+        legal = castleIsLegal(colour, tempBoard, tempPieceBoards, tempFlags, true); // Queen side castle
+    }
+    
+    
+    if(legal && !inCheck(colour, tempBoard, tempPieceBoards, tempFlags)){
+        
+        if(depth > 0){
+        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
+            int[] theirMove = chooseBestMove(tempBoard, tempPieceBoards, tempFlags, 1-colour, depth - 1, alpha, beta);
+            moveScore = new int[]{moves[i], theirMove[1]};   
+        }
+        else{
+        	//Evaluate board position if at the terminal depth
+            moveScore = new int[]{moves[i], evaluateGameScore(tempPieceBoards, tempBoard, tempFlags)};
+        }
+        
+        
+        if(bestMoves.isEmpty()){
+                bestMoves.add(moveScore);        
+        }
+        else if(bestMoves.get(0)[1] == moveScore[1]){
+                bestMoves.add(moveScore);
+        }
+        
+        if(colour == BLACK){
+            
+        	//A higher move score is beneficial for BLACK
+            if(bestMoves.get(0)[1] < moveScore[1]){
+                bestMoves.clear();
+                bestMoves.add(moveScore);   
+            }
+            
+            alpha = Math.max(alpha, bestMoves.get(0)[1]);
+            
+        }
+        else{
+            //A lower (possibly negative) game score is beneficial for WHITE
+            if(bestMoves.get(0)[1] > moveScore[1]){
+                bestMoves.clear();
+                bestMoves.add(moveScore);
+            } 
+            beta = Math.min(beta, bestMoves.get(0)[1]);
+        }
+        
+        if(beta < alpha){
+                break; //Beta or alpha cut-off
+        }
+    }
+    
+    legal = true;
+}
+
+if(bestMoves.size() > 1){
+	//If more than one move results in the same board score, choose one randomly
+    int randInt = r.nextInt(bestMoves.size());
+    bestMove = bestMoves.get(randInt);
+}
+else if(bestMoves.size() == 1){
+    bestMove = bestMoves.get(0);
+}
+else{
+    //If bestMoves does not have any moves in it, this means no moves for black are legal and it is either in checkmate or it is a stalemate
+    if(check){
+        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
+    }
+    else{
+        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
+    }
+    
+}
+
+return bestMove;
+
+}
+
+private int[] chooseBestMoveRestricted(int[] currBoard, long[] pieceBoards, byte flags, int colour, int depth, int alpha, int beta, int[] movesToSearch){
+
+int 	i;
+int[] 	moves, moveScore, tempBoard, bestMove, parsedMove;
+int[][] parsedMoves, parsedMoves1;
+long[] 	tempPieceBoards;
+byte 	tempFlags;
+
+boolean check = false;
+boolean legal = true;
+
+ArrayList<int[]> bestMoves = new ArrayList();
+
+moves = movesToSearch;
 
 if(inCheck(colour, currBoard, pieceBoards, flags)){
     check = true;
@@ -1152,7 +1296,6 @@ int move = piece << 28 | capturedPiece << 24 | fromSq << 16 | toSq << 8 | moveFl
 
 int[] moveInfo = parseMove(move);
 
-System.out.println(Arrays.toString(moveInfo));
 gameFlags = updateGame(moveInfo, gameBoard, gamePieceBoards, gameFlags);
  
 }
@@ -1204,6 +1347,260 @@ return castleIsLegal(WHITE, gameBoard, gamePieceBoards, gameFlags, queenSide);
 
 //-------------------------------------------------------------------------------------------
 
+//--Methods for UCI Interface
+
+public String bestMove() {
+return "";	
+}
+
+public int convertFENtoMoveInt(String fen){
+	
+	byte flags = 0;
+	String startPos = fen.substring(0, 2);
+	String endPos = fen.substring(2, 4);
+	
+	
+	int[] startSq = ANtoArrayIndex(Integer.parseInt(startPos.substring(1)), startPos.charAt(0));
+	int[] endSq = ANtoArrayIndex(Integer.parseInt(endPos.substring(1)), endPos.charAt(0));
+	
+	int startInd = getIndex(startSq);
+	int endInd = getIndex(endSq);
+	
+	if ((startInd == 4  && endInd == 6  && gameBoard[4]  == wKing) || 
+		(startInd == 60 && endInd == 62 && gameBoard[60] == bKing)) {
+		flags |= Constants.moveFlagKingSideCastle;
+	}
+	else if ((startInd == 4  && endInd == 2  && gameBoard[4]  == wKing) || 
+			 (startInd == 60 && endInd == 58 && gameBoard[60] == bKing)) {
+		flags |= Constants.moveFlagQueenSideCastle;
+	}
+	else if(gameBoard[startInd] == wPawn && ((gameFlags & 1) == 1) &&
+			endSq[0] == 5 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
+		flags |= Constants.moveFlagEnPassant;
+    }
+	else if(gameBoard[startInd] == bPawn && ((gameFlags & 1) == 1) &&
+			endSq[0] == 2 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
+		flags |= Constants.moveFlagEnPassant;
+    }
+
+	if(fen.length() > 4){
+		String promotionType = fen.substring(4).toLowerCase();
+		flags |= Constants.moveFlagPromotion;
+		
+		int promotionPiece;
+		
+		switch(promotionType){
+		
+		case "n":
+		case "k":
+			promotionPiece = wKnight;
+			break;
+		
+		case "b":
+			promotionPiece = wBishop;
+			break;
+			
+		case "r":
+			promotionPiece = wRook;
+			break;
+			
+		default: //queen
+			promotionPiece = wQueen;
+			break;
+		}
+		
+		if(gameBoard[startInd] > 5) { promotionPiece += 6;} //SWITCH TO BLACK
+		
+		flags |= promotionPiece;
+	}
+
+	int oldIndex = getIndex(startSq);
+	int newIndex = getIndex(endSq);
+
+	return gameBoard[oldIndex] << 28 | gameBoard[newIndex] << 24 |
+		   oldIndex << 16 | newIndex << 8 | flags;
+}
+
+public void parseFENAndUpdate(String fen) {
+
+	String[] fields = fen.split(" +");
+	
+	String pieces =						 fields[0];
+	String colourToMove =				 fields[1];
+	String castling = 					 fields[2];
+	String enPassantSquare = 			 fields[3];
+	String halfmovesSinceCaptureOrPawn = fields[4];
+	String moveNumber = 				 fields[5];
+	
+	setBoardPositions(pieces);
+	turn = colourToMove.equals("w") ? WHITE : BLACK;
+	setCastlingRights(castling);
+	setEnPassantFlag(enPassantSquare);
+	
+	
+}
+
+public void makeANMove(String move) {
+	
+    // piece(4) | capturedPiece{4} | fromSq(8) | toSq(8) | flags(8)
+    /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
+               bit 5: promotion flag
+               bit 6: en-passant capture flag
+               bit 7: Queen Side Castle
+               bit 8: King Side Castle
+    */
+	byte flags = 0;
+	String startPos = move.substring(0, 2);
+	String endPos = move.substring(2, 4);
+	
+	
+	int[] startSq = ANtoArrayIndex(Integer.parseInt(startPos.substring(1)), startPos.charAt(0));
+	int[] endSq = ANtoArrayIndex(Integer.parseInt(endPos.substring(1)), endPos.charAt(0));
+	
+	int startInd = getIndex(startSq);
+	int endInd = getIndex(endSq);
+	
+	if ((startInd == 4  && endInd == 6  && gameBoard[4]  == wKing) || 
+		(startInd == 60 && endInd == 62 && gameBoard[60] == bKing)) {
+		flags |= Constants.moveFlagKingSideCastle;
+	}
+	else if ((startInd == 4  && endInd == 2  && gameBoard[4]  == wKing) || 
+			 (startInd == 60 && endInd == 58 && gameBoard[60] == bKing)) {
+		flags |= Constants.moveFlagQueenSideCastle;
+	}
+	else if(gameBoard[startInd] == wPawn && ((gameFlags & 1) == 1) &&
+			endSq[0] == 5 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
+		flags |= Constants.moveFlagEnPassant;
+    }
+	else if(gameBoard[startInd] == bPawn && ((gameFlags & 1) == 1) &&
+			endSq[0] == 2 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
+		flags |= Constants.moveFlagEnPassant;
+    }
+
+	if(move.length() > 4){
+		String promotionType = move.substring(4).toLowerCase();
+		flags |= Constants.moveFlagPromotion;
+		
+		int promotionPiece;
+		
+		switch(promotionType){
+		
+		case "n":
+		case "k":
+			promotionPiece = wKnight;
+			break;
+		
+		case "b":
+			promotionPiece = wBishop;
+			break;
+			
+		case "r":
+			promotionPiece = wRook;
+			break;
+			
+		default: //queen
+			promotionPiece = wQueen;
+			break;
+		}
+		
+		if(gameBoard[startInd] > 5) { promotionPiece += 6;} //SWITCH TO BLACK
+		
+		flags |= promotionPiece;
+	}
+	
+	makeMove(startSq, endSq, flags);
+	
+}
+
+private void setBoardPositions(String fen) {
+	int sq = 56;
+	
+	char c;
+	int i = 0;
+	int len = fen.length();
+	while(i < len) {
+		
+		c = fen.charAt(i);
+		
+		if(Character.isLetter(c)){
+			int piece = pieceNum(c);
+	        gamePieceBoards[piece] = gamePieceBoards[piece] | (1L << sq);
+	        gameBoard[sq] = piece;
+	        sq ++;
+		}
+		else if(Character.isDigit(c)){
+			sq += Integer.parseInt(String.valueOf(c));
+		}
+		else if(c == '/'){
+			sq -= 15;
+		}
+		i++;
+	}
+	
+}
+
+private void setCastlingRights(String fen) {
+	
+	/*
+	bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
+	bit 6: Black King Side Castle possible  (Rook on square 63)
+	bit 7: White Queen Side Castle possible (Rook on square 0)
+	bit 8: White King Side Castle possible  (Rook on square 7)  
+	*/
+	for(int i = 0; i < fen.length(); i++){
+		switch(fen.charAt(i)){
+		
+		case '-':
+			gameFlags &= 0b00001111;
+			break;
+			
+		case 'K':
+			gameFlags |= 0b10000000;
+			break;
+			
+		case 'Q':
+			gameFlags |= 0b01000000;	
+			break;
+
+		case 'k':
+			gameFlags |= 0b00100000;	
+			break;
+			
+		case 'q':
+			gameFlags |= 0b00010000;	
+			break;
+		
+		}
+	}
+}
+
+private void setEnPassantFlag(String fen){
+	/*
+	bit 1: En Passant is possible, there was a pawn double pushed on the last turn
+	bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
+	*/
+	if(fen.equals("-")){
+		gameFlags &= 0b11110000;
+	}
+	else {
+		int file = fen.charAt(0) - 97;
+		gameFlags = (byte) (gameFlags | (file << 1) | 1);
+	}
+	
+}
+
+private int[] ANtoArrayIndex(int Row, char Col){
+    
+    return new int[]{Row - 1, (int) Col - 97};
+}
+
+private int pieceNum(char c){
+	
+	char[] FENPieces = {'P', 'K', 'B', 'R', 'Q', 'K', 'p', 'k', 'b', 'r', 'q', 'k'};
+	return Arrays.binarySearch(FENPieces, 0, 11, c);
+	
+
+}
 
 
 
@@ -1273,6 +1670,22 @@ public void printMovesAsStrings(int[] moves){
         
         System.out.println(moveStr);
     }
+}
+
+public boolean isDebugMode() {
+	return debugMode;
+}
+
+public void setDebugMode(boolean debugMode) {
+	this.debugMode = debugMode;
+}
+
+public boolean isInitialized() {
+	return initialized;
+}
+
+public void setInitialized(boolean initialized) {
+	this.initialized = initialized;
 }
 
 //------------------------------------------------------------------------------------------

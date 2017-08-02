@@ -32,8 +32,9 @@ sourceSets {
 
 jar {
 	destinationDir = file('.')
+	archiveName = 'jfEngine.jar'
 	manifest {
-		attributes("Main-Class": "joeflowplayschess.JoeFlowPlaysChess")
+		attributes("Main-Class": "joeflowplayschess.JoeFlowWatchesHisEnginesPlayChess")
 	}
 }
 
