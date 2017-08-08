@@ -87,6 +87,11 @@ public int moveFlagKingSideCastle =  0b10000000;
 public long[] queenCastleSquares =   new long[]{0xe, 0xe00000000000000L};
 public long[] kingCastleSquares =    new long[]{0x60, 0x6000000000000000L};
 
+public long queenSideWhiteCastleDestinationSquare = 0x4L;
+public long kingSideWhiteCastleDestinationSquare = 	0x40L;
+public long queenSideBlackCastleDestinationSquare = 0x400000000000000L;
+public long kingSideBlackCastleDestinationSquare = 	0x4000000000000000L;
+
 //All the following arrays are used in the magic bitboard generation
 public long[][] occupancyVariation = new long[64][];
 public long[][] occupancyAttackSet = new long[64][];
