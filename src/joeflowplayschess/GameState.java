@@ -105,12 +105,8 @@ public class GameState {
 	
 	public long getAllPieces() {
 		
-		Arrays.stream(gamePieceBoards).reduce(0L, );
-	    long allPieces = 0;
-	    for(int i = 0; i < 12; i++){
-	        allPieces |= gamePieceBoards[i];
-	    }	
-	    return allPieces;
+		return Arrays.stream(gamePieceBoards).reduce(0L, (x, y) -> x | y);
+
 	}
 	
 	/**

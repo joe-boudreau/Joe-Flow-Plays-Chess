@@ -64,7 +64,7 @@ public class ChessEngine {
 	private static int defaultDepth = 	3;
 	
 	Random r = 						new Random();
-	boolean debugMode = 			false;
+	boolean debugMode = 			true;
 	boolean initialized =			false;
 	boolean firstgame = 			true;
 
@@ -115,28 +115,28 @@ public void init(){
  */
 public int[] selectMove(int colour, int searchDepth){
 
-int[] bestMove, moveInfo;
-
-nodeCount = 0;
-
-bestMove = chooseBestMove(gameState, colour, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
-
-return checkForMateAndUpdateBoard(colour, searchDepth, bestMove);
+	int[] bestMove, moveInfo;
+	
+	nodeCount = 0;
+	
+	bestMove = chooseBestMove(gameState, colour, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	
+	return checkForMateAndUpdateBoard(colour, searchDepth, bestMove);
 
 }
 
 public int[] selectMoveRestricted(String[] FENMoves){
 
-int[] bestMove, moveInfo;
-
-nodeCount = 0;
-
-bestMove = chooseBestMoveRestricted(gameState, 
-									turn, defaultDepth, Integer.MIN_VALUE, 
-									Integer.MAX_VALUE, 
-									Stream.of(FENMoves).map(s -> convertFENtoMoveInt(s)).mapToInt(Integer::intValue).toArray());
-
-return checkForMateAndUpdateBoard(turn, defaultDepth, bestMove);
+	int[] bestMove, moveInfo;
+	
+	nodeCount = 0;
+	
+	bestMove = chooseBestMoveRestricted(gameState, 
+										turn, defaultDepth, Integer.MIN_VALUE, 
+										Integer.MAX_VALUE, 
+										Stream.of(FENMoves).map(s -> convertFENtoMoveInt(s)).mapToInt(Integer::intValue).toArray());
+	
+	return checkForMateAndUpdateBoard(turn, defaultDepth, bestMove);
 
 }
 
@@ -192,204 +192,204 @@ private int[] checkForMateAndUpdateBoard(int colour, int searchDepth, int[] best
  */
 private int[] chooseBestMove(GameState gState, int colour, int depth, int alpha, int beta){
 
-int 	i;
-int[] 	moves, moveScore, bestMove, parsedMove;
-int[][] parsedMoves, parsedMoves1;
-
-boolean check = false;
-boolean legal = true;
-
-ArrayList<int[]> bestMoves = new ArrayList();
-
-moves = generateAllMoves(colour, gState);
-
-if(inCheck(colour, gState)){
-    check = true;
-}
-
-for(i = 0; i < moves.length; i++){
-    
-    nodeCount++;
-    GameState tState = gState.copy();
-    
-    parsedMove = parseMove(moves[i]);
-    
-    updateGame(parsedMove,tState);
-    
-    if(!check && isCastleMove(parsedMove, colour)){
-        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideAfterCastleKingPos[colour]); // king side castle
-    }
-    
-    
-    if(legal && !inCheck(colour, tState)){
-        
-        if(depth > 0){
-        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
-            int[] theirMove = chooseBestMove(tState, 1-colour, depth - 1, alpha, beta);
-            moveScore = new int[]{moves[i], theirMove[1]};   
-        }
-        else{
-        	//Evaluate board position if at the terminal depth
-            moveScore = new int[]{moves[i], evaluateGameScore(tState)};
-        }
-        
-        
-        if(bestMoves.isEmpty()){
-                bestMoves.add(moveScore);        
-        }
-        else if(bestMoves.get(0)[1] == moveScore[1]){
-                bestMoves.add(moveScore);
-        }
-        
-        if(colour == BLACK){
-            
-        	//A higher move score is beneficial for BLACK
-            if(bestMoves.get(0)[1] < moveScore[1]){
-                bestMoves.clear();
-                bestMoves.add(moveScore);   
-            }
-            
-            alpha = Math.max(alpha, bestMoves.get(0)[1]);
-            
-        }
-        else{
-            //A lower (possibly negative) game score is beneficial for WHITE
-            if(bestMoves.get(0)[1] > moveScore[1]){
-                bestMoves.clear();
-                bestMoves.add(moveScore);
-            } 
-            beta = Math.min(beta, bestMoves.get(0)[1]);
-        }
-        
-        if(beta < alpha){
-                break; //Beta or alpha cut-off
-        }
-    }
-    
-    legal = true;
-}
-
-if(bestMoves.size() > 1){
-	//If more than one move results in the same board score, choose one randomly
-    int randInt = r.nextInt(bestMoves.size());
-    bestMove = bestMoves.get(randInt);
-}
-else if(bestMoves.size() == 1){
-    bestMove = bestMoves.get(0);
-}
-else{
-    //If bestMoves does not have any moves in it, this means no moves for black are legal and it is either in checkmate or it is a stalemate
-    if(check){
-        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
-    }
-    else{
-        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
-    }
-    
-}
-
-return bestMove;
+	int 	i;
+	int[] 	moves, moveScore, bestMove, parsedMove;
+	int[][] parsedMoves, parsedMoves1;
+	
+	boolean check = false;
+	boolean legal = true;
+	
+	ArrayList<int[]> bestMoves = new ArrayList();
+	
+	moves = generateAllMoves(colour, gState);
+	
+	if(inCheck(colour, gState)){
+	    check = true;
+	}
+	
+	for(i = 0; i < moves.length; i++){
+	    
+	    nodeCount++;
+	    GameState tState = gState.copy();
+	    
+	    parsedMove = parseMove(moves[i]);
+	    
+	    updateGame(parsedMove,tState);
+	    
+	    if(!check && isCastleMove(parsedMove, colour)){
+	        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
+	    }
+	    
+	    
+	    if(legal && !inCheck(colour, tState)){
+	        
+	        if(depth > 0){
+	        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
+	            int[] theirMove = chooseBestMove(tState, 1-colour, depth - 1, alpha, beta);
+	            moveScore = new int[]{moves[i], theirMove[1]};   
+	        }
+	        else{
+	        	//Evaluate board position if at the terminal depth
+	            moveScore = new int[]{moves[i], evaluateGameScore(tState)};
+	        }
+	        
+	        
+	        if(bestMoves.isEmpty()){
+	                bestMoves.add(moveScore);        
+	        }
+	        else if(bestMoves.get(0)[1] == moveScore[1]){
+	                bestMoves.add(moveScore);
+	        }
+	        
+	        if(colour == BLACK){
+	            
+	        	//A higher move score is beneficial for BLACK
+	            if(bestMoves.get(0)[1] < moveScore[1]){
+	                bestMoves.clear();
+	                bestMoves.add(moveScore);   
+	            }
+	            
+	            alpha = Math.max(alpha, bestMoves.get(0)[1]);
+	            
+	        }
+	        else{
+	            //A lower (possibly negative) game score is beneficial for WHITE
+	            if(bestMoves.get(0)[1] > moveScore[1]){
+	                bestMoves.clear();
+	                bestMoves.add(moveScore);
+	            } 
+	            beta = Math.min(beta, bestMoves.get(0)[1]);
+	        }
+	        
+	        if(beta < alpha){
+	                break; //Beta or alpha cut-off
+	        }
+	    }
+	    
+	    legal = true;
+	}
+	
+	if(bestMoves.size() > 1){
+		//If more than one move results in the same board score, choose one randomly
+	    int randInt = r.nextInt(bestMoves.size());
+	    bestMove = bestMoves.get(randInt);
+	}
+	else if(bestMoves.size() == 1){
+	    bestMove = bestMoves.get(0);
+	}
+	else{
+	    //If bestMoves does not have any moves in it, this means no moves for black are legal and it is either in checkmate or it is a stalemate
+	    if(check){
+	        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
+	    }
+	    else{
+	        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
+	    }
+	    
+	}
+	
+	return bestMove;
 
 }
 
 private int[] chooseBestMoveRestricted(GameState gState, int colour, int depth, int alpha, int beta, int[] movesToSearch){
 
-int 	i;
-int[] 	moves, moveScore, bestMove, parsedMove;
-int[][] parsedMoves, parsedMoves1;
-
-boolean check = false;
-boolean legal = true;
-
-ArrayList<int[]> bestMoves = new ArrayList();
-
-moves = movesToSearch;
-
-if(inCheck(colour, gState)){
-    check = true;
-}
-
-for(i = 0; i < moves.length; i++){
-    
-    nodeCount++;
-    GameState tState = gState.copy();
-    
-    parsedMove = parseMove(moves[i]);
-    
-    updateGame(parsedMove,tState);
-    
-    if(!check && isCastleMove(parsedMove, colour)){
-        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideAfterCastleKingPos[colour]); // king side castle
-    }
-    
-    if(legal && !inCheck(colour, tState)){
-        
-        if(depth > 0){
-        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
-            int[] theirMove = chooseBestMove(tState, 1-colour, depth - 1, alpha, beta);
-            moveScore = new int[]{moves[i], theirMove[1]};   
-        }
-        else{
-        	//Evaluate board position if at the terminal depth
-            moveScore = new int[]{moves[i], evaluateGameScore(tState)};
-        }
-        
-        
-        if(bestMoves.isEmpty()){
-                bestMoves.add(moveScore);        
-        }
-        else if(bestMoves.get(0)[1] == moveScore[1]){
-                bestMoves.add(moveScore);
-        }
-        
-        if(colour == BLACK){
-            
-        	//A higher move score is beneficial for BLACK
-            if(bestMoves.get(0)[1] < moveScore[1]){
-                bestMoves.clear();
-                bestMoves.add(moveScore);   
-            }
-            
-            alpha = Math.max(alpha, bestMoves.get(0)[1]);
-            
-        }
-        else{
-            //A lower (possibly negative) game score is beneficial for WHITE
-            if(bestMoves.get(0)[1] > moveScore[1]){
-                bestMoves.clear();
-                bestMoves.add(moveScore);
-            } 
-            beta = Math.min(beta, bestMoves.get(0)[1]);
-        }
-        
-        if(beta < alpha){
-                break; //Beta or alpha cut-off
-        }
-    }
-    
-    legal = true;
-}
-
-if(bestMoves.size() > 1){
-	//If more than one move results in the same board score, choose one randomly
-    int randInt = r.nextInt(bestMoves.size());
-    bestMove = bestMoves.get(randInt);
-}
-else if(bestMoves.size() == 1){
-    bestMove = bestMoves.get(0);
-}
-else{
-    //If bestMoves does not have any moves in it, this means no moves for black are legal and it is either in checkmate or it is a stalemate
-    if(check){
-        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
-    }
-    else{
-        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
-    }
-    
-}
-
-return bestMove;
+	int 	i;
+	int[] 	moves, moveScore, bestMove, parsedMove;
+	int[][] parsedMoves, parsedMoves1;
+	
+	boolean check = false;
+	boolean legal = true;
+	
+	ArrayList<int[]> bestMoves = new ArrayList();
+	
+	moves = movesToSearch;
+	
+	if(inCheck(colour, gState)){
+	    check = true;
+	}
+	
+	for(i = 0; i < moves.length; i++){
+	    
+	    nodeCount++;
+	    GameState tState = gState.copy();
+	    
+	    parsedMove = parseMove(moves[i]);
+	    
+	    updateGame(parsedMove,tState);
+	    
+	    if(!check && isCastleMove(parsedMove, colour)){
+	        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
+	    }
+	    
+	    if(legal && !inCheck(colour, tState)){
+	        
+	        if(depth > 0){
+	        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
+	            int[] theirMove = chooseBestMove(tState, 1-colour, depth - 1, alpha, beta);
+	            moveScore = new int[]{moves[i], theirMove[1]};   
+	        }
+	        else{
+	        	//Evaluate board position if at the terminal depth
+	            moveScore = new int[]{moves[i], evaluateGameScore(tState)};
+	        }
+	        
+	        
+	        if(bestMoves.isEmpty()){
+	                bestMoves.add(moveScore);        
+	        }
+	        else if(bestMoves.get(0)[1] == moveScore[1]){
+	                bestMoves.add(moveScore);
+	        }
+	        
+	        if(colour == BLACK){
+	            
+	        	//A higher move score is beneficial for BLACK
+	            if(bestMoves.get(0)[1] < moveScore[1]){
+	                bestMoves.clear();
+	                bestMoves.add(moveScore);   
+	            }
+	            
+	            alpha = Math.max(alpha, bestMoves.get(0)[1]);
+	            
+	        }
+	        else{
+	            //A lower (possibly negative) game score is beneficial for WHITE
+	            if(bestMoves.get(0)[1] > moveScore[1]){
+	                bestMoves.clear();
+	                bestMoves.add(moveScore);
+	            } 
+	            beta = Math.min(beta, bestMoves.get(0)[1]);
+	        }
+	        
+	        if(beta < alpha){
+	                break; //Beta or alpha cut-off
+	        }
+	    }
+	    
+	    legal = true;
+	}
+	
+	if(bestMoves.size() > 1){
+		//If more than one move results in the same board score, choose one randomly
+	    int randInt = r.nextInt(bestMoves.size());
+	    bestMove = bestMoves.get(randInt);
+	}
+	else if(bestMoves.size() == 1){
+	    bestMove = bestMoves.get(0);
+	}
+	else{
+	    //If bestMoves does not have any moves in it, this means no moves for black are legal and it is either in checkmate or it is a stalemate
+	    if(check){
+	        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
+	    }
+	    else{
+	        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
+	    }
+	    
+	}
+	
+	return bestMove;
 
 }
 
@@ -400,24 +400,24 @@ return bestMove;
  */
 public int evaluateGameScore(GameState state){
 
-int overallScore;
-
-long[] pieceBoards = state.getPieceBoards();
-
-
-overallScore = 2*(numSet(pieceBoards[bPawn]) - numSet(pieceBoards[wPawn])) +
-                    7*(numSet(pieceBoards[bKnight]) - numSet(pieceBoards[wKnight])) +
-                    6*(numSet(pieceBoards[bBishop]) - numSet(pieceBoards[wBishop])) +   
-                    10*(numSet(pieceBoards[bRook]) - numSet(pieceBoards[wRook])) +
-                    18*(numSet(pieceBoards[bQueen]) - numSet(pieceBoards[wQueen]));  
-
-overallScore = 2*(overallScore) + centreControlScore(pieceBoards);
-
-overallScore = 3*(overallScore) + 2*(pawnStructureScore(bPawn) - pawnStructureScore(wPawn));
-
-overallScore = 2*(overallScore) + positionScore(BLACK, state) - positionScore(WHITE, state);
-
-return overallScore;
+	int overallScore;
+	
+	long[] pieceBoards = state.getPieceBoards();
+	
+	
+	overallScore = 2*(numSet(pieceBoards[bPawn]) - numSet(pieceBoards[wPawn])) +
+	                    7*(numSet(pieceBoards[bKnight]) - numSet(pieceBoards[wKnight])) +
+	                    6*(numSet(pieceBoards[bBishop]) - numSet(pieceBoards[wBishop])) +   
+	                    10*(numSet(pieceBoards[bRook]) - numSet(pieceBoards[wRook])) +
+	                    18*(numSet(pieceBoards[bQueen]) - numSet(pieceBoards[wQueen]));  
+	
+	overallScore = 2*(overallScore) + centreControlScore(pieceBoards);
+	
+	overallScore = 3*(overallScore) + 2*(pawnStructureScore(bPawn) - pawnStructureScore(wPawn));
+	
+	overallScore = 2*(overallScore) + positionScore(BLACK, state) - positionScore(WHITE, state);
+	
+	return overallScore;
 
 }
 
@@ -698,35 +698,20 @@ return false;
  */
 
 public boolean castleIsLegal(int colour, GameState state, boolean queenSide){
-    
-if(inCheck(colour, state)){ return false;}
 
 GameState tState = state.copy();
 
-tempBoard[Constants.initKingPos[colour]] = empty;
+tState.getBoard()[Constants.initKingPos[colour]] = empty;
 
 if(queenSide){
-    
-    for(int i = 1; i <= 2; i++){
-        tempBoard[Constants.initKingPos[colour]-i] = king[colour];
-        temppieceBoards[king[colour]] <<= 1;
-        
-        if(inCheck(colour, tState)){ return false;}
-        
-        tempBoard[Constants.initKingPos[colour]-i] = empty;
-    }
+	tState.getBoard()[Constants.initKingPos[colour]-1] = king[colour];
+    tState.getPieceBoards()[king[colour]] <<= 1;
+    if(inCheck(colour, tState)){ return false;}
 }
 else{
-    
-    for(int i = 1; i <= 2; i++){
-        tempBoard[Constants.initKingPos[colour]+i] = king[colour];
-        temppieceBoards[king[colour]] >>= 1;
-        
-        if(inCheck(colour, tState)){ return false;}
-        
-        tempBoard[Constants.initKingPos[colour]+i] = empty;
-    }
-    
+	tState.getBoard()[Constants.initKingPos[colour]+1] = king[colour];
+	tState.getPieceBoards()[king[colour]] >>= 1;
+    if(inCheck(colour, tState)){ return false;}
 }
 
 return true;
@@ -736,7 +721,7 @@ return true;
 public boolean isCastleMove(int[] parsedMove, int colour) {
 	return parsedMove[0] == king[colour] &&
 		   parsedMove[2] == Constants.initKingPos[colour] && 
-		  (parsedMove[3] == Constants.queenSideAfterCastleKingPos[colour] || parsedMove[3] == Constants.kingSideAfterCastleKingPos[colour]);
+		  (parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour] || parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
 }
 
 //--------------------------------------------------------------------------------------------
@@ -880,23 +865,13 @@ public void generateKingTargets(ArrayList moves, int colour, long king, GameStat
     
     long targets = Constants.KingMoves[fromSq] & ~friendlyPieces;
     generateMoves(fromSq, targets, pieceType, moves, 0, board);
-    
-    if(colour == WHITE){
-        if((flags & (1 << 6)) != 0 && (allPieces & Constants.queenCastleSquares[WHITE]) == 0){
-            generateMoves(fromSq, Constants.queenSideWhiteCastleDestinationSquare, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
-        }
-        if((flags & (1 << 7)) != 0 && (allPieces & Constants.kingCastleSquares[WHITE]) == 0){
-            generateMoves(fromSq, Constants.kingSideWhiteCastleDestinationSquare, pieceType, moves, Constants.moveFlagKingSideCastle, board);
-        }  
+
+    if((flags & (1 << 6)) != 0 && (allPieces & Constants.queenCastleSquares[colour]) == 0){
+        generateMoves(fromSq, Constants.queenSideCastleDestinationSquare[colour], pieceType, moves, Constants.moveFlagQueenSideCastle, board);
     }
-    else{
-        if((flags & (1 << 4)) != 0 && (allPieces & Constants.queenCastleSquares[BLACK]) == 0){
-            generateMoves(fromSq, Constants.queenSideBlackCastleDestinationSquare, pieceType, moves, Constants.moveFlagQueenSideCastle, board);
-        }
-        if((flags & (1 << 5)) != 0 && (allPieces & Constants.kingCastleSquares[BLACK]) == 0){
-            generateMoves(fromSq, Constants.kingSideBlackCastleDestinationSquare, pieceType, moves, Constants.moveFlagKingSideCastle, board);
-        }
-    }
+    if((flags & (1 << 7)) != 0 && (allPieces & Constants.kingCastleSquares[colour]) == 0){
+        generateMoves(fromSq, Constants.kingSideCastleDestinationSquare[colour], pieceType, moves, Constants.moveFlagKingSideCastle, board);
+    }  
 }
 
 /**
@@ -1100,6 +1075,12 @@ public void makeMove(int[] oldPos, int[] newPos, int moveFlags){
 int oldIndex = getIndex(oldPos);
 int newIndex = getIndex(newPos);
 
+makeMove(oldIndex, newIndex, moveFlags);
+ 
+}
+
+public void makeMove(int oldIndex, int newIndex, int moveFlags){
+
 int piece =          gameState.getBoard()[oldIndex];
 int capturedPiece =  gameState.getBoard()[newIndex];
 int fromSq =         oldIndex;
@@ -1120,20 +1101,16 @@ public int[] whiteLegalMoves(){
     
 ArrayList<Integer> legalList = new ArrayList();
 int[] whiteMoves, legalMoves, tempBoard;
-long[] temppieceBoards;
-byte tempFlags;
 
 whiteMoves = generateAllMoves(WHITE, gameState);
 
 for(int wmove : whiteMoves){
     
-    tempBoard = Arrays.copyOf(gameBoard, 64);
-    temppieceBoards = Arrays.copyOf(gamepieceBoards, 12);
-    tempFlags = gameFlags;
+	GameState tGameState = gameState.copy();
     
-    tempFlags = updateGame(parseMove(wmove), tempBoard, temppieceBoards, tempFlags);
+    updateGame(parseMove(wmove), tGameState);
     
-    if(!inCheck(WHITE, tempBoard, temppieceBoards, tempFlags)){ //If move doesn't leave white in check
+    if(!inCheck(WHITE, tGameState)){ //If move doesn't leave white in check
         legalList.add(wmove);									//then Add move
     } 
 }
@@ -1152,10 +1129,7 @@ return legalMoves;
  * Check that castle is legal for white
  */
 public boolean castleIsLegal(boolean queenSide){
-
-
-return castleIsLegal(WHITE, gameBoard, gamepieceBoards, gameFlags, queenSide);
-
+	return castleIsLegal(WHITE, gameState, queenSide);
 }
 
 //-------------------------------------------------------------------------------------------
@@ -1163,7 +1137,7 @@ return castleIsLegal(WHITE, gameBoard, gamepieceBoards, gameFlags, queenSide);
 //--Methods for UCI Interface
 
 public String bestMove() {
-return "";	
+	return "";	
 }
 
 public int convertFENtoMoveInt(String fen){
@@ -1178,6 +1152,8 @@ public int convertFENtoMoveInt(String fen){
 	
 	int startInd = getIndex(startSq);
 	int endInd = getIndex(endSq);
+	int[] gameBoard = gameState.getBoard();
+	byte gameFlags = gameState.getFlags();
 	
 	if ((startInd == 4  && endInd == 6  && gameBoard[4]  == wKing) || 
 		(startInd == 60 && endInd == 62 && gameBoard[60] == bKing)) {
@@ -1227,11 +1203,8 @@ public int convertFENtoMoveInt(String fen){
 		flags |= promotionPiece;
 	}
 
-	int oldIndex = getIndex(startSq);
-	int newIndex = getIndex(endSq);
-
-	return gameBoard[oldIndex] << 28 | gameBoard[newIndex] << 24 |
-		   oldIndex << 16 | newIndex << 8 | flags;
+	return gameBoard[startInd] << 28 | gameBoard[endInd] << 24 |
+			startInd << 16 | endInd << 8 | flags;
 }
 
 public void parseFENAndUpdate(String fen) {
@@ -1253,74 +1226,11 @@ public void parseFENAndUpdate(String fen) {
 	
 }
 
-public void makeANMove(String move) {
-	
-    // piece(4) | capturedPiece{4} | fromSq(8) | toSq(8) | flags(8)
-    /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
-               bit 5: promotion flag
-               bit 6: en-passant capture flag
-               bit 7: Queen Side Castle
-               bit 8: King Side Castle
-    */
-	byte flags = 0;
-	String startPos = move.substring(0, 2);
-	String endPos = move.substring(2, 4);
-	
-	
-	int[] startSq = ANtoArrayIndex(Integer.parseInt(startPos.substring(1)), startPos.charAt(0));
-	int[] endSq = ANtoArrayIndex(Integer.parseInt(endPos.substring(1)), endPos.charAt(0));
-	
-	int startInd = getIndex(startSq);
-	int endInd = getIndex(endSq);
-	
-	if ((startInd == 4  && endInd == 6  && gameBoard[4]  == wKing) || 
-		(startInd == 60 && endInd == 62 && gameBoard[60] == bKing)) {
-		flags |= Constants.moveFlagKingSideCastle;
-	}
-	else if ((startInd == 4  && endInd == 2  && gameBoard[4]  == wKing) || 
-			 (startInd == 60 && endInd == 58 && gameBoard[60] == bKing)) {
-		flags |= Constants.moveFlagQueenSideCastle;
-	}
-	else if(gameBoard[startInd] == wPawn && ((gameFlags & 1) == 1) &&
-			endSq[0] == 5 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
-		flags |= Constants.moveFlagEnPassant;
-    }
-	else if(gameBoard[startInd] == bPawn && ((gameFlags & 1) == 1) &&
-			endSq[0] == 2 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
-		flags |= Constants.moveFlagEnPassant;
-    }
-
-	if(move.length() > 4){
-		String promotionType = move.substring(4).toLowerCase();
-		flags |= Constants.moveFlagPromotion;
-		
-		int promotionPiece;
-		
-		switch(promotionType){
-		
-		case "n":
-		case "k":
-			promotionPiece = wKnight;
-			break;
-		
-		case "b":
-			promotionPiece = wBishop;
-			break;
-			
-		case "r":
-			promotionPiece = wRook;
-			break;
-			
-		default: //queen
-			promotionPiece = wQueen;
-			break;
-		}
-		
-		if(gameBoard[startInd] > 5) { promotionPiece += 6;} //SWITCH TO BLACK
-		
-		flags |= promotionPiece;
-	}
-	
+public void makeANMove(String ANmove) {
+	int[] move = parseMove(convertFENtoMoveInt(ANmove));
+	int startSq = move[2];
+	int endSq = move[3];
+	int flags = move[4];
 	makeMove(startSq, endSq, flags);
 	
 }
@@ -1357,6 +1267,7 @@ private void setBoardPositions(String fen) {
 
 private void setCastlingRights(String fen) {
 	
+	byte gameFlags = gameState.getFlags();
 	/*
 	bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
 	bit 6: Black King Side Castle possible  (Rook on square 63)
@@ -1368,22 +1279,27 @@ private void setCastlingRights(String fen) {
 		
 		case '-':
 			gameFlags &= 0b00001111;
+			gameState.setFlags(gameFlags);
 			break;
 			
 		case 'K':
 			gameFlags |= 0b10000000;
+			gameState.setFlags(gameFlags);
 			break;
 			
 		case 'Q':
 			gameFlags |= 0b01000000;	
+			gameState.setFlags(gameFlags);
 			break;
 
 		case 'k':
 			gameFlags |= 0b00100000;	
+			gameState.setFlags(gameFlags);
 			break;
 			
 		case 'q':
 			gameFlags |= 0b00010000;	
+			gameState.setFlags(gameFlags);
 			break;
 		
 		}
@@ -1391,6 +1307,7 @@ private void setCastlingRights(String fen) {
 }
 
 private void setEnPassantFlag(String fen){
+	byte gameFlags = gameState.getFlags();
 	/*
 	bit 1: En Passant is possible, there was a pawn double pushed on the last turn
 	bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
@@ -1402,6 +1319,7 @@ private void setEnPassantFlag(String fen){
 		int file = fen.charAt(0) - 97;
 		gameFlags = (byte) (gameFlags | (file << 1) | 1);
 	}
+	gameState.setFlags(gameFlags);
 	
 }
 
