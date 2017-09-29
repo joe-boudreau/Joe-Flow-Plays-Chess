@@ -1,8 +1,8 @@
-package joeflowplayschess;
+package joeflowplayschess.UCI;
 
-import java.awt.List;
+import joeflowplayschess.engine.ChessEngine;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class JoeFlowSpeaksUCI {

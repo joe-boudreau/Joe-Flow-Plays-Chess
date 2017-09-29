@@ -1,4 +1,6 @@
-package joeflowplayschess;
+package joeflowplayschess.UCI;
+
+import joeflowplayschess.engine.ChessEngine;
 
 public class MoveSelectorRunnable implements Runnable {
 
