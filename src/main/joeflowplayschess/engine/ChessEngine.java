@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import static joeflowplayschess.engine.Constants.*;
+import static joeflowplayschess.engine.DebugUtils.*;
+
 /**
  * The ChessEngine class computes all the decision making for the engine, which plays
  * as black exclusively. 
@@ -25,36 +28,17 @@ import java.util.stream.Stream;
  *  material advantage found. Factors such as pawn structure, centre control,
  *  piece advancement, and piece mobility are looked at.
  * 
- * +
+ *
  */
 public class ChessEngine {
 
 	//declarations
 	private GameState gameState;
 	private int 	  nodeCount;
-	private Constants Constants;
+	private Constants constants;
 	private int 	  turn;
 	
 	//declarations + initializations
-	private static int WHITE = 			0;
-	private static int BLACK =			1;    
-	    
-	private static int wPawn = 			0;
-	private static int wKnight = 		1;
-	private static int wBishop = 		2;
-	private static int wRook = 			3;
-	private static int wQueen = 		4;
-	private static int wKing = 			5;
-	
-	private static int bPawn = 			6;
-	private static int bKnight =		7;
-	private static int bBishop =		8;
-	private static int bRook = 			9;
-	private static int bQueen = 		10;
-	private static int bKing = 			11;
-	
-	private static int empty = 			0xE;
-	
 	private static int[] king = 		new int[]{wKing, bKing};
 	
 	private static int defaultDepth = 	3;
@@ -70,7 +54,7 @@ public void init(){
 	
 	if(!initialized){
 		if(firstgame){
-			setConstants(new Constants());
+			constants = Constants.init(this.getClass().getClassLoader());
 			firstgame = false;
 		}
 		
@@ -88,7 +72,7 @@ public void init(){
 		  
 		*/
 		turn = WHITE;
-		gameState = new GameState(true, getConstants());  //set up board for beginning of game
+		gameState = new GameState();  //set up board for beginning of game
 		initialized = true;
 	}
 }
@@ -213,7 +197,7 @@ private int[] chooseBestMove(GameState gState, int colour, int depth, int alpha,
 	    updateGame(parsedMove,tState);
 	    
 	    if(!check && isCastleMove(parsedMove, colour)){
-	        legal = castleIsLegal(colour, tState, parsedMove[3] == getConstants().queenSideCastleDestinationSquare[colour]);
+	        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
 	    }
 	    
 	    
@@ -315,7 +299,7 @@ private int[] chooseBestMoveRestricted(GameState gState, int colour, int depth, 
 	    updateGame(parsedMove,tState);
 	    
 	    if(!check && isCastleMove(parsedMove, colour)){
-	        legal = castleIsLegal(colour, tState, parsedMove[3] == getConstants().queenSideCastleDestinationSquare[colour]);
+	        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
 	    }
 	    
 	    if(legal && !inCheck(colour, tState)){
@@ -399,8 +383,7 @@ public int evaluateGameScore(GameState state){
 	int overallScore;
 	
 	long[] pieceBoards = state.getPieceBoards();
-	
-	
+
 	overallScore = 2*(numSet(pieceBoards[bPawn]) - numSet(pieceBoards[wPawn])) +
 	                    7*(numSet(pieceBoards[bKnight]) - numSet(pieceBoards[wKnight])) +
 	                    6*(numSet(pieceBoards[bBishop]) - numSet(pieceBoards[wBishop])) +   
@@ -438,7 +421,7 @@ public int advancementScore(long[] currpieceBoards, int colour){
     
     for(int i = 0; i < 8; i++){
         for(int j = colour*6; j < colour*6+6; j++){
-            rankScore[i] += numSet(currpieceBoards[j] & getConstants().RANKS[i]);
+            rankScore[i] += numSet(currpieceBoards[j] & Constants.RANKS[i]);
         }
         
         advancement += rankScore[i]*(i + (7-i)*colour);
@@ -456,10 +439,10 @@ public int centreControlScore(long[] pieceBoards){
     long blackCentre = 0, whiteCentre = 0;
     
     for(int i = 0; i < 6; i++){
-        whiteCentre |= (pieceBoards[i] & getConstants().CENTER_4);
+        whiteCentre |= (pieceBoards[i] & Constants.CENTER_4);
     }
     for(int j = 6; j < 12; j++){
-        blackCentre |= (pieceBoards[j] & getConstants().CENTER_4);
+        blackCentre |= (pieceBoards[j] & Constants.CENTER_4);
     }
     
     return numSet(blackCentre) - numSet(whiteCentre);
@@ -503,13 +486,13 @@ public int pawnStructureScore(long pawns){
         
         switch (file) {
             case 7:
-                if((pawns & getConstants().FILES[file-1]) == 0) { isos++;}
+                if((pawns & Constants.FILES[file-1]) == 0) { isos++;}
                 break;
             case 0:
-                if((pawns & getConstants().FILES[file+1]) == 0) { isos++;}
+                if((pawns & Constants.FILES[file+1]) == 0) { isos++;}
                 break;
             default:
-                if(((pawns & getConstants().FILES[file+1]) == 0) && ((pawns & getConstants().FILES[file-1]) == 0)) { isos++;}
+                if(((pawns & Constants.FILES[file+1]) == 0) && ((pawns & Constants.FILES[file-1]) == 0)) { isos++;}
                 break;
         }
         tPawns &= (tPawns-1);
@@ -578,12 +561,12 @@ public void updateGame(int[] move, GameState state){
     pieceBoards[piece] &= (~(1L << fromSq)); //Remove moving piece from old square
     board[fromSq] = empty;
     
-    if((moveFlags & getConstants().moveFlagPromotion) != 0){ //Pawn Promotion
+    if((moveFlags & Constants.moveFlagPromotion) != 0){ //Pawn Promotion
         
-        pieceBoards[moveFlags & getConstants().moveFlagPromotedPiece] |= (1L << toSq); //Add promoted piece to new square
-        board[toSq] = moveFlags & getConstants().moveFlagPromotedPiece;
+        pieceBoards[moveFlags & Constants.moveFlagPromotedPiece] |= (1L << toSq); //Add promoted piece to new square
+        board[toSq] = moveFlags & Constants.moveFlagPromotedPiece;
     }
-    else if((moveFlags & getConstants().moveFlagEnPassant) != 0){ //En Passant
+    else if((moveFlags & Constants.moveFlagEnPassant) != 0){ //En Passant
         
         int[] otherPiece = new int[]{bPawn, wPawn};
         int[] sqDelta = new int[]{-8, 8};
@@ -593,7 +576,7 @@ public void updateGame(int[] move, GameState state){
         board[toSq + sqDelta[colour]] = empty;
         board[toSq] = piece;
     }
-    else if((moveFlags & getConstants().moveFlagKingSideCastle) != 0){ //King-side Castle
+    else if((moveFlags & Constants.moveFlagKingSideCastle) != 0){ //King-side Castle
         
         int[] rook = new int[]{wRook, bRook};
         int[] newSq = new int[]{5, 61};
@@ -606,7 +589,7 @@ public void updateGame(int[] move, GameState state){
         board[oldSq[colour]] = empty;
         board[newSq[colour]] = rook[colour];
     }
-    else if((moveFlags & getConstants().moveFlagQueenSideCastle) != 0){ //Queen-side Castle
+    else if((moveFlags & Constants.moveFlagQueenSideCastle) != 0){ //Queen-side Castle
         
         int[] rook = new int[]{wRook, bRook};
         int[] newSq = new int[]{3, 59};
@@ -696,15 +679,15 @@ public boolean castleIsLegal(int colour, GameState state, boolean queenSide){
 
 GameState tState = state.copy();
 
-tState.getBoard()[getConstants().initKingPos[colour]] = empty;
+tState.getBoard()[Constants.initKingPos[colour]] = empty;
 
 if(queenSide){
-	tState.getBoard()[getConstants().initKingPos[colour]-1] = king[colour];
+	tState.getBoard()[Constants.initKingPos[colour]-1] = king[colour];
     tState.getPieceBoards()[king[colour]] <<= 1;
     if(inCheck(colour, tState)){ return false;}
 }
 else{
-	tState.getBoard()[getConstants().initKingPos[colour]+1] = king[colour];
+	tState.getBoard()[Constants.initKingPos[colour]+1] = king[colour];
 	tState.getPieceBoards()[king[colour]] >>= 1;
     if(inCheck(colour, tState)){ return false;}
 }
@@ -715,8 +698,8 @@ return true;
 
 public boolean isCastleMove(int[] parsedMove, int colour) {
 	return parsedMove[0] == king[colour] &&
-		   parsedMove[2] == getConstants().initKingPos[colour] &&
-		  (parsedMove[3] == getConstants().queenSideCastleDestinationSquare[colour] || parsedMove[3] == getConstants().queenSideCastleDestinationSquare[colour]);
+		   parsedMove[2] == Constants.initKingPos[colour] &&
+		  (parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour] || parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
 }
 
 //--------------------------------------------------------------------------------------------
@@ -768,10 +751,10 @@ public void generatePawnTargets(ArrayList moves, int colour, long pawns, GameSta
     int[][] attackDiff = new int[][]{{7, 64-9}, {9,64-7}}; //push one forward and one left or right
    
     
-    long[] fileMask = new long[]{~getConstants().FILE_H, ~getConstants().FILE_A};
-    long[] promotionMask = new long[]{getConstants().RANK_8, getConstants().RANK_1};
-    long[] doublePushMask = new long[]{getConstants().RANK_3, getConstants().RANK_6};
-    long[] enPassantMask = new long[]{getConstants().RANK_6, getConstants().RANK_3};
+    long[] fileMask = new long[]{~Constants.FILE_H, ~Constants.FILE_A};
+    long[] promotionMask = new long[]{Constants.RANK_8, Constants.RANK_1};
+    long[] doublePushMask = new long[]{Constants.RANK_3, Constants.RANK_6};
+    long[] enPassantMask = new long[]{Constants.RANK_6, Constants.RANK_3};
     
     int diff = pushDiff[colour];
     
@@ -782,7 +765,7 @@ public void generatePawnTargets(ArrayList moves, int colour, long pawns, GameSta
     long enemyPieces = state.getEnemyPieces(colour);
 
     
-    long enPassantTargetSquare = getConstants().FILES[(state.getFlags() & 0b00001110) >>> 1] & enPassantMask[colour];
+    long enPassantTargetSquare = Constants.FILES[(state.getFlags() & 0b00001110) >>> 1] & enPassantMask[colour];
     
     //Single Pushes
     pawnPush = circularLeftShift(pawns, diff) & emptySquares;
@@ -809,7 +792,7 @@ public void generatePawnTargets(ArrayList moves, int colour, long pawns, GameSta
         //En Passant Attacks
         epAttacks = attackTargets & enPassantTargetSquare;
         if((state.getFlags() & 1) == 1){
-            generatePawnMoves(epAttacks, diff, colour, moves, getConstants().moveFlagEnPassant, state.getBoard());
+            generatePawnMoves(epAttacks, diff, colour, moves, Constants.moveFlagEnPassant, state.getBoard());
         }
         
         //Promotion Attacks
@@ -833,7 +816,7 @@ public void generateKnightTargets(ArrayList moves, int colour, long knights, Gam
     long targets;
     while(knights > 0){
         int fromSq = Long.numberOfTrailingZeros(knights);
-        targets = getConstants().KnightMoves[fromSq] & ~friendlyPieces;
+        targets = constants.KnightMoves[fromSq] & ~friendlyPieces;
         generateMoves(fromSq, targets, pieceType, moves, 0, state.getBoard());
         knights &= knights - 1;
     }
@@ -858,14 +841,14 @@ public void generateKingTargets(ArrayList moves, int colour, long king, GameStat
     byte flags = state.getFlags();
     int[] board = state.getBoard();
     
-    long targets = getConstants().KingMoves[fromSq] & ~friendlyPieces;
+    long targets = constants.KingMoves[fromSq] & ~friendlyPieces;
     generateMoves(fromSq, targets, pieceType, moves, 0, board);
 
-    if((flags & (1 << 6)) != 0 && (allPieces & getConstants().queenCastleSquares[colour]) == 0){
-        generateMoves(fromSq, getConstants().queenSideCastleDestinationSquare[colour], pieceType, moves, getConstants().moveFlagQueenSideCastle, board);
+    if((flags & (1 << 6)) != 0 && (allPieces & Constants.queenCastleSquares[colour]) == 0){
+        generateMoves(fromSq, Constants.queenSideCastleDestinationSquare[colour], pieceType, moves, Constants.moveFlagQueenSideCastle, board);
     }
-    if((flags & (1 << 7)) != 0 && (allPieces & getConstants().kingCastleSquares[colour]) == 0){
-        generateMoves(fromSq, getConstants().kingSideCastleDestinationSquare[colour], pieceType, moves, getConstants().moveFlagKingSideCastle, board);
+    if((flags & (1 << 7)) != 0 && (allPieces & Constants.kingCastleSquares[colour]) == 0){
+        generateMoves(fromSq, Constants.kingSideCastleDestinationSquare[colour], pieceType, moves, Constants.moveFlagKingSideCastle, board);
     }  
 }
 
@@ -887,11 +870,11 @@ public void generateRookTargets(ArrayList moves, int colour, long rooks, GameSta
     while(rooks != 0){
         fromSq = Long.numberOfTrailingZeros(rooks);
 
-        index = (int) (((allPieces & getConstants().RookMaskOnSquare[fromSq])*
-                    getConstants().magicNumberRook[fromSq]) >>>
-                    getConstants().magicShiftsRook[fromSq]);
+        index = (int) (((allPieces & constants.RookMaskOnSquare[fromSq])*
+                    constants.magicNumberRook[fromSq]) >>>
+                    constants.magicShiftsRook[fromSq]);
 
-        targets = getConstants().magicMovesRook[fromSq][index] & (~friendlyPieces);
+        targets = constants.magicMovesRook[fromSq][index] & (~friendlyPieces);
         generateMoves(fromSq, targets, pieceType, moves, 0, state.getBoard());
         
         rooks &= rooks -1;
@@ -916,11 +899,11 @@ public void generateBishopTargets(ArrayList moves, int colour, long bishops, Gam
     while(bishops != 0){
         fromSq = Long.numberOfTrailingZeros(bishops);
 
-        index = (int) (((allPieces & getConstants().BishopMaskOnSquare[fromSq])*
-                    getConstants().magicNumberBishop[fromSq]) >>>
-                    getConstants().magicShiftsBishop[fromSq]);
+        index = (int) (((allPieces & constants.BishopMaskOnSquare[fromSq])*
+                    constants.magicNumberBishop[fromSq]) >>>
+                    constants.magicShiftsBishop[fromSq]);
 
-        targets = getConstants().magicMovesBishop[fromSq][index] & (~friendlyPieces);
+        targets = constants.magicMovesBishop[fromSq][index] & (~friendlyPieces);
         generateMoves(fromSq, targets, pieceType, moves, 0, state.getBoard());
         
         bishops &= bishops -1;
@@ -946,15 +929,15 @@ public void generateQueenTargets(ArrayList moves, int colour, long queens, GameS
     while(queens != 0){
         fromSq = Long.numberOfTrailingZeros(queens);
 
-        rookIndex = (int) (((allPieces & getConstants().RookMaskOnSquare[fromSq])*
-                    getConstants().magicNumberRook[fromSq]) >>>
-                    getConstants().magicShiftsRook[fromSq]);
+        rookIndex = (int) (((allPieces & constants.RookMaskOnSquare[fromSq])*
+                    constants.magicNumberRook[fromSq]) >>>
+                    constants.magicShiftsRook[fromSq]);
         
-        bishopIndex = (int) (((allPieces & getConstants().BishopMaskOnSquare[fromSq])*
-                    getConstants().magicNumberBishop[fromSq]) >>>
-                    getConstants().magicShiftsBishop[fromSq]);
+        bishopIndex = (int) (((allPieces & constants.BishopMaskOnSquare[fromSq])*
+                    constants.magicNumberBishop[fromSq]) >>>
+                    constants.magicShiftsBishop[fromSq]);
 
-        targets = (getConstants().magicMovesBishop[fromSq][bishopIndex] | getConstants().magicMovesRook[fromSq][rookIndex])
+        targets = (constants.magicMovesBishop[fromSq][bishopIndex] | constants.magicMovesRook[fromSq][rookIndex])
                   & (~friendlyPieces);
         generateMoves(fromSq, targets, pieceType, moves, 0, state.getBoard());
         
@@ -1014,10 +997,10 @@ public void generatePawnPromotionMoves(long Targets, int moveDiff, int colour, A
         int capture = board[toSq];
         int move = pieceType << 28 | capture << 24 | fromSq << 16 | toSq << 8;
 
-        moveList.add(move | getConstants().moveFlagPromotion | wRook + (colour * 6));   //Rook
-        moveList.add(move | getConstants().moveFlagPromotion | wKnight + (colour * 6)); //Knight
-        moveList.add(move | getConstants().moveFlagPromotion | wBishop + (colour * 6)); //Bishop
-        moveList.add(move | getConstants().moveFlagPromotion | wQueen + (colour * 6));  //Queen
+        moveList.add(move | Constants.moveFlagPromotion | wRook + (colour * 6));   //Rook
+        moveList.add(move | Constants.moveFlagPromotion | wKnight + (colour * 6)); //Knight
+        moveList.add(move | Constants.moveFlagPromotion | wBishop + (colour * 6)); //Bishop
+        moveList.add(move | Constants.moveFlagPromotion | wQueen + (colour * 6));  //Queen
         Targets &= Targets - 1;
         
     }
@@ -1152,24 +1135,24 @@ public int convertFENtoMoveInt(String fen){
 	
 	if ((startInd == 4  && endInd == 6  && gameBoard[4]  == wKing) || 
 		(startInd == 60 && endInd == 62 && gameBoard[60] == bKing)) {
-		flags |= getConstants().moveFlagKingSideCastle;
+		flags |= Constants.moveFlagKingSideCastle;
 	}
 	else if ((startInd == 4  && endInd == 2  && gameBoard[4]  == wKing) || 
 			 (startInd == 60 && endInd == 58 && gameBoard[60] == bKing)) {
-		flags |= getConstants().moveFlagQueenSideCastle;
+		flags |= Constants.moveFlagQueenSideCastle;
 	}
 	else if(gameBoard[startInd] == wPawn && ((gameFlags & 1) == 1) &&
-			endSq[0] == 5 && endSq[1] == (gameFlags & getConstants().gameFlagEnPassantMask)){
-		flags |= getConstants().moveFlagEnPassant;
+			endSq[0] == 5 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
+		flags |= Constants.moveFlagEnPassant;
     }
 	else if(gameBoard[startInd] == bPawn && ((gameFlags & 1) == 1) &&
-			endSq[0] == 2 && endSq[1] == (gameFlags & getConstants().gameFlagEnPassantMask)){
-		flags |= getConstants().moveFlagEnPassant;
+			endSq[0] == 2 && endSq[1] == (gameFlags & Constants.gameFlagEnPassantMask)){
+		flags |= Constants.moveFlagEnPassant;
     }
 
 	if(fen.length() > 4){
 		String promotionType = fen.substring(4).toLowerCase();
-		flags |= getConstants().moveFlagPromotion;
+		flags |= Constants.moveFlagPromotion;
 		
 		int promotionPiece;
 		
@@ -1331,13 +1314,19 @@ private int pieceNum(char c){
 
 }
 
+public GameState getGameState() {
+	return gameState;
+}
+
+public void setGameState(GameState gameState) {
+	this.gameState = gameState;
+}
 
 public Constants getConstants() {
-	return Constants;
+	return constants;
 }
 
 public void setConstants(Constants constants) {
-	Constants = constants;
+	this.constants = constants;
 }
-
 }

@@ -5,7 +5,9 @@
  */
 package joeflowplayschess.engine;
 
-import java.io.Serializable;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -47,6 +49,25 @@ import java.util.Random;
 
 public class Constants implements Serializable{
 
+public static int WHITE = 			0;
+public static int BLACK =			1;
+
+public static int wPawn = 			0;
+public static int wKnight = 		1;
+public static int wBishop = 		2;
+public static int wRook = 			3;
+public static int wQueen = 		    4;
+public static int wKing = 			5;
+
+public static int bPawn = 			6;
+public static int bKnight =		    7;
+public static int bBishop =		    8;
+public static int bRook = 			9;
+public static int bQueen = 		    10;
+public static int bKing = 			11;
+
+public static int empty = 			0xE;
+
 public static long ALL_SET =                0xffffffffffffffffL; //all 64 squares
 
 public static long RANK_1 =                 0xffL;
@@ -72,6 +93,7 @@ public static long FILE_H =                 0x8080808080808080L;
 public static long[] FILES =                new long[]{FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H};
 
 public static long CENTER_4 =               0x1818000000L;
+
 //Used when setting moveFlags. Makes for easier code and less mistakes
 public static int moveFlagPromotedPiece =   0b00001111;
 public static int moveFlagPromotion =       0b00010000;
@@ -80,6 +102,34 @@ public static int moveFlagQueenSideCastle = 0b01000000;
 public static int moveFlagKingSideCastle =  0b10000000;
 
 public static int gameFlagEnPassantMask = 0b00001110;
+
+
+/*GAME FLAGS
+variable name: flags
+data type: byte
+
+bit 1: En Passant is possible, there was a pawn double pushed on the last turn
+bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
+
+bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
+bit 6: Black King Side Castle possible  (Rook on square 63)
+bit 7: White Queen Side Castle possible (Rook on square 0)
+bit 8: White King Side Castle possible  (Rook on square 7)
+
+*/
+public static byte EN_PASSANT =             0b00000001;
+public static byte FILE_0 =                 0b00000000;
+public static byte FILE_1 =                 0b00000010;
+public static byte FILE_2 =                 0b00000100;
+public static byte FILE_3 =                 0b00000110;
+public static byte FILE_4 =                 0b00001000;
+public static byte FILE_5 =                 0b00001010;
+public static byte FILE_6 =                 0b00001100;
+public static byte FILE_7 =                 0b00001110;
+public static byte BLACK_QUEENSIDE_CASTLE = 0b00010000;
+public static byte BLACK_KINGSIDE_CASTLE =  0b00100000;
+public static byte WHITE_QUEENSIDE_CASTLE = 0b01000000;
+public static byte WHITE_KINGSIDE_CASTLE =  (byte) 0b10000000;
 
 //The squares in between the castling squares which need to be checked for potential checks
 public static long[] queenCastleSquares =   new long[]{0xe, 0xe00000000000000L};
@@ -111,8 +161,34 @@ public long[] BishopMaskOnSquare =   new long[64];
 public long[] KnightMoves =          new long[64];
 public long[] KingMoves =            new long[64];
 
-public Constants(){
-    
+public static Constants init(ClassLoader classLoader) {
+
+    URL constantsURL = classLoader.getResource("resources/chess.constants");
+
+    try {
+        File constantsFile;
+        if(constantsURL != null){
+            constantsFile = new File(constantsURL.toURI());
+            return (Constants) new ObjectInputStream(new FileInputStream(constantsFile)).readObject();
+        }
+        else{
+            Constants c = new Constants();
+            constantsFile = new File("resources/chess.constants");
+            new ObjectOutputStream(new FileOutputStream(constantsFile)).writeObject(c);
+            return c;
+        }
+    } catch (URISyntaxException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
+
+private Constants(){
     /*KingMoves and KnightMoves are 64-element long arrays which represent the
     possible destination squares for kings and knights at each square on the board.
     They are built by initially defining the 35th square and bitshifting in either

@@ -8,46 +8,21 @@ public class GameState {
 	private long[] 	  gamePieceBoards;
 	private int[] 	  gameBoard;
 	
-	private static int WHITE = 			0;
-	private static int BLACK =			1;    
-	    
-	private static int wPawn = 			0;
-	private static int wKnight = 		1;
-	private static int wBishop = 		2;
-	private static int wRook = 			3;
-	private static int wQueen = 		4;
-	private static int wKing = 			5;
-	
-	private static int bPawn = 			6;
-	private static int bKnight =		7;
-	private static int bBishop =		8;
-	private static int bRook = 			9;
-	private static int bQueen = 		10;
-	private static int bKing = 			11;
-	
-	private static int empty = 			0xE;
-	
-	private Constants Constants;
-	
-	public GameState(boolean startPos, Constants constants) {
+	public GameState() {
 		
-		gameFlags = (byte) 0b11110000; //Initialize with all castling rights
+		gameFlags = (byte) (Constants.WHITE_KINGSIDE_CASTLE | Constants.WHITE_QUEENSIDE_CASTLE |
+							Constants.BLACK_KINGSIDE_CASTLE | Constants.BLACK_QUEENSIDE_CASTLE); //Initialize with all castling rights
 		gamePieceBoards = new long[12];
 		gameBoard = new int[64];
-		
-		Constants = constants;
-		if(startPos) {
-			setToStartPosition();
-		}
+		setToStartPosition();
 	}
 	
-	private GameState(byte flags, long[] pieceBoards, int[] board, Constants constants) {
-		
-		Constants = constants;
-		
+	public GameState(byte flags, int[] board) {
+
 		gameFlags = flags;
-		gamePieceBoards = pieceBoards;
 		gameBoard = board;
+		gamePieceBoards = new long[12];
+		generatePieceBoards();
 	}
 	
 	
@@ -72,7 +47,7 @@ public class GameState {
 	
 	
 	public GameState copy(){
-		return new GameState(gameFlags, Arrays.copyOf(gamePieceBoards, 12), Arrays.copyOf(gameBoard, 64), Constants);
+		return new GameState(gameFlags, Arrays.copyOf(gameBoard, 64));
 	}
 	
 	public long getFriendlyPieces(int colour) {
@@ -96,7 +71,7 @@ public class GameState {
 	
 	public long getEmptySquares() {
 	    //Build a bitboard representing all free, unoccupied squares on the board
-	    long freeSquares = Constants.ALL_SET; 
+	    long freeSquares = Constants.ALL_SET;
 	    for(long piece : gamePieceBoards){
 	        freeSquares &= (~piece);
 	    }
@@ -127,63 +102,92 @@ public class GameState {
 		    
 		    //White Pieces
 		    if(sq == 0 || sq == 7){
-		        gamePieceBoards[wRook] = gamePieceBoards[wRook] | (1L << sq);
-		        gameBoard[sq] = wRook;
+		        gameBoard[sq] = Constants.wRook;
 		    }
-		    if(sq == 1 || sq == 6){
-		        gamePieceBoards[wKnight] = gamePieceBoards[wKnight] | (1L << sq);
-		        gameBoard[sq] = wKnight;
+		    else if(sq == 1 || sq == 6){
+		        gameBoard[sq] = Constants.wKnight;
 		    }
-		    if(sq == 2 || sq == 5){
-		        gamePieceBoards[wBishop] = gamePieceBoards[wBishop] | (1L << sq);
-		        gameBoard[sq] = wBishop;
+			else if(sq == 2 || sq == 5){
+		        gameBoard[sq] = Constants.wBishop;
 		    }
-		    if(sq == 3){
-		        gamePieceBoards[wQueen] = gamePieceBoards[wQueen] | (1L << sq);
-		        gameBoard[sq] = wQueen;
+			else if(sq == 3){
+		        gameBoard[sq] = Constants.wQueen;
 		    }
-		    if(sq == 4){
-		        gamePieceBoards[wKing] = gamePieceBoards[wKing] | (1L << sq);
-		        gameBoard[sq] = wKing;
+			else if(sq == 4){
+		        gameBoard[sq] = Constants.wKing;
 		    }
-		    if(sq > 7 && sq < 16){
-		        gamePieceBoards[wPawn] = gamePieceBoards[wPawn] | (1L << sq);
-		        gameBoard[sq] = wPawn;
+			else if(sq > 7 && sq < 16){
+		        gameBoard[sq] = Constants.wPawn;
 		    }
-		    
-		    if(sq > 15 && sq < 48){
-		        gameBoard[sq] = empty;
+
+			else if(sq > 15 && sq < 48){
+		        gameBoard[sq] = Constants.empty;
 		    }
 		    
 		    //Black pieces
-		    if(sq == 56 || sq == 63){
-		        gamePieceBoards[bRook] = gamePieceBoards[bRook] | (1L << sq);
-		        gameBoard[sq] = bRook;
+			else if(sq == 56 || sq == 63){
+		        gameBoard[sq] = Constants.bRook;
 		    }
-		    if(sq == 57 || sq == 62){
-		        gamePieceBoards[bKnight] = gamePieceBoards[bKnight] | (1L << sq);
-		        gameBoard[sq] = bKnight;
+			else if(sq == 57 || sq == 62){
+		        gameBoard[sq] = Constants.bKnight;
 		    }
-		    if(sq == 58 || sq == 61){
-		        gamePieceBoards[bBishop] = gamePieceBoards[bBishop] | (1L << sq);
-		        gameBoard[sq] = bBishop;
+			else if(sq == 58 || sq == 61){
+		        gameBoard[sq] = Constants.bBishop;
 		    }
-		    if(sq == 59){
-		        gamePieceBoards[bQueen] = gamePieceBoards[bQueen] | (1L << sq);
-		        gameBoard[sq] = bQueen;
+			else if(sq == 59){
+		        gameBoard[sq] = Constants.bQueen;
 		    }
-		    if(sq == 60){
-		        gamePieceBoards[bKing] = gamePieceBoards[bKing] | (1L << sq);
-		        gameBoard[sq] = bKing;
+			else if(sq == 60){
+		        gameBoard[sq] = Constants.bKing;
 		    }
-		    if(sq > 47 && sq < 56){
-		        gamePieceBoards[bPawn] = gamePieceBoards[bPawn] | (1L << sq);
-		        gameBoard[sq] = bPawn;
+			else if(sq > 47 && sq < 56){
+		        gameBoard[sq] = Constants.bPawn;
 		    }
 		}
-		
+		generatePieceBoards();
 	}
-	
-	
-	
+
+	private void generatePieceBoards(){
+		for(int i = 0; i < 64; i++){
+			if(gameBoard[i] != Constants.empty) {
+				gamePieceBoards[gameBoard[i]] |= (1L << i);
+			}
+		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof GameState)) return false;
+
+		GameState gameState = (GameState) o;
+
+		if (gameFlags != gameState.gameFlags) return false;
+		if (!Arrays.equals(gamePieceBoards, gameState.gamePieceBoards)) return false;
+		return Arrays.equals(gameBoard, gameState.gameBoard);
+	}
+
+	@Override
+	public String toString(){
+		String n = "\r\n";
+		char[] pieceMapping = new char[]{'p', 'n', 'b', 'r', 'q', 'k', 'P', 'N', 'B', 'R', 'Q', 'K', ' ', ' ', '0'};
+		char[][] boardRows = new char[8][16];
+
+		String board ="";
+		int rowNum = 7;
+		for(char[] row : boardRows){
+			for(int i = 0; i < 7; i++){
+				row[2*i] = pieceMapping[gameBoard[rowNum*8 + i]];
+				row[2*i + 1] = ' ';
+			}
+			row[14] = pieceMapping[gameBoard[rowNum*8 + 7]];
+			rowNum--;
+			board += new String(row) + n;
+		}
+
+		return "Board:" + n +
+				board +
+				"Flags:" + n +
+				Long.toBinaryString(Byte.toUnsignedLong(gameFlags));
+	}
 }

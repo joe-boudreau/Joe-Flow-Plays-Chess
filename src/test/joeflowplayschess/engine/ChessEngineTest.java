@@ -1,11 +1,14 @@
 package joeflowplayschess.engine;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class ChessEngineTest{
 
-    @Test
-    public void
+    @Before
+    public void setup(){
+
+    }
 
 
 

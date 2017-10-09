@@ -29,7 +29,7 @@ private static void uci(){
 }
 
 private static void debug(boolean On){
-	JoeFlow.setDebugMode(On);
+	//JoeFlow.setDebugMode(On);
 }
 
 private static void isready() {
@@ -46,7 +46,8 @@ private static void register(){
 }
 
 private static void ucinewgame(){
-	JoeFlow.setInitialized(false);
+	//TODO: Figure this shit out now that you've refactored the engine
+	//JoeFlow.setInitialized(false);
 	JoeFlow.init();
 	
 }

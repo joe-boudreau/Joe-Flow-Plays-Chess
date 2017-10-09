@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Joe-Flow-Plays-Chess.iml" filepath="$PROJECT_DIR$/Joe-Flow-Plays-Chess.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Joe-Flow-Plays-Chess.iml" filepath="$PROJECT_DIR$/.idea/modules/Joe-Flow-Plays-Chess.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Joe-Flow-Plays-Chess_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Joe-Flow-Plays-Chess_main.iml" group="Joe-Flow-Plays-Chess" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Joe-Flow-Plays-Chess_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Joe-Flow-Plays-Chess_test.iml" group="Joe-Flow-Plays-Chess" />
     </modules>
