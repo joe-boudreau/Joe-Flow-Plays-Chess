@@ -72,6 +72,8 @@ public class Constants implements Serializable{
 
     public static int empty = 			0xE;
 
+    public static int[] kings = 		        new int[]{wKing, bKing};
+
     public static long ALL_SET =                0xffffffffffffffffL; //all 64 squares
 
     public static long RANK_1 =                 0xffL;

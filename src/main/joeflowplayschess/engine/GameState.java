@@ -2,11 +2,14 @@ package joeflowplayschess.engine;
 
 import java.util.Arrays;
 
+import static joeflowplayschess.engine.Constants.WHITE;
+
 public class GameState {
 	
 	private byte 	  gameFlags;
 	private long[] 	  gamePieceBoards;
 	private int[] 	  gameBoard;
+	private int 	  turn;
 	
 	public GameState() {
 		
@@ -14,14 +17,16 @@ public class GameState {
 							Constants.BLACK_KINGSIDE_CASTLE | Constants.BLACK_QUEENSIDE_CASTLE); //Initialize with all castling rights
 		gamePieceBoards = new long[12];
 		gameBoard = new int[64];
+		turn = WHITE;
 		setToStartPosition();
 	}
 	
-	public GameState(byte flags, int[] board) {
+	public GameState(byte flags, int[] board, int colourToMove) {
 
 		gameFlags = flags;
 		gameBoard = board;
 		gamePieceBoards = new long[12];
+		turn = colourToMove;
 		generatePieceBoards();
 	}
 	
@@ -44,10 +49,20 @@ public class GameState {
 	public void setBoard(int[] gameBoard) {
 		this.gameBoard = gameBoard;
 	}
-	
+	public int getTurn() {
+		return turn;
+	}
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+
+	public void switchTurn(){
+		//This will convert WHITE to BLACK and BLACK to WHITE
+		turn = 1 - turn;
+	}
 	
 	public GameState copy(){
-		return new GameState(gameFlags, Arrays.copyOf(gameBoard, 64));
+		return new GameState(gameFlags, Arrays.copyOf(gameBoard, 64), turn);
 	}
 	
 	public long getFriendlyPieces(int colour) {
@@ -164,6 +179,7 @@ public class GameState {
 
 		if (gameFlags != gameState.gameFlags) return false;
 		if (!Arrays.equals(gamePieceBoards, gameState.gamePieceBoards)) return false;
+		if (turn != gameState.getTurn()) return false;
 		return Arrays.equals(gameBoard, gameState.gameBoard);
 	}
 
@@ -188,6 +204,8 @@ public class GameState {
 		return "Board:" + n +
 				board +
 				"Flags:" + n +
-				Long.toBinaryString(Byte.toUnsignedLong(gameFlags));
+				Long.toBinaryString(Byte.toUnsignedLong(gameFlags)) + n +
+				"Turn:" + n +
+				(turn == WHITE ? "WHITE" : "BLACK");
 	}
 }
