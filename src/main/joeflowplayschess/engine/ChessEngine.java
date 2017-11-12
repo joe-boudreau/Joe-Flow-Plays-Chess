@@ -100,7 +100,7 @@ public int[] selectMove(int colour, int searchDepth){
 	
 	nodeCount = 0;
 	
-	bestMove = chooseBestMove(gameState, colour, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	bestMove = chooseBestMove(gameState, colour, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
 	
 	return checkForMateAndUpdateBoard(colour, searchDepth, bestMove);
 
@@ -112,10 +112,8 @@ public int[] selectMoveRestricted(String[] FENMoves){
 	
 	nodeCount = 0;
 	
-	bestMove = chooseBestMoveRestricted(gameState, 
-										turn, defaultDepth, Integer.MIN_VALUE, 
-										Integer.MAX_VALUE, 
-										Stream.of(FENMoves).map(s -> convertFENtoMoveInt(s)).mapToInt(Integer::intValue).toArray());
+	bestMove = chooseBestMove(gameState, turn, defaultDepth, Integer.MIN_VALUE, Integer.MAX_VALUE,
+							  Stream.of(FENMoves).map(s -> convertFENtoMoveInt(s)).mapToInt(Integer::intValue).toArray());
 	
 	return checkForMateAndUpdateBoard(turn, defaultDepth, bestMove);
 
@@ -171,7 +169,7 @@ private int[] checkForMateAndUpdateBoard(int colour, int searchDepth, int[] best
  * from moves previously searched in the search tree, which allows for pruning of the tree if the better move for the
  * opposing player has already been determined and the tree currently being searched would not be selected by them.
  */
-private int[] chooseBestMove(GameState gState, int colour, int depth, int alpha, int beta){
+private int[] chooseBestMove(GameState gState, int colour, int depth, int alpha, int beta, int[] movesToSearch){
 
 	int 	i;
 	int[] 	moves, moveScore, bestMove, parsedMove;
@@ -181,112 +179,24 @@ private int[] chooseBestMove(GameState gState, int colour, int depth, int alpha,
 	boolean legal = true;
 	
 	ArrayList<int[]> bestMoves = new ArrayList();
-	
-	moves = generateAllMoves(colour, gState);
-	printMovesAsStrings(moves);
-	for(i = 0; i < moves.length; i++){
-	    
-	    nodeCount++;
-	    GameState tState = gState.copy();
 
-	    parsedMove = parseMove(moves[i]);
-	    
-	    updateGame(parsedMove,tState);
-	    
-	    if(!check && isCastleMove(parsedMove, colour)){
-	        legal = isCastleLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
-	    }
-	    
-	    
-	    if(legal && !inCheck(colour, tState)){
-	        
-	        if(depth > 0){
-	        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
-	            int[] theirMove = chooseBestMove(tState, 1-colour, depth - 1, alpha, beta);
-	            moveScore = new int[]{moves[i], theirMove[1]};   
-	        }
-	        else{
-	        	//Evaluate board position if at the terminal depth
-	            moveScore = new int[]{moves[i], evaluateGameScore(tState)};
-	        }
-	        
-	        
-	        if(bestMoves.isEmpty()){
-	                bestMoves.add(moveScore);        
-	        }
-	        else if(bestMoves.get(0)[1] == moveScore[1]){
-	                bestMoves.add(moveScore);
-	        }
-	        
-	        if(colour == BLACK){
-	            
-	        	//A higher move score is beneficial for BLACK
-	            if(bestMoves.get(0)[1] < moveScore[1]){
-	                bestMoves.clear();
-	                bestMoves.add(moveScore);   
-	            }
-	            
-	            alpha = Math.max(alpha, bestMoves.get(0)[1]);
-	            
-	        }
-	        else{
-	            //A lower (possibly negative) game score is beneficial for WHITE
-	            if(bestMoves.get(0)[1] > moveScore[1]){
-	                bestMoves.clear();
-	                bestMoves.add(moveScore);
-	            } 
-	            beta = Math.min(beta, bestMoves.get(0)[1]);
-	        }
-	        
-	        if(beta < alpha){
-	                break; //Beta or alpha cut-off
-	        }
-	    }
-	    
-	    legal = true;
-	}
-	
-	if(bestMoves.size() > 1){
-		//If more than one move results in the same board score, choose one randomly
-	    int randInt = r.nextInt(bestMoves.size());
-	    bestMove = bestMoves.get(randInt);
-	}
-	else if(bestMoves.size() == 1){
-	    bestMove = bestMoves.get(0);
+	if(movesToSearch == null) {
+		moves = generateAllMoves(colour, gState);
 	}
 	else{
-	    //If bestMoves does not have any moves in it, this means no moves for black are legal and it is either in checkmate or it is a stalemate
-	    if(check){
-	        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
-	    }
-	    else{
-	        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
-	    }
-	    
+		moves = movesToSearch;
 	}
-	
-	return bestMove;
 
-}
+	if(depth == defaultDepth){
+		printMovesAsStrings(moves);
+	}
 
-private int[] chooseBestMoveRestricted(GameState gState, int colour, int depth, int alpha, int beta, int[] movesToSearch){
 
-	int 	i;
-	int[] 	moves, moveScore, bestMove, parsedMove;
-	int[][] parsedMoves, parsedMoves1;
-	
-	boolean check = inCheck(colour, gState);
-	boolean legal = true;
-	
-	ArrayList<int[]> bestMoves = new ArrayList();
-	
-	moves = movesToSearch;
-	
 	for(i = 0; i < moves.length; i++){
 	    
 	    nodeCount++;
 	    GameState tState = gState.copy();
-	    
+
 	    parsedMove = parseMove(moves[i]);
 	    
 	    updateGame(parsedMove,tState);
@@ -295,11 +205,12 @@ private int[] chooseBestMoveRestricted(GameState gState, int colour, int depth, 
 	        legal = isCastleLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
 	    }
 	    
+	    
 	    if(legal && !inCheck(colour, tState)){
 	        
 	        if(depth > 0){
 	        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
-	            int[] theirMove = chooseBestMove(tState, 1-colour, depth - 1, alpha, beta);
+	            int[] theirMove = chooseBestMove(tState, 1-colour, depth - 1, alpha, beta, null);
 	            moveScore = new int[]{moves[i], theirMove[1]};   
 	        }
 	        else{

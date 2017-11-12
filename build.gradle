@@ -10,6 +10,7 @@
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'idea'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -20,8 +21,13 @@ repositories {
 }
 
 dependencies {
+	compile 'org.slf4j:slf4j-api:1.7.24'
+	compile 'org.slf4j:slf4j-simple:1.7.24'
 	compile 'junit:junit:4.12'
+	compile 'org.apache.logging.log4j:log4j:2.9.1'
+	compile 'org.slf4j:slf4j-log4j12:1.8.0-beta0'
 	testCompile 'junit:junit:4.12'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
 }
 
 sourceSets {
@@ -30,7 +36,7 @@ sourceSets {
 			srcDirs = ['src/main']
 		}
 		resources {
-			srcDirs = ['resources']
+			srcDirs = ['resources', 'config']
 		}
 	}
 	test {

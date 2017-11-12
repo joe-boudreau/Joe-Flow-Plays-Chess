@@ -1,13 +1,14 @@
 package joeflowplayschess.engine;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import org.apache.commons.lang3.SystemUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+
 
 public class EngineTestUtils {
 
@@ -22,7 +23,7 @@ public class EngineTestUtils {
                                       "r n b q k b n r";
 
 
-    public static int boardStringLength = 134;
+    public static int boardStringLengthLinux = 127;
 
     public static List<Character> pieceMapping = Arrays.asList(new Character[]{'p', 'n', 'b', 'r', 'q', 'k', 'P', 'N', 'B', 'R', 'Q', 'K', ' ', ' ', '0'});
 
@@ -34,7 +35,7 @@ public class EngineTestUtils {
     public static int[] toGameBoard(String boardString) {
         int[] gameBoard = new int[64];
 
-        if (boardString.length() != boardStringLength) {
+        if (boardString.length() != (boardStringLengthLinux + (SystemUtils.IS_OS_WINDOWS ? 8 : 0))){
             throw new IllegalArgumentException("Board String Malformed!");
         }
 
