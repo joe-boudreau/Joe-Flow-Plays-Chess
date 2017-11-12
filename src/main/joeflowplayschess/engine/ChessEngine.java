@@ -7,11 +7,12 @@ package joeflowplayschess.engine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
 import static joeflowplayschess.engine.Constants.*;
-import static joeflowplayschess.engine.DebugUtils.*;
+import static joeflowplayschess.engine.DebugUtils.printMovesAsStrings;
 
 /**
  * The ChessEngine class computes all the decision making for the engine, which plays
@@ -43,10 +44,10 @@ public class ChessEngine {
 	
 	private static int defaultDepth = 	3;
 	
-	Random r = 						new Random();
-	boolean debugMode = 			true;
-	boolean initialized =			false;
-	boolean firstgame = 			true;
+	private Random r = 						new Random();
+	private boolean debugMode = 			true;
+	private boolean initialized =			false;
+	private boolean firstgame = 			true;
 
 public ChessEngine(){}
 
@@ -149,7 +150,7 @@ private int[] checkForMateAndUpdateBoard(int colour, int searchDepth, int[] best
 		System.out.println(bestMove[1]);
 		System.out.println("Game Flags:");
 		System.out.println(Integer.toBinaryString(Byte.toUnsignedInt(gameState.getFlags())));
-		printBoardArray(gameState.getBoard());
+		System.out.println(gameState.toString());
 	}
 	
 	return moveInfo;
@@ -176,28 +177,24 @@ private int[] chooseBestMove(GameState gState, int colour, int depth, int alpha,
 	int[] 	moves, moveScore, bestMove, parsedMove;
 	int[][] parsedMoves, parsedMoves1;
 	
-	boolean check = false;
+	boolean check = inCheck(colour, gState);
 	boolean legal = true;
 	
 	ArrayList<int[]> bestMoves = new ArrayList();
 	
 	moves = generateAllMoves(colour, gState);
-	
-	if(inCheck(colour, gState)){
-	    check = true;
-	}
-	
+	printMovesAsStrings(moves);
 	for(i = 0; i < moves.length; i++){
 	    
 	    nodeCount++;
 	    GameState tState = gState.copy();
-	    
+
 	    parsedMove = parseMove(moves[i]);
 	    
 	    updateGame(parsedMove,tState);
 	    
 	    if(!check && isCastleMove(parsedMove, colour)){
-	        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
+	        legal = isCastleLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
 	    }
 	    
 	    
@@ -278,16 +275,12 @@ private int[] chooseBestMoveRestricted(GameState gState, int colour, int depth, 
 	int[] 	moves, moveScore, bestMove, parsedMove;
 	int[][] parsedMoves, parsedMoves1;
 	
-	boolean check = false;
+	boolean check = inCheck(colour, gState);
 	boolean legal = true;
 	
 	ArrayList<int[]> bestMoves = new ArrayList();
 	
 	moves = movesToSearch;
-	
-	if(inCheck(colour, gState)){
-	    check = true;
-	}
 	
 	for(i = 0; i < moves.length; i++){
 	    
@@ -299,7 +292,7 @@ private int[] chooseBestMoveRestricted(GameState gState, int colour, int depth, 
 	    updateGame(parsedMove,tState);
 	    
 	    if(!check && isCastleMove(parsedMove, colour)){
-	        legal = castleIsLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
+	        legal = isCastleLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
 	    }
 	    
 	    if(legal && !inCheck(colour, tState)){
@@ -675,24 +668,30 @@ return false;
  * in addition to the checks this function performs.
  */
 
-public boolean castleIsLegal(int colour, GameState state, boolean queenSide){
+public boolean isCastleLegal(int colour, GameState state, boolean queenSide){
 
-GameState tState = state.copy();
+	GameState tState = state.copy();
 
-tState.getBoard()[Constants.initKingPos[colour]] = empty;
+	tState.getBoard()[Constants.initKingPos[colour]] = empty;
 
-if(queenSide){
-	tState.getBoard()[Constants.initKingPos[colour]-1] = king[colour];
-    tState.getPieceBoards()[king[colour]] <<= 1;
-    if(inCheck(colour, tState)){ return false;}
-}
-else{
-	tState.getBoard()[Constants.initKingPos[colour]+1] = king[colour];
-	tState.getPieceBoards()[king[colour]] >>= 1;
-    if(inCheck(colour, tState)){ return false;}
-}
+	if(queenSide){
+		if(colour == WHITE && ((tState.getFlags() & Constants.WHITE_QUEENSIDE_CASTLE) == 0)) {return false;}
+		if(colour == BLACK && ((tState.getFlags() & Constants.BLACK_QUEENSIDE_CASTLE) == 0)) {return false;}
 
-return true;
+		tState.getBoard()[Constants.initKingPos[colour]-1] = king[colour];
+		tState.getPieceBoards()[king[colour]] <<= 1;
+		if(inCheck(colour, tState)){ return false;}
+	}
+	else{
+		if(colour == WHITE && ((tState.getFlags() & Constants.WHITE_KINGSIDE_CASTLE) == 0)) {return false;}
+		if(colour == BLACK && ((tState.getFlags() & Constants.BLACK_KINGSIDE_CASTLE) == 0)) {return false;}
+
+		tState.getBoard()[Constants.initKingPos[colour]+1] = king[colour];
+		tState.getPieceBoards()[king[colour]] >>= 1;
+		if(inCheck(colour, tState)){ return false;}
+	}
+
+	return true;
 
 }
 
@@ -1089,7 +1088,7 @@ for(int wmove : whiteMoves){
     updateGame(parseMove(wmove), tGameState);
     
     if(!inCheck(WHITE, tGameState)){ //If move doesn't leave white in check
-        legalList.add(wmove);									//then Add move
+        legalList.add(wmove);		 //then Add move
     } 
 }
 
@@ -1106,8 +1105,8 @@ return legalMoves;
 /**
  * Check that castle is legal for white
  */
-public boolean castleIsLegal(boolean queenSide){
-	return castleIsLegal(WHITE, gameState, queenSide);
+public boolean isCastleLegalForWhite(boolean queenSide){
+	return isCastleLegal(WHITE, gameState, queenSide);
 }
 
 //-------------------------------------------------------------------------------------------
@@ -1308,25 +1307,10 @@ private int[] ANtoArrayIndex(int Row, char Col){
 
 private int pieceNum(char c){
 	
-	char[] FENPieces = {'P', 'K', 'B', 'R', 'Q', 'K', 'p', 'k', 'b', 'r', 'q', 'k'};
-	return Arrays.binarySearch(FENPieces, 0, 11, c);
+	List<Character> FENPieces = Arrays.asList(new Character[]{'P', 'N', 'B', 'R', 'Q', 'K', 'p', 'n', 'b', 'r', 'q', 'k'});
+	return FENPieces.indexOf(c);
 	
 
 }
 
-public GameState getGameState() {
-	return gameState;
-}
-
-public void setGameState(GameState gameState) {
-	this.gameState = gameState;
-}
-
-public Constants getConstants() {
-	return constants;
-}
-
-public void setConstants(Constants constants) {
-	this.constants = constants;
-}
 }

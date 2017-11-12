@@ -12,6 +12,7 @@ public class GameStateTest{
 
     private byte initialGameFlags;
     private int[] initialGameBoard;
+    private GameState initialGameState;
 
     @Before
     public void setup() throws IOException {
@@ -19,34 +20,72 @@ public class GameStateTest{
                                         BLACK_KINGSIDE_CASTLE | BLACK_QUEENSIDE_CASTLE);
         String boardStr = EngineTestUtils.loadBoardString("start.board");
         initialGameBoard = EngineTestUtils.toGameBoard(boardStr);
+        initialGameState = new GameState(initialGameFlags, initialGameBoard);
     }
 
     @Test
     public void GameState_Initial_ReturnStartBoard() {
-        GameState expectedGameState = new GameState(initialGameFlags, initialGameBoard);
+
         GameState gameState = new GameState();
 
-        assertEquals(expectedGameState, gameState);
+        assertEquals(initialGameState, gameState);
 
-        System.out.println(expectedGameState);
+        System.out.println(initialGameState);
         System.out.println(gameState);
     }
 
     @Test
-    public void GameState_Initial_ReturnFriendlyPiecesWhite() throws IOException {
+    public void GameState_Initial_ReturnFriendlyPiecesWhiteEnemyPiecesBlack() throws IOException {
 
-        GameState gameState = new GameState(initialGameFlags, initialGameBoard);
-        long friendlyPieces = gameState.getFriendlyPieces(Constants.WHITE);
-        long expectedFriendlyPieces = EngineTestUtils.bitBoardToLong(0b00000000L,
-                                                                     0b00000000L,
-                                                                     0b00000000L,
-                                                                     0b00000000L,
-                                                                     0b00000000L,
-                                                                     0b00000000L,
-                                                                     0b11111111L,
-                                                                     0b11111111L);
+        long whiteFriendlyPieces = initialGameState.getFriendlyPieces(Constants.WHITE);
+        long blackEnemyPieces = initialGameState.getEnemyPieces(Constants.BLACK);
+        long expectedResult = EngineTestUtils.bitBoardToLong(
+                0b00000000L,
+                0b00000000L,
+                0b00000000L,
+                0b00000000L,
+                0b00000000L,
+                0b00000000L,
+                0b11111111L,
+                0b11111111L);
 
-        assertEquals(expectedFriendlyPieces, friendlyPieces);
+        assertEquals(expectedResult, whiteFriendlyPieces);
+        assertEquals(expectedResult, blackEnemyPieces);
+    }
+
+    @Test
+    public void GameState_Initial_ReturnEmptySquares() throws IOException {
+
+        long emptySquares = initialGameState.getEmptySquares();
+        long expectedResult = EngineTestUtils.bitBoardToLong(
+                0b00000000L,
+                0b00000000L,
+                0b11111111L,
+                0b11111111L,
+                0b11111111L,
+                0b11111111L,
+                0b00000000L,
+                0b00000000L);
+
+        assertEquals(expectedResult, emptySquares);
+    }
+
+    @Test
+    public void GameState_Initial_ReturnAllPieces() throws IOException {
+        long emptySquares = initialGameState.getAllPieces();
+        long expectedResult = EngineTestUtils.bitBoardToLong(
+                0b11111111L,
+                0b11111111L,
+                0b00000000L,
+                0b00000000L,
+                0b00000000L,
+                0b00000000L,
+                0b11111111L,
+                0b11111111L);
+
+
+
+        assertEquals(expectedResult, emptySquares);
     }
 
 

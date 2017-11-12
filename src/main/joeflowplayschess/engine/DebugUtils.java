@@ -17,16 +17,6 @@ public class DebugUtils {
         }
     }
 
-    public static void printBoardArray(int[] b){
-
-        for(int i = 56; i > -1; i-=8){
-            System.out.println(b[i] + "  " + b[i+1] + "  " +
-                    b[i+2] + "  " + b[i+3] + "  " +
-                    b[i+4] + "  " + b[i+5] + "  " +
-                    b[i+6] + "  " + b[i+7] + "  ");
-        }
-    }
-
     public static void printMovesAsStrings(int[] moves){
 
         int piece, capturedPiece, fromSq, toSq, moveFlags, fromRow, fromCol, toRow, toCol;

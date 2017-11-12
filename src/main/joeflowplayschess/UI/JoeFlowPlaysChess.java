@@ -44,37 +44,16 @@ package joeflowplayschess.UI;
 
 import joeflowplayschess.engine.ChessEngine;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 /**
  *
  * @author jboudrea
@@ -233,7 +212,7 @@ public class JoeFlowPlaysChess extends JFrame {
      */
     public void makeBlackMove(){
         
-        int[] blackMove = JoeFlow.selectMove(BLACK, 4);
+        int[] blackMove = JoeFlow.selectMove(BLACK, 3);
         // piece(4) | capturedPiece{4} | fromSq(8) | toSq(8) | flags(8)
         /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
                    bit 5: promotion flag
@@ -358,7 +337,7 @@ public class JoeFlowPlaysChess extends JFrame {
      * considers if white is in check or if the move would put it in check, and
      * the returned list is checked against the proposed move.
      * The final check is in the case white is trying to castle, in which case
-     * the chess engine is consulted by calling the castleIsLegal() method, to
+     * the chess engine is consulted by calling the isCastleLegalForWhite() method, to
      * make sure white would not be skipping over or landing on any potential checks.
      * 
      * After these legality checks are performed, if the move is valid then
@@ -462,10 +441,10 @@ public class JoeFlowPlaysChess extends JFrame {
                     if(valid){
                           
                         if(currPiece.getType().equals("king") && oldSquareIndex == 4 && newSquareIndex == 6){
-                            valid = JoeFlow.castleIsLegal(false); // king side castle
+                            valid = JoeFlow.isCastleLegalForWhite(false); // king side castle
                         }
                         else if(currPiece.getType().equals("king") && oldSquareIndex == 4 && newSquareIndex == 2){
-                            valid = JoeFlow.castleIsLegal(true); // Queen side castle
+                            valid = JoeFlow.isCastleLegalForWhite(true); // Queen side castle
                         }
                     }
                     
