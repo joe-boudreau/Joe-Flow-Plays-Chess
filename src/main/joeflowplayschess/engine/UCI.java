@@ -1,7 +1,5 @@
 package joeflowplayschess.engine;
 
-import joeflowplayschess.Utils;
-
 import java.util.Arrays;
 import java.util.List;
 

@@ -27,11 +27,6 @@ public class EngineTestUtils {
 
     public static List<Character> pieceMapping = Arrays.asList(new Character[]{'p', 'n', 'b', 'r', 'q', 'k', 'P', 'N', 'B', 'R', 'Q', 'K', ' ', ' ', '0'});
 
-    public static GameState buildGameState(String board, byte flags){
-
-        return new GameState(flags, toGameBoard(board));
-    }
-
     public static int[] toGameBoard(String boardString) {
         int[] gameBoard = new int[64];
 
@@ -53,7 +48,7 @@ public class EngineTestUtils {
     }
 
     public static String loadBoardString(String boardFileName) throws IOException {
-        Path p = Paths.get("resources", "test_boards", boardFileName);
+        Path p = Paths.get("test_resources","test_boards", boardFileName);
         return new String(Files.readAllBytes(p));
     }
 

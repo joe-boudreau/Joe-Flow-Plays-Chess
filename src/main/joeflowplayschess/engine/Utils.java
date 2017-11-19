@@ -1,4 +1,4 @@
-package joeflowplayschess;
+package joeflowplayschess.engine;
 
 import joeflowplayschess.engine.Constants;
 

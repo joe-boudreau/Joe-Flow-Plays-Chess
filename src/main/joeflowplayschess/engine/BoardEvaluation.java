@@ -1,11 +1,78 @@
 package joeflowplayschess.engine;
 
 import java.util.Arrays;
+import java.util.Random;
+
 import static java.lang.Long.bitCount;
 import static joeflowplayschess.engine.Constants.*;
 import static joeflowplayschess.engine.Constants.WHITE;
 
 public class BoardEvaluation {
+
+    private static final Random rand = new Random();
+
+    private static final int[] PIECE_VALUE = {100, 320, 325, 500, 975};
+
+    //The following piece square value tables are oriented for black.
+    // To use for white pieces, lookup index (square + 56) - ((int)square/8)*16
+    private static final int[] PAWN_SQUARE_SCORE = new int[]{
+            0,  0,  0,  0,  0,  0,  0,  0,
+            50, 50, 50, 50, 50, 50, 50, 50,
+            10, 10, 20, 30, 30, 20, 10, 10,
+            5,  5, 10, 27, 27, 10,  5,  5,
+            0,  0,  0, 25, 25,  0,  0,  0,
+            5, -5,-10,  0,  0,-10, -5,  5,
+            5, 10, 10,-25,-25, 10, 10,  5,
+            0,  0,  0,  0,  0,  0,  0,  0
+    };
+
+    private static final int[] KNIGHT_SQUARE_SCORE = new int[]{
+            -50,-40,-30,-30,-30,-30,-40,-50,
+            -40,-20,  0,  0,  0,  0,-20,-40,
+            -30,  0, 10, 15, 15, 10,  0,-30,
+            -30,  5, 15, 20, 20, 15,  5,-30,
+            -30,  0, 15, 20, 20, 15,  0,-30,
+            -30,  5, 10, 15, 15, 10,  5,-30,
+            -40,-20,  0,  5,  5,  0,-20,-40,
+            -50,-40,-20,-30,-30,-20,-40,-50
+    };
+
+    private static final int[] BISHOP_SQUARE_SCORE = new int[]{
+            -20,-10,-10,-10,-10,-10,-10,-20,
+            -10,  0,  0,  0,  0,  0,  0,-10,
+            -10,  0,  5, 10, 10,  5,  0,-10,
+            -10,  5,  5, 10, 10,  5,  5,-10,
+            -10,  0, 10, 10, 10, 10,  0,-10,
+            -10, 10, 10, 10, 10, 10, 10,-10,
+            -10,  5,  0,  0,  0,  0,  5,-10,
+            -20,-10,-40,-10,-10,-40,-10,-20
+    };
+
+    private static final int[][] SQUARE_SCORES = {PAWN_SQUARE_SCORE, KNIGHT_SQUARE_SCORE, BISHOP_SQUARE_SCORE};
+
+    private static final int[] KING_SQUARE_SCORE = new int[]{
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -20, -30, -30, -40, -40, -30, -30, -20,
+            -10, -20, -20, -20, -20, -20, -20, -10,
+            20,  20,   0,   0,   0,   0,  20,  20,
+            20,  30,  10,   0,   0,  10,  30,  20
+    };
+
+    private static final int[] KING_END_TABLE_SQUARE_SCORE = new int[]{
+            -50,-40,-30,-20,-20,-30,-40,-50,
+            -30,-20,-10,  0,  0,-10,-20,-30,
+            -30,-10, 20, 30, 30, 20,-10,-30,
+            -30,-10, 30, 40, 40, 30,-10,-30,
+            -30,-10, 30, 40, 40, 30,-10,-30,
+            -30,-10, 20, 30, 30, 20,-10,-30,
+            -30,-30,  0,  0,  0,  0,-30,-30,
+            -50,-30,-30,-30,-30,-30,-30,-50
+    };
+
+    private static final int[][] KING_SQUARE_SCORES = {KING_SQUARE_SCORE, KING_END_TABLE_SQUARE_SCORE};
 
     /**
      * Evaluates a game board according to various metrics, most importantly using a weighted
@@ -14,23 +81,65 @@ public class BoardEvaluation {
      */
     public static int evaluateGameScore(GameState state, MoveGeneration moveGenerator){
 
-        int overallScore;
+        int overallScore = 0;
 
         long[] pieceBoards = state.getPieceBoards();
 
-        overallScore = 2*(bitCount(pieceBoards[bPawn]) - bitCount(pieceBoards[wPawn])) +
-                7*(bitCount(pieceBoards[bKnight]) - bitCount(pieceBoards[wKnight])) +
-                6*(bitCount(pieceBoards[bBishop]) - bitCount(pieceBoards[wBishop])) +
-                10*(bitCount(pieceBoards[bRook]) - bitCount(pieceBoards[wRook])) +
-                18*(bitCount(pieceBoards[bQueen]) - bitCount(pieceBoards[wQueen]));
+        //Material Score Black
+        for(int piece = bPawn; piece <= bQueen; piece++){
+            overallScore += PIECE_VALUE[piece - 6]*bitCount(pieceBoards[piece]);
+        }
+        //Material Score White
+        for(int piece = wPawn; piece <= wQueen; piece++){
+            overallScore -= PIECE_VALUE[piece]*bitCount(pieceBoards[piece]);
+        }
 
-        overallScore = 2*(overallScore) + centreControlScore(pieceBoards);
+        //Piece Position Score Black
+        for(int piece = bPawn; piece <= bBishop; piece++){
+            overallScore += piecePositionScore(pieceBoards[piece], SQUARE_SCORES[piece-6], BLACK);
+        }
+
+        //Piece Position Score White
+        for(int piece = wPawn; piece <= wBishop; piece++){
+            overallScore -= piecePositionScore(pieceBoards[piece], SQUARE_SCORES[piece], WHITE);
+        }
+
+        //TODO remove if statement
+        overallScore += kingPositionScore(pieceBoards[bKing], BLACK, KING_SQUARE_SCORES[state.totalPiecesRemaining() > 10 ? 0 : 1]);
+
+        overallScore += kingPositionScore(pieceBoards[wKing], WHITE, KING_SQUARE_SCORES[state.totalPiecesRemaining() > 10 ? 0 : 1]);
+
+        overallScore = 2*(overallScore) + centreControlScore(state);
 
         overallScore = 3*(overallScore) + 2*(pawnStructureScore(bPawn) - pawnStructureScore(wPawn));
 
-        overallScore = 2*(overallScore) + positionScore(BLACK, state, moveGenerator) - positionScore(WHITE, state, moveGenerator);
+        overallScore = 2*(overallScore) + mobilityScore(BLACK, state, moveGenerator) - mobilityScore(WHITE, state, moveGenerator);
+
+        //Little bit of randomness
+        overallScore += rand.nextInt(3);
 
         return overallScore;
+
+    }
+
+    public static int piecePositionScore(long pieceBoard, int[] squareValues, int colour){
+
+        int score = 0;
+        int piecePosition;
+
+        while (pieceBoard > 0) {
+            piecePosition = Long.numberOfTrailingZeros(pieceBoard);
+            score += squareValues[squareMappedToTableIndexByColour(piecePosition, colour)];
+            pieceBoard &= (pieceBoard - 1);
+        }
+        return score;
+    }
+
+    public static int kingPositionScore(long king, int colour, int[] squareValues){
+        int piecePosition;
+        piecePosition = Long.numberOfTrailingZeros(king);
+        //TODO make linear interpolated value
+        return squareValues[squareMappedToTableIndexByColour(piecePosition, colour)];
 
     }
 
@@ -60,16 +169,10 @@ public class BoardEvaluation {
      * Assigns a score to the number of pieces in the center of the board. Control of the center
      * squares is advantageous
      */
-    private static int centreControlScore(long[] pieceBoards){
+    private static int centreControlScore(GameState gameState){
 
-        long blackCentre = 0, whiteCentre = 0;
-
-        for(int i = 0; i < 6; i++){
-            whiteCentre |= (pieceBoards[i] & Constants.CENTER_4);
-        }
-        for(int j = 6; j < 12; j++){
-            blackCentre |= (pieceBoards[j] & Constants.CENTER_4);
-        }
+        long  whiteCentre = gameState.getFriendlyPieces(WHITE) & Constants.CENTER_4;
+        long  blackCentre = gameState.getFriendlyPieces(BLACK) & Constants.CENTER_4;
 
         return bitCount(blackCentre) - bitCount(whiteCentre);
     }
@@ -79,7 +182,7 @@ public class BoardEvaluation {
      * of your pieces being attacked by the opposing player) as well as how many moves you have available
      * to choose from at that board position. Mobility is advantageous, generally.
      */
-    private static int positionScore(int colour, GameState state, MoveGeneration moveGenerator){
+    private static int mobilityScore(int colour, GameState state, MoveGeneration moveGenerator){
 
         int[] yourMoves = moveGenerator.generateAllMoves(colour, state);
 
@@ -96,18 +199,18 @@ public class BoardEvaluation {
 
         long tPawns;
         int dubs = 0, isos = 0;
-        int file;
+        int file, pawn;
 
         tPawns = pawns;
         while(tPawns > 0){
-            int pawn = Long.numberOfTrailingZeros(tPawns);
+            pawn = Long.numberOfTrailingZeros(tPawns);
             if((pawns & (1L << (pawn+8))) != 0){ dubs++;}
             tPawns &= (tPawns-1);
         }
 
         tPawns = pawns;
         while(tPawns > 0){
-            int pawn = Long.numberOfTrailingZeros(tPawns);
+            pawn = Long.numberOfTrailingZeros(tPawns);
             file = pawn%8;
 
             switch (file) {
@@ -125,5 +228,9 @@ public class BoardEvaluation {
         }
 
         return -1*(dubs+isos);
+    }
+
+    private static int squareMappedToTableIndexByColour(int square, int colour){
+        return (colour)*square + (1-colour)*((square + 56) - ((int)square/8)*16);
     }
 }

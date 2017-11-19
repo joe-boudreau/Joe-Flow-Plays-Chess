@@ -10,6 +10,7 @@ public class GameState {
 	private long[] 	  gamePieceBoards;
 	private int[] 	  gameBoard;
 	private int 	  turn;
+	private int		  moveCount;
 	
 	public GameState() {
 		
@@ -18,51 +19,83 @@ public class GameState {
 		gamePieceBoards = new long[12];
 		gameBoard = new int[64];
 		turn = WHITE;
+		moveCount = 0;
 		setToStartPosition();
 	}
 	
-	public GameState(byte flags, int[] board, int colourToMove) {
+	public GameState(byte flags, int[] board, int colourToMove, int currentMoveCount) {
 
 		gameFlags = flags;
 		gameBoard = board;
 		gamePieceBoards = new long[12];
 		turn = colourToMove;
+		moveCount = currentMoveCount;
 		generatePieceBoards();
 	}
 	
-	
+	//Game Flags
 	public byte getFlags() {
 		return gameFlags;
 	}
 	public void setFlags(byte gameFlags) {
 		this.gameFlags = gameFlags;
 	}
+
+
+
+	//Piece Boards
 	public long[] getPieceBoards() {
 		return gamePieceBoards;
 	}
 	public void setPieceBoards(long[] gamePieceBoards) {
 		this.gamePieceBoards = gamePieceBoards;
 	}
+
+
+
+	//Game Board
 	public int[] getBoard() {
 		return gameBoard;
 	}
 	public void setBoard(int[] gameBoard) {
 		this.gameBoard = gameBoard;
 	}
+
+
+
+	//Turn to move
 	public int getTurn() {
 		return turn;
 	}
 	public void setTurn(int turn) {
 		this.turn = turn;
 	}
-
-	public void switchTurn(){
+	public void switchTurn() {
 		//This will convert WHITE to BLACK and BLACK to WHITE
 		turn = 1 - turn;
 	}
-	
+
+
+	//Move Count
+	public int getMoveCount() {
+		return moveCount;
+	}
+
+	public void setMoveCount(int moveCount) {
+		this.moveCount = moveCount;
+	}
+	public void incrementMoveCount(){
+		moveCount++;
+	}
+
+
+	/**
+	 * Returns a new instance of the current GameState object. No shared references.
+	 *
+	 * @return	an equivalent GameState
+	 */
 	public GameState copy(){
-		return new GameState(gameFlags, Arrays.copyOf(gameBoard, 64), turn);
+		return new GameState(gameFlags, Arrays.copyOf(gameBoard, 64), turn, moveCount);
 	}
 	
 	public long getFriendlyPieces(int colour) {
@@ -97,6 +130,10 @@ public class GameState {
 		
 		return Arrays.stream(gamePieceBoards).reduce(0L, (x, y) -> x | y);
 
+	}
+
+	public int totalPiecesRemaining(){
+		return Long.bitCount(getAllPieces());
 	}
 	
 	/**
@@ -206,6 +243,6 @@ public class GameState {
 				"Flags:" + n +
 				Long.toBinaryString(Byte.toUnsignedLong(gameFlags)) + n +
 				"Turn:" + n +
-				(turn == WHITE ? "WHITE" : "BLACK");
+				(turn == WHITE ? "WHITE" : "BLACK") + n;
 	}
 }

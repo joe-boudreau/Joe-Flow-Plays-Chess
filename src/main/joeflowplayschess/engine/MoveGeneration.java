@@ -1,6 +1,7 @@
 package joeflowplayschess.engine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static joeflowplayschess.engine.Constants.*;
 
@@ -19,14 +20,14 @@ public class MoveGeneration {
      */
     public int[] generateAllMoves(int colour, GameState state){
 
-        ArrayList<Integer> possibleMoves = new ArrayList();
+        List<Integer> possibleMoves = new ArrayList<>();
 
-        generatePawnTargets(possibleMoves, colour, wPawn + colour*6, state);
-        generateKnightTargets(possibleMoves, colour, wKnight + colour*6, state);
-        generateKingTargets(possibleMoves, colour, wKing + colour*6, state);
-        generateRookTargets(possibleMoves, colour, wRook + colour*6, state);
-        generateBishopTargets(possibleMoves, colour, wBishop + colour*6, state);
-        generateQueenTargets(possibleMoves, colour, wQueen + colour*6, state);
+        generatePawnTargets(possibleMoves, colour, state);
+        generateKnightTargets(possibleMoves, colour, state);
+        generateKingTargets(possibleMoves, colour, state);
+        generateRookTargets(possibleMoves, colour, state);
+        generateBishopTargets(possibleMoves, colour, state);
+        generateQueenTargets(possibleMoves, colour, state);
 
 
         int[] movesArray = new int[possibleMoves.size()];
@@ -42,7 +43,9 @@ public class MoveGeneration {
     /**
      * Generates all possible pawn targets and invokes the move generation function to add the moves to the moves List, which is passed aa an input argument
      */
-    public void generatePawnTargets(ArrayList moves, int colour, long pawns, GameState state){
+    public void generatePawnTargets(List moves, int colour, GameState state){
+
+        long pawns = state.getPieceBoards()[wPawn + colour*6];
 
         if(pawns == 0) return;
 
@@ -107,7 +110,9 @@ public class MoveGeneration {
      * Generates Knight moves using the Constants.KnightMoves pre-generated bitboards
      *
      */
-    public void generateKnightTargets(ArrayList moves, int colour, long knights, GameState state){
+    public void generateKnightTargets(List moves, int colour, GameState state){
+
+        long knights = state.getPieceBoards()[wKnight + colour*6];
 
         if(knights == 0) return;
 
@@ -128,7 +133,9 @@ public class MoveGeneration {
      * Generates King moves using the Constants.KingMoves pre-generated bitboards. Checks for castling ability as well.
      *
      */
-    public void generateKingTargets(ArrayList moves, int colour, long king, GameState state){
+    public void generateKingTargets(List moves, int colour, GameState state){
+
+        long king = state.getPieceBoards()[wKing + colour*6];
 
         if(king == 0) return;
 
@@ -156,7 +163,9 @@ public class MoveGeneration {
     /**
      * Generates rook moves using magic bitboards. See Constants class for more info.
      */
-    public void generateRookTargets(ArrayList moves, int colour, long rooks, GameState state){
+    public void generateRookTargets(List moves, int colour, GameState state){
+
+        long rooks = state.getPieceBoards()[wRook + colour*6];
 
         if(rooks == 0) return;
 
@@ -185,7 +194,9 @@ public class MoveGeneration {
     /**
      * Generates bishop moves using magic bitboards. See Constants class for more info.
      */
-    public void generateBishopTargets(ArrayList moves, int colour, long bishops, GameState state){
+    public void generateBishopTargets(List moves, int colour, GameState state){
+
+        long bishops = state.getPieceBoards()[wBishop + colour*6];
 
         if(bishops == 0) return;
 
@@ -215,7 +226,9 @@ public class MoveGeneration {
      * Generates queen moves using magic bitboards. Uses a combination of bishop magic bitboards and rook magic bitboardsd.
      * See Constants class for more info.
      */
-    public void generateQueenTargets(ArrayList moves, int colour, long queens, GameState state){
+    public void generateQueenTargets(List moves, int colour, GameState state){
+
+        long queens = state.getPieceBoards()[wQueen + colour*6];
 
         if(queens == 0) return;
 
@@ -251,14 +264,14 @@ public class MoveGeneration {
      * Receives a bitboard representing all the target (destination) squares for a given piece, and parses the bitboard one-by-one
      * to generate individual moves, encoded as integers, and adds them to a List of moves which is an input argument.
      */
-    public void generateMoves(int from, long Targets, int pieceType, ArrayList moveList, int flags, int[] board){
+    public void generateMoves(int from, long Targets, int pieceType, List moveList, int flags, int[] board){
 
         while(Targets != 0){ //while bits are still set in the target bitboard
 
             int toSq = Long.numberOfTrailingZeros(Targets); //Get square index by computing the position of the the least significant bit set in the long
             int capture = board[toSq]; //Return piece occupying that square, if any. Will be empty (0xE) if no piece occupies the square.
             int move = pieceType << 28 | capture << 24 | from << 16 | toSq << 8 | flags; //Encode the move information in an int
-            moveList.add(move); //Add to the ArrayList Moves
+            moveList.add(move); //Add to the Move List
             Targets &= Targets - 1; //Mask out the least significant bit before repeating the loop again
 
 
@@ -268,7 +281,7 @@ public class MoveGeneration {
     /**
      * Separate method for generating pawn moves. Similar to the generateMoves method but uses the restricted pawn move rules to generate the starting square dynamically
      */
-    public void generatePawnMoves(long Targets, int moveDiff, int colour, ArrayList moveList, int flags, int[] board){
+    public void generatePawnMoves(long Targets, int moveDiff, int colour, List moveList, int flags, int[] board){
 
         int pieceType = wPawn + (colour * 6);
 
@@ -288,7 +301,7 @@ public class MoveGeneration {
      * Adds the four distinct options available when a pawn is promoted as possible moves to be considered
      *
      */
-    public void generatePawnPromotionMoves(long Targets, int moveDiff, int colour, ArrayList moveList, int[] board){
+    public void generatePawnPromotionMoves(long Targets, int moveDiff, int colour, List moveList, int[] board){
 
         int pieceType = wPawn + (colour * 6);
 

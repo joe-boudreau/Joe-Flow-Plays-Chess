@@ -1,6 +1,7 @@
 package joeflowplayschess.UCI;
 
 import joeflowplayschess.engine.ChessEngine;
+import joeflowplayschess.engine.UCI;
 
 import java.util.ArrayList;
 import java.util.Scanner;

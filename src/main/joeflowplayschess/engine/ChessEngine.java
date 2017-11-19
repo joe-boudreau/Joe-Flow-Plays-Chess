@@ -5,12 +5,9 @@
  */
 package joeflowplayschess.engine;
 
-import joeflowplayschess.Utils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -43,10 +40,9 @@ public class ChessEngine {
 	private int 	  nodeCount;
 	private Constants constants;
 	private MoveGeneration moveGenerator;
-
+	private int sameScore = 0;
 	//declarations + initializations
-	private static int defaultDepth = 	    3;
-	private Random r = 						new Random();
+	private static int defaultDepth = 	    4;
 	private boolean debugMode = 			true;
 	private boolean initialized =			false;
 	private boolean firstgame = 			true;
@@ -96,14 +92,19 @@ public void init(){
  * @param colour	Always BLACK, which is 1
  * @return 			array of ints containing move and game information
  */
+
+public int[] selectMove(int colour){
+	return selectMove(colour, defaultDepth);
+}
 public int[] selectMove(int colour, int searchDepth){
 
 	int[] bestMove, moveInfo;
-	
+
 	nodeCount = 0;
-	
+	gameState.setTurn(colour);
 	bestMove = chooseBestMove(gameState, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
-	
+	logger.info("same score nodes: " + sameScore);
+	sameScore = 0;
 	return checkForMateAndUpdateBoard(searchDepth, bestMove);
 
 }
@@ -147,10 +148,8 @@ private int[] checkForMateAndUpdateBoard( int searchDepth, int[] bestMove) {
 	//Print some relevant infomation to the console
 	if(debugMode) {
 		logger.info("Nodes traversed: " + nodeCount);
-		logger.info("Best Move Score For Black:");
-		logger.info(bestMove[1]);
-		logger.info("Game Flags:");
-		logger.info(Integer.toBinaryString(Byte.toUnsignedInt(gameState.getFlags())));
+		logger.info("Best Move Score For Black: " + bestMove[1]);
+		logger.info("Game Flags: " + Integer.toBinaryString(Byte.toUnsignedInt(gameState.getFlags())));
 		logger.info(gameState.toString());
 	}
 	
@@ -195,7 +194,6 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 		printMovesAsStrings(moves);
 	}
 
-
 	for(i = 0; i < moves.length; i++){
 	    
 	    nodeCount++;
@@ -229,6 +227,8 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 	        }
 	        else if(bestMoves.get(0)[1] == moveScore[1]){
 	                bestMoves.add(moveScore);
+	                //logger.info("Same score returned!");
+					sameScore++;
 	        }
 	        
 	        if(colour == BLACK){
@@ -261,8 +261,7 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 	
 	if(bestMoves.size() > 1){
 		//If more than one move results in the same board score, choose one randomly
-	    int randInt = r.nextInt(bestMoves.size());
-	    bestMove = bestMoves.get(randInt);
+	    bestMove = bestMoves.get(0);
 	}
 	else if(bestMoves.size() == 1){
 	    bestMove = bestMoves.get(0);
@@ -277,7 +276,7 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 	    }
 	    
 	}
-	
+
 	return bestMove;
 
 }
@@ -395,7 +394,7 @@ public void updateGame(int[] move, GameState state){
     }
     
     state.setFlags(flags);
-    
+    state.incrementMoveCount();
 }
 
 /**
@@ -451,6 +450,7 @@ public boolean isCastleLegal(int colour, GameState state, boolean queenSide){
 
 }
 
+//--Methods for UCI Interface-------------------------------------------------------
 
 public void makeANMove(String ANmove) {
     int[] move = Utils.parseMove(UCI.convertFENtoMoveInt(gameState, ANmove));
@@ -459,6 +459,10 @@ public void makeANMove(String ANmove) {
     int flags = move[4];
     makeMove(startSq, endSq, flags);
 
+}
+
+public void parseFENAndUpdate(String fen){
+    UCI.parseFENAndUpdate(gameState, fen);
 }
 
 //--Methods for JoeFlowPlaysChess Class-------------------------------------------------------

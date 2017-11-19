@@ -34,12 +34,12 @@ public class ChessPiece extends JLabel {
     colour =    colourPiece;
     hasMoved =  false;
 	
-    System.out.println(getClass().getClassLoader().getResource("resources/" 
+    System.out.println(getClass().getClassLoader().getResource("graphics/"
                                 + (colourPiece == 0 ? "w" : "b") 
                                 + typePiece + ".png"));
 	
       
-    setIcon(new ImageIcon(getClass().getResource("/resources/" 
+    setIcon(new ImageIcon(getClass().getResource("/graphics/"
                                 + (colourPiece == 0 ? "w" : "b") 
                                 + typePiece + ".png")));
 
@@ -76,7 +76,7 @@ public class ChessPiece extends JLabel {
     public void setType(String newType){
           
         String colourStr = colour == 0 ? "w" : "b"; 
-        setIcon(new ImageIcon(getClass().getResource("/resources/" + colourStr + newType + ".png")));
+        setIcon(new ImageIcon(getClass().getResource("/graphics/" + colourStr + newType + ".png")));
         type = newType;
     }
     

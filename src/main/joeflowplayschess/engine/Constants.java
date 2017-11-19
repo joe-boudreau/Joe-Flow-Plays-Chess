@@ -40,8 +40,8 @@ import java.util.Random;
  * 
  * MSb [63, 62, 61 .. 0] LSb
  * 
- * For example, all the squares in the bottom row, a.k.a Rank 1, could be represent
- * as long 0xff, or binary 0b11111111, since those are the 8 least significant
+ * For example, all the squares in the bottom row, a.k.a Rank 1, could be represented
+ * as the long value 0xffL, or in binary 0b11111111L, since those are the 8 least significant
  * digits
  * 
  * 
@@ -53,61 +53,61 @@ public class Constants implements Serializable{
 
     static Logger logger = Logger.getLogger(Constants.class);
 
-    public static int WHITE = 			0;
-    public static int BLACK =			1;
+    public static final int WHITE = 	0;
+    public static final int BLACK =	    1;
 
-    public static int wPawn = 			0;
-    public static int wKnight = 		1;
-    public static int wBishop = 		2;
-    public static int wRook = 			3;
-    public static int wQueen = 		    4;
-    public static int wKing = 			5;
+    public static final int wPawn = 	0;
+    public static final int wKnight = 	1;
+    public static final int wBishop =   2;
+    public static final int wRook = 	3;
+    public static final int wQueen =    4;
+    public static final int wKing = 	5;
 
-    public static int bPawn = 			6;
-    public static int bKnight =		    7;
-    public static int bBishop =		    8;
-    public static int bRook = 			9;
-    public static int bQueen = 		    10;
-    public static int bKing = 			11;
+    public static final int bPawn = 	6;
+    public static final int bKnight =	7;
+    public static final int bBishop =	8;
+    public static final int bRook = 	9;
+    public static final int bQueen =    10;
+    public static final int bKing = 	11;
 
-    public static int empty = 			0xE;
+    public static final int empty =     0xE;
 
-    public static int[] kings = 		        new int[]{wKing, bKing};
+    public static final int[] kings = 		          new int[]{wKing, bKing};
 
-    public static long ALL_SET =                0xffffffffffffffffL; //all 64 squares
+    public static final long ALL_SET =                0xffffffffffffffffL; //all 64 squares
 
-    public static long RANK_1 =                 0xffL;
-    public static long RANK_2 =                 0xff00L;
-    public static long RANK_3 =                 0xff0000L;
-    public static long RANK_4 =                 0xff000000L;
-    public static long RANK_5 =                 0xff00000000L;
-    public static long RANK_6 =                 0xff0000000000L;
-    public static long RANK_7 =                 0xff000000000000L;
-    public static long RANK_8 =                 0xff00000000000000L;
+    public static final long RANK_1 =                 0xffL;
+    public static final long RANK_2 =                 0xff00L;
+    public static final long RANK_3 =                 0xff0000L;
+    public static final long RANK_4 =                 0xff000000L;
+    public static final long RANK_5 =                 0xff00000000L;
+    public static final long RANK_6 =                 0xff0000000000L;
+    public static final long RANK_7 =                 0xff000000000000L;
+    public static final long RANK_8 =                 0xff00000000000000L;
 
-    public static long[] RANKS =                new long[]{RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8};
+    public static final long[] RANKS =                new long[]{RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8};
 
-    public static long FILE_A =                 0x101010101010101L;
-    public static long FILE_B =                 0x202020202020202L;
-    public static long FILE_C =                 0x404040404040404L;
-    public static long FILE_D =                 0x808080808080808L;
-    public static long FILE_E =                 0x1010101010101010L;
-    public static long FILE_F =                 0x2020202020202020L;
-    public static long FILE_G =                 0x4040404040404040L;
-    public static long FILE_H =                 0x8080808080808080L;
+    public static final long FILE_A =                 0x101010101010101L;
+    public static final long FILE_B =                 0x202020202020202L;
+    public static final long FILE_C =                 0x404040404040404L;
+    public static final long FILE_D =                 0x808080808080808L;
+    public static final long FILE_E =                 0x1010101010101010L;
+    public static final long FILE_F =                 0x2020202020202020L;
+    public static final long FILE_G =                 0x4040404040404040L;
+    public static final long FILE_H =                 0x8080808080808080L;
 
-    public static long[] FILES =                new long[]{FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H};
+    public static final long[] FILES =                new long[]{FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H};
 
-    public static long CENTER_4 =               0x1818000000L;
+    public static final long CENTER_4 =               0x1818000000L;
 
     //Used when setting moveFlags. Makes for easier code and less mistakes
-    public static int moveFlagPromotedPiece =   0b00001111;
-    public static int moveFlagPromotion =       0b00010000;
-    public static int moveFlagEnPassant =       0b00100000;
-    public static int moveFlagQueenSideCastle = 0b01000000;
-    public static int moveFlagKingSideCastle =  0b10000000;
+    public static final int moveFlagPromotedPiece =   0b00001111;
+    public static final int moveFlagPromotion =       0b00010000;
+    public static final int moveFlagEnPassant =       0b00100000;
+    public static final int moveFlagQueenSideCastle = 0b01000000;
+    public static final int moveFlagKingSideCastle =  0b10000000;
 
-    public static int gameFlagEnPassantMask = 0b00001110;
+    public static final int gameFlagEnPassantMask =   0b00001110;
 
 
     /*GAME FLAGS
@@ -123,28 +123,28 @@ public class Constants implements Serializable{
     bit 8: White King Side Castle possible  (Rook on square 7)
 
     */
-    public static byte EN_PASSANT =             0b00000001;
-    public static byte FILE_0 =                 0b00000000;
-    public static byte FILE_1 =                 0b00000010;
-    public static byte FILE_2 =                 0b00000100;
-    public static byte FILE_3 =                 0b00000110;
-    public static byte FILE_4 =                 0b00001000;
-    public static byte FILE_5 =                 0b00001010;
-    public static byte FILE_6 =                 0b00001100;
-    public static byte FILE_7 =                 0b00001110;
-    public static byte BLACK_QUEENSIDE_CASTLE = 0b00010000;
-    public static byte BLACK_KINGSIDE_CASTLE =  0b00100000;
-    public static byte WHITE_QUEENSIDE_CASTLE = 0b01000000;
-    public static byte WHITE_KINGSIDE_CASTLE =  (byte) 0b10000000;
+    public static final byte EN_PASSANT =             0b00000001;
+    public static final byte FILE_0 =                 0b00000000;
+    public static final byte FILE_1 =                 0b00000010;
+    public static final byte FILE_2 =                 0b00000100;
+    public static final byte FILE_3 =                 0b00000110;
+    public static final byte FILE_4 =                 0b00001000;
+    public static final byte FILE_5 =                 0b00001010;
+    public static final byte FILE_6 =                 0b00001100;
+    public static final byte FILE_7 =                 0b00001110;
+    public static final byte BLACK_QUEENSIDE_CASTLE = 0b00010000;
+    public static final byte BLACK_KINGSIDE_CASTLE =  0b00100000;
+    public static final byte WHITE_QUEENSIDE_CASTLE = 0b01000000;
+    public static final byte WHITE_KINGSIDE_CASTLE =  (byte) 0b10000000;
 
     //The squares in between the castling squares which need to be checked for potential checks
-    public static long[] queenCastleSquares =   new long[]{0xe, 0xe00000000000000L};
-    public static long[] kingCastleSquares =    new long[]{0x60, 0x6000000000000000L};
+    public static final long[] queenCastleSquares =   new long[]{0xe, 0xe00000000000000L};
+    public static final long[] kingCastleSquares =    new long[]{0x60, 0x6000000000000000L};
 
-    public static long[] queenSideCastleDestinationSquare = {0x4L, 0x400000000000000L};
-    public static long[] kingSideCastleDestinationSquare = 	{0x40L, 0x4000000000000000L};
+    public static final long[] queenSideCastleDestinationSquare =   {0x4L, 0x400000000000000L};
+    public static final long[] kingSideCastleDestinationSquare = 	{0x40L, 0x4000000000000000L};
 
-    public static int[] initKingPos =	new int[]{4, 60};
+    public static final int[] initKingPos =	new int[]{4, 60};
 
 
 
@@ -170,31 +170,31 @@ public class Constants implements Serializable{
     public static Constants init(ClassLoader classLoader) {
 
         URL constantsURL = classLoader.getResource("chess.constants");
-
+        File constantsFile;
         try {
-            File constantsFile;
             if(constantsURL != null){
                 constantsFile = new File(constantsURL.toURI());
                 logger.info("Constants Initialization - Found cached version of Constants. Loading into memory.");
                 return (Constants) new ObjectInputStream(new FileInputStream(constantsFile)).readObject();
             }
-            else{
-                Constants c = new Constants();
-                logger.info("Constants Initialization - No cached version of Constants found. Generating cache file.");
-                constantsFile = new File("resources/chess.constants");
-                new ObjectOutputStream(new FileOutputStream(constantsFile)).writeObject(c);
-                logger.info("Constants Initialization - Constants written to 'resources/chess.constants' successfully");
-                return c;
-            }
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.error("URI for chess.constants location invalid.", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error while reading chess.constants file.", e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("Invalid class. Has the serial version been modified?", e);
         }
 
-        return null;
+        Constants c = new Constants();
+        logger.info("Constants Initialization - No cached version of Constants found. Generating cache file.");
+        try {
+            constantsFile = new File("resources/chess.constants");
+            new ObjectOutputStream(new FileOutputStream(constantsFile)).writeObject(c);
+            logger.info("Constants Initialization - Constants written to 'resources/chess.constants' successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return c;
     }
 
     private Constants(){
@@ -202,7 +202,7 @@ public class Constants implements Serializable{
         possible destination squares for kings and knights at each square on the board.
         They are built by initially defining the 35th square and bitshifting in either
         direction to define squares 34 --> 0 and 36 --> 63. Then the wrap-around
-        overflow must be masked out for the edge filFes in the following for loop.
+        overflow must be masked out for the edge files in the following for loop.
         */
         KingMoves[35] = 0x1c141c000000L;
         /*

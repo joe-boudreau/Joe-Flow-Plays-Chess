@@ -139,6 +139,7 @@ public class JoeFlowPlaysChess extends JFrame {
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
+        setResizable(false);
         pane.validate();
         
         Runnable game = new Runnable(){
@@ -212,7 +213,7 @@ public class JoeFlowPlaysChess extends JFrame {
      */
     public void makeBlackMove(){
         
-        int[] blackMove = JoeFlow.selectMove(BLACK, 3);
+        int[] blackMove = JoeFlow.selectMove(BLACK);
         // piece(4) | capturedPiece{4} | fromSq(8) | toSq(8) | flags(8)
         /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
                    bit 5: promotion flag
@@ -836,7 +837,7 @@ public class JoeFlowPlaysChess extends JFrame {
         footerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         footerPanel.setBounds(0, 880, 800, 120);
         
-        board = new JLabel(new ImageIcon(getClass().getResource("/resources/board.png")));
+        board = new JLabel(new ImageIcon(getClass().getResource("/graphics/board.png")));
         
         board.setBounds(0, 80, 800, 800);
         
@@ -894,10 +895,10 @@ public class JoeFlowPlaysChess extends JFrame {
         bishop.addActionListener(BA);
         rook.addActionListener(BA);
         
-        makeCustomButton(queen, "/resources/wqueenSmall.png", "/resources/wqueenSmallPressed.png");
-        makeCustomButton(knight, "/resources/wknightSmall.png", "/resources/wknightSmallPressed.png");
-        makeCustomButton(bishop, "/resources/wbishopSmall.png", "/resources/wbishopSmallPressed.png");
-        makeCustomButton(rook, "/resources/wrookSmall.png", "/resources/wrookSmallPressed.png");
+        makeCustomButton(queen, "/graphics/wqueenSmall.png", "/graphics/wqueenSmallPressed.png");
+        makeCustomButton(knight, "/graphics/wknightSmall.png", "/graphics/wknightSmallPressed.png");
+        makeCustomButton(bishop, "/graphics/wbishopSmall.png", "/graphics/wbishopSmallPressed.png");
+        makeCustomButton(rook, "/graphics/wrookSmall.png", "/graphics/wrookSmallPressed.png");
         
         promotionOptions.add(queen);
         promotionOptions.add(knight);
@@ -990,8 +991,8 @@ public class JoeFlowPlaysChess extends JFrame {
         JLabel[] blackPiecesTaken = new JLabel[15];
         
         for(int i = 0; i < 15; i++){
-            whitePiecesTaken[i] = new JLabel(new ImageIcon(getClass().getResource("/resources/blank.png")));
-            blackPiecesTaken[i] = new JLabel(new ImageIcon(getClass().getResource("/resources/blank.png")));
+            whitePiecesTaken[i] = new JLabel(new ImageIcon(getClass().getResource("/graphics/blank.png")));
+            blackPiecesTaken[i] = new JLabel(new ImageIcon(getClass().getResource("/graphics/blank.png")));
             
             whiteTaken.add(whitePiecesTaken[i]);
             blackTaken.add(blackPiecesTaken[i]);
@@ -1164,14 +1165,14 @@ public class JoeFlowPlaysChess extends JFrame {
             
             takenPanel = (JPanel) footerPanel.getComponent(0);
             newDeadPiece = (JLabel) takenPanel.getComponent(numWTaken);
-            newDeadPiece.setIcon(new ImageIcon(getClass().getResource("/resources/w" + type + "Small.png")));
+            newDeadPiece.setIcon(new ImageIcon(getClass().getResource("/graphics/w" + type + "Small.png")));
             numWTaken++;
         }
         else{
             
             takenPanel = (JPanel) footerPanel.getComponent(1);
             newDeadPiece = (JLabel) takenPanel.getComponent(numBTaken);
-            newDeadPiece.setIcon(new ImageIcon(getClass().getResource("/resources/b" + type + "Small.png")));
+            newDeadPiece.setIcon(new ImageIcon(getClass().getResource("/graphics/b" + type + "Small.png")));
             numBTaken++;
         }
     }
