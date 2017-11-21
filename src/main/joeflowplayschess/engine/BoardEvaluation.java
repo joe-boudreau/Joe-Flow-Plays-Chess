@@ -113,10 +113,10 @@ public class BoardEvaluation {
 
         overallScore = 3*(overallScore) + 2*(pawnStructureScore(bPawn) - pawnStructureScore(wPawn));
 
-        overallScore = 2*(overallScore) + mobilityScore(BLACK, state, moveGenerator) - mobilityScore(WHITE, state, moveGenerator);
+        overallScore = 5*(overallScore) + mobilityScore(BLACK, state, moveGenerator) - mobilityScore(WHITE, state, moveGenerator);
 
         //Little bit of randomness
-        overallScore += rand.nextInt(3);
+        overallScore += (rand.nextInt(5)*(-1*rand.nextInt(2)));
 
         return overallScore;
 

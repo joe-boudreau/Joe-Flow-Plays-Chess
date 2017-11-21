@@ -56,6 +56,8 @@ public class Constants implements Serializable{
     public static final int WHITE = 	0;
     public static final int BLACK =	    1;
 
+    public static final int empty =     0xE;
+
     public static final int wPawn = 	0;
     public static final int wKnight = 	1;
     public static final int wBishop =   2;
@@ -69,8 +71,6 @@ public class Constants implements Serializable{
     public static final int bRook = 	9;
     public static final int bQueen =    10;
     public static final int bKing = 	11;
-
-    public static final int empty =     0xE;
 
     public static final int[] kings = 		          new int[]{wKing, bKing};
 

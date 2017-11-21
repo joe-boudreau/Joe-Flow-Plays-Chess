@@ -20,7 +20,7 @@ public class GameStateTest{
                                         BLACK_KINGSIDE_CASTLE | BLACK_QUEENSIDE_CASTLE);
         String boardStr = EngineTestUtils.loadBoardString("start.board");
         initialGameBoard = EngineTestUtils.toGameBoard(boardStr);
-        initialGameState = new GameState(initialGameFlags, initialGameBoard, WHITE);
+        initialGameState = new GameState(initialGameFlags, initialGameBoard, WHITE, 0);
     }
 
     @Test

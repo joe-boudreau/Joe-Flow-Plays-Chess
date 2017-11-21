@@ -8,6 +8,8 @@ package joeflowplayschess.engine;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -40,7 +42,8 @@ public class ChessEngine {
 	private int 	  nodeCount;
 	private Constants constants;
 	private MoveGeneration moveGenerator;
-	private int sameScore = 0;
+	private int nodesPruned = 0;
+	private int nodexDepth = 0;
 	//declarations + initializations
 	private static int defaultDepth = 	    4;
 	private boolean debugMode = 			true;
@@ -103,8 +106,9 @@ public int[] selectMove(int colour, int searchDepth){
 	nodeCount = 0;
 	gameState.setTurn(colour);
 	bestMove = chooseBestMove(gameState, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
-	logger.info("same score nodes: " + sameScore);
-	sameScore = 0;
+	logger.info("Nodes pruned:" + nodesPruned + "  Node x Depth Score:"+nodexDepth);
+	nodexDepth = 0;
+	nodesPruned = 0;
 	return checkForMateAndUpdateBoard(searchDepth, bestMove);
 
 }
@@ -173,26 +177,21 @@ private int[] checkForMateAndUpdateBoard( int searchDepth, int[] bestMove) {
  */
 private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, int[] movesToSearch){
 
-    int     colour = gState.getTurn();
 	int 	i;
-	int[] 	moves, moveScore, bestMove, parsedMove;
-	int[][] parsedMoves, parsedMoves1;
-	
+	int[] 	moves, moveScore, parsedMove;
+
+	int     colour = gState.getTurn();
 	boolean check = inCheck(colour, gState);
 	boolean legal = true;
-	
-	ArrayList<int[]> bestMoves = new ArrayList();
 
-	if(movesToSearch == null) {
+	//moves = generateAndSortMoves(gState, movesToSearch, colour);
+	if (movesToSearch == null) {
 		moves = moveGenerator.generateAllMoves(colour, gState);
-	}
-	else{
+	} else {
 		moves = movesToSearch;
 	}
 
-	if(depth == defaultDepth){
-		printMovesAsStrings(moves);
-	}
+	int[] bestMove = new int[]{0, Integer.MAX_VALUE*(1-2*colour)};
 
 	for(i = 0; i < moves.length; i++){
 	    
@@ -220,72 +219,63 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 	        	//Evaluate board position if at the terminal depth
 	            moveScore = new int[]{moves[i], BoardEvaluation.evaluateGameScore(tState, moveGenerator)};
 	        }
-	        
-	        
-	        if(bestMoves.isEmpty()){
-	                bestMoves.add(moveScore);        
-	        }
-	        else if(bestMoves.get(0)[1] == moveScore[1]){
-	                bestMoves.add(moveScore);
-	                //logger.info("Same score returned!");
-					sameScore++;
-	        }
+
 	        
 	        if(colour == BLACK){
 	            
 	        	//A higher move score is beneficial for BLACK
-	            if(bestMoves.get(0)[1] < moveScore[1]){
-	                bestMoves.clear();
-	                bestMoves.add(moveScore);   
+	            if(bestMove[1] < moveScore[1]){
+					bestMove = moveScore;
 	            }
-	            
-	            alpha = Math.max(alpha, bestMoves.get(0)[1]);
+	            alpha = Math.max(alpha, bestMove[1]);
 	            
 	        }
 	        else{
+
 	            //A lower (possibly negative) game score is beneficial for WHITE
-	            if(bestMoves.get(0)[1] > moveScore[1]){
-	                bestMoves.clear();
-	                bestMoves.add(moveScore);
+	            if(bestMove[1] > moveScore[1]){
+					bestMove = moveScore;
 	            } 
-	            beta = Math.min(beta, bestMoves.get(0)[1]);
+	            beta = Math.min(beta, bestMove[1]);
 	        }
 	        
 	        if(beta < alpha){
+					nodesPruned += (moves.length - i);
+					nodexDepth +=  (moves.length - i)*(depth+1);
 	                break; //Beta or alpha cut-off
 	        }
 	    }
-	    
 	    legal = true;
 	}
+
 	
-	if(bestMoves.size() > 1){
-		//If more than one move results in the same board score, choose one randomly
-	    bestMove = bestMoves.get(0);
-	}
-	else if(bestMoves.size() == 1){
-	    bestMove = bestMoves.get(0);
-	}
-	else{
-	    //If bestMoves does not have any moves in it, this means no moves for black are legal and it is either in checkmate or it is a stalemate
+	if(bestMove[0] == 0) {
+	    //If the bestMove is 0, this means no moves for black are legal and it is either in checkmate or it is a stalemate
 	    if(check){
 	        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
 	    }
 	    else{
 	        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
 	    }
-	    
 	}
 
 	return bestMove;
 
 }
 
+	private int[] generateAndSortMoves(GameState gState, int[] movesToSearch, int colour) {
+		int[] moves;
 
+		if (movesToSearch == null) {
+			moves = moveGenerator.generateAllMoves(colour, gState);
+		} else {
+			moves = movesToSearch;
+		}
+		return Arrays.stream(moves).boxed().sorted(Comparator.comparingInt(a -> ((a << 4) >>> 28) - (a >>> 28))).mapToInt(i -> i).toArray();
+		//Arrays.stream(moves).boxed().sorted((a, b) ->  (((a << 4) >>> 28) - (a >>> 28)) - (((b << 4) >>> 28) - (b >>> 28))).mapToInt(i -> i).toArray();
+	}
 
-
-
-/**
+	/**
  * Accepts a move, and the object reference to the current game information,
  * and updates the game information based off the move
  * 

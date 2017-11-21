@@ -54,6 +54,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+
+import static joeflowplayschess.engine.Constants.*;
+
 /**
  *
  * @author jboudrea
@@ -79,9 +82,6 @@ public class JoeFlowPlaysChess extends JFrame {
     private boolean         castleFlag;
     
     //declarations + initializations
-    private int WHITE =                  0;
-    private int BLACK =                  1;
-    
     private int numWTaken =              0;
     private int numBTaken =              0;
     
@@ -89,12 +89,6 @@ public class JoeFlowPlaysChess extends JFrame {
     private volatile int screenY =       0;
     private volatile int myX =           0;
     private volatile int myY =           0;
-    
-    public int moveFlagPromotedPiece =   0b00001111;
-    public int moveFlagPromotion =       0b00010000;
-    public int moveFlagEnPassant =       0b00100000;
-    public int moveFlagQueenSideCastle = 0b01000000;
-    public int moveFlagKingSideCastle =  0b10000000;
     
     public boolean enPassantFlag =       false;
     public int enPassantColumn =         0;
@@ -104,8 +98,9 @@ public class JoeFlowPlaysChess extends JFrame {
     private boolean draw =               false;
     private boolean confirmNeeded =      false;
     
-    String[] pieceTypes = {"pawn", "rook", "knight", "bishop", "queen", "king",
-                           "pawn", "rook", "knight", "bishop", "queen", "king"};
+    private String[] pieceTypes = {"pawn", "knight", "bishop", "rook", "queen", "king",
+                                   "pawn", "knight", "bishop", "rook", "queen", "king"};
+
 
     char[] columns =      {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
     int[] rows =          {	1, 	 2,   3,   4,   5,   6,   7,   8};
