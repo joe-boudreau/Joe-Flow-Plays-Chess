@@ -4,66 +4,79 @@ import java.util.Arrays;
 
 import static joeflowplayschess.engine.Constants.WHITE;
 
+/*GAME FLAGS
+variable name: flags
+data type: byte
+
+bit 1: En Passant is possible, there was a pawn double pushed on the last turn
+bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
+
+bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
+bit 6: Black King Side Castle possible  (Rook on square 63)
+bit 7: White Queen Side Castle possible (Rook on square 0)
+bit 8: White King Side Castle possible  (Rook on square 7)
+
+*/
 public class GameState {
 	
-	private byte 	  gameFlags;
-	private long[] 	  gamePieceBoards;
-	private int[] 	  gameBoard;
-	private int 	  turn;
-	private int		  moveCount;
+	private byte   flags;
+	private long[] pieceBoards;
+	private int[]  board;
+	private int	   turn;
+	private int    moveCount;
+
+	private ZobristKeys zobristKeyHelper;
+	private long   zobristKey;
 	
-	public GameState() {
+	public GameState(ZobristKeys zobristKeys) {
 		
-		gameFlags = (byte) (Constants.WHITE_KINGSIDE_CASTLE | Constants.WHITE_QUEENSIDE_CASTLE |
+		flags = (byte) (Constants.WHITE_KINGSIDE_CASTLE | Constants.WHITE_QUEENSIDE_CASTLE |
 							Constants.BLACK_KINGSIDE_CASTLE | Constants.BLACK_QUEENSIDE_CASTLE); //Initialize with all castling rights
-		gamePieceBoards = new long[12];
-		gameBoard = new int[64];
+		pieceBoards = new long[13];
+		board = new int[64];
 		turn = WHITE;
 		moveCount = 0;
 		setToStartPosition();
+		zobristKeyHelper = zobristKeys;
+		zobristKey = zobristKeyHelper.generateZobristKey(this);
 	}
 	
-	public GameState(byte flags, int[] board, int colourToMove, int currentMoveCount) {
+	public GameState(byte flags, int[] board, int colourToMove, int moveCount, long zobristKey, ZobristKeys zobristKeys) {
 
-		gameFlags = flags;
-		gameBoard = board;
-		gamePieceBoards = new long[12];
-		turn = colourToMove;
-		moveCount = currentMoveCount;
+		this.flags = flags;
+		this.board = board;
+		this.pieceBoards = new long[13];
+		this.turn = colourToMove;
+		this.moveCount = moveCount;
+		this.zobristKey = zobristKey;
+		this.zobristKeyHelper = zobristKeys;
 		generatePieceBoards();
 	}
 	
-	//Game Flags
-	public byte getFlags() {
-		return gameFlags;
-	}
-	public void setFlags(byte gameFlags) {
-		this.gameFlags = gameFlags;
-	}
 
 
 
 	//Piece Boards
 	public long[] getPieceBoards() {
-		return gamePieceBoards;
+		return pieceBoards;
 	}
 	public void setPieceBoards(long[] gamePieceBoards) {
-		this.gamePieceBoards = gamePieceBoards;
+		this.pieceBoards = gamePieceBoards;
 	}
 
 
 
 	//Game Board
 	public int[] getBoard() {
-		return gameBoard;
+		return board;
 	}
 	public void setBoard(int[] gameBoard) {
-		this.gameBoard = gameBoard;
+		this.board = gameBoard;
 	}
 
 
 
-	//Turn to move
+	//Turn to bestMove
 	public int getTurn() {
 		return turn;
 	}
@@ -89,20 +102,35 @@ public class GameState {
 	}
 
 
+	//Zobrist Key
+	public long getZobristKey() {
+		return zobristKey;
+	}
+
+	//Game Flags
+	public byte getFlags() {
+		return flags;
+	}
+
+	public void updateZobristKeyAndFlags(int[] parsedMove, byte newFlags) {
+		this.zobristKey = zobristKeyHelper.updateZobristKey(zobristKey, parsedMove, flags, newFlags);
+		this.flags = newFlags;
+	}
+
 	/**
 	 * Returns a new instance of the current GameState object. No shared references.
 	 *
 	 * @return	an equivalent GameState
 	 */
 	public GameState copy(){
-		return new GameState(gameFlags, Arrays.copyOf(gameBoard, 64), turn, moveCount);
+		return new GameState(flags, Arrays.copyOf(board, 64), turn, moveCount, zobristKey, zobristKeyHelper);
 	}
 	
 	public long getFriendlyPieces(int colour) {
 		
 		long friendlyPieces = 0;
-	    for(int j = colour*6; j < colour*6 + 6; j++){
-	        friendlyPieces |= gamePieceBoards[j];
+	    for(int j = colour*6 + 1; j < colour*6 + 6 + 1; j++){
+	        friendlyPieces |= pieceBoards[j];
 	    }
 	    return friendlyPieces;
 		
@@ -111,8 +139,8 @@ public class GameState {
 	public long getEnemyPieces(int colour) {
 	    //build a bitboard representing all enemy pieces on the board
 	    long enemyPieces = 0;
-	    for(int j = (1-colour)*6; j < (1-colour)*6 + 6; j++){
-	        enemyPieces |= gamePieceBoards[j];
+	    for(int j = (1-colour)*6 + 1; j < (1-colour)*6 + 6 + 1; j++){
+	        enemyPieces |= pieceBoards[j];
 	    }
 	    return enemyPieces;
 	}
@@ -120,7 +148,7 @@ public class GameState {
 	public long getEmptySquares() {
 	    //Build a bitboard representing all free, unoccupied squares on the board
 	    long freeSquares = Constants.ALL_SET;
-	    for(long piece : gamePieceBoards){
+	    for(long piece : pieceBoards){
 	        freeSquares &= (~piece);
 	    }
 	    return freeSquares;
@@ -128,7 +156,7 @@ public class GameState {
 	
 	public long getAllPieces() {
 		
-		return Arrays.stream(gamePieceBoards).reduce(0L, (x, y) -> x | y);
+		return Arrays.stream(pieceBoards).reduce(0L, (x, y) -> x | y);
 
 	}
 
@@ -154,46 +182,46 @@ public class GameState {
 		    
 		    //White Pieces
 		    if(sq == 0 || sq == 7){
-		        gameBoard[sq] = Constants.wRook;
+		        board[sq] = Constants.wRook;
 		    }
 		    else if(sq == 1 || sq == 6){
-		        gameBoard[sq] = Constants.wKnight;
+		        board[sq] = Constants.wKnight;
 		    }
 			else if(sq == 2 || sq == 5){
-		        gameBoard[sq] = Constants.wBishop;
+		        board[sq] = Constants.wBishop;
 		    }
 			else if(sq == 3){
-		        gameBoard[sq] = Constants.wQueen;
+		        board[sq] = Constants.wQueen;
 		    }
 			else if(sq == 4){
-		        gameBoard[sq] = Constants.wKing;
+		        board[sq] = Constants.wKing;
 		    }
 			else if(sq > 7 && sq < 16){
-		        gameBoard[sq] = Constants.wPawn;
+		        board[sq] = Constants.wPawn;
 		    }
 
 			else if(sq > 15 && sq < 48){
-		        gameBoard[sq] = Constants.empty;
+		        board[sq] = Constants.empty;
 		    }
 		    
 		    //Black pieces
 			else if(sq == 56 || sq == 63){
-		        gameBoard[sq] = Constants.bRook;
+		        board[sq] = Constants.bRook;
 		    }
 			else if(sq == 57 || sq == 62){
-		        gameBoard[sq] = Constants.bKnight;
+		        board[sq] = Constants.bKnight;
 		    }
 			else if(sq == 58 || sq == 61){
-		        gameBoard[sq] = Constants.bBishop;
+		        board[sq] = Constants.bBishop;
 		    }
 			else if(sq == 59){
-		        gameBoard[sq] = Constants.bQueen;
+		        board[sq] = Constants.bQueen;
 		    }
 			else if(sq == 60){
-		        gameBoard[sq] = Constants.bKing;
+		        board[sq] = Constants.bKing;
 		    }
 			else if(sq > 47 && sq < 56){
-		        gameBoard[sq] = Constants.bPawn;
+		        board[sq] = Constants.bPawn;
 		    }
 		}
 		generatePieceBoards();
@@ -201,8 +229,8 @@ public class GameState {
 
 	private void generatePieceBoards(){
 		for(int i = 0; i < 64; i++){
-			if(gameBoard[i] != Constants.empty) {
-				gamePieceBoards[gameBoard[i]] |= (1L << i);
+			if(board[i] != Constants.empty) {
+				pieceBoards[board[i]] |= (1L << i);
 			}
 		}
 	}
@@ -214,26 +242,26 @@ public class GameState {
 
 		GameState gameState = (GameState) o;
 
-		if (gameFlags != gameState.gameFlags) return false;
-		if (!Arrays.equals(gamePieceBoards, gameState.gamePieceBoards)) return false;
+		if (flags != gameState.flags) return false;
+		if (!Arrays.equals(pieceBoards, gameState.pieceBoards)) return false;
 		if (turn != gameState.getTurn()) return false;
-		return Arrays.equals(gameBoard, gameState.gameBoard);
+		return Arrays.equals(board, gameState.board);
 	}
 
 	@Override
 	public String toString(){
 		String n = "\r\n";
-		char[] pieceMapping = new char[]{'p', 'n', 'b', 'r', 'q', 'k', 'P', 'N', 'B', 'R', 'Q', 'K', ' ', ' ', '0'};
+		char[] pieceMapping = new char[]{'0', 'p', 'n', 'b', 'r', 'q', 'k', 'P', 'N', 'B', 'R', 'Q', 'K'};
 		char[][] boardRows = new char[8][16];
 
 		String board ="";
 		int rowNum = 7;
 		for(char[] row : boardRows){
 			for(int i = 0; i < 7; i++){
-				row[2*i] = pieceMapping[gameBoard[rowNum*8 + i]];
+				row[2*i] = pieceMapping[this.board[rowNum*8 + i]];
 				row[2*i + 1] = ' ';
 			}
-			row[14] = pieceMapping[gameBoard[rowNum*8 + 7]];
+			row[14] = pieceMapping[this.board[rowNum*8 + 7]];
 			rowNum--;
 			board += new String(row) + n;
 		}
@@ -241,8 +269,11 @@ public class GameState {
 		return "Board:" + n +
 				board +
 				"Flags:" + n +
-				Long.toBinaryString(Byte.toUnsignedLong(gameFlags)) + n +
+				Long.toBinaryString(Byte.toUnsignedLong(flags)) + n +
 				"Turn:" + n +
-				(turn == WHITE ? "WHITE" : "BLACK") + n;
+				(turn == WHITE ? "WHITE" : "BLACK") + n +
+				"Zobrist Key: " + n +
+				zobristKey + n;
+
 	}
 }

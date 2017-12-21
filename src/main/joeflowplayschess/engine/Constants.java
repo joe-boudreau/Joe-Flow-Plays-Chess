@@ -17,9 +17,9 @@ import java.util.Random;
 /**
  * Pre-computed values used in ChessEngine class. Some are for convenience, but
  * this class is depended on by ChessEngine to compute the necessary attack sets
- * for sliding piece move generation. Most of the code for that, which involves
+ * for sliding piece bestMove generation. Most of the code for that, which involves
  * something referred to as "magic bitboards", is based off a perfact hashing
- * algorithm for quick efficient move sets. I got the algorithm from the following
+ * algorithm for quick efficient bestMove sets. I got the algorithm from the following
  * blog:
  * http://www.afewmorelines.com/understanding-magic-bitboards-in-chess-programming/
  * But there were a number of changes I needed to make to the code for it to run
@@ -56,21 +56,21 @@ public class Constants implements Serializable{
     public static final int WHITE = 	0;
     public static final int BLACK =	    1;
 
-    public static final int empty =     0xE;
+    public static final int empty =     0;
 
-    public static final int wPawn = 	0;
-    public static final int wKnight = 	1;
-    public static final int wBishop =   2;
-    public static final int wRook = 	3;
-    public static final int wQueen =    4;
-    public static final int wKing = 	5;
+    public static final int wPawn = 	1;
+    public static final int wKnight = 	2;
+    public static final int wBishop =   3;
+    public static final int wRook = 	4;
+    public static final int wQueen =    5;
+    public static final int wKing = 	6;
 
-    public static final int bPawn = 	6;
-    public static final int bKnight =	7;
-    public static final int bBishop =	8;
-    public static final int bRook = 	9;
-    public static final int bQueen =    10;
-    public static final int bKing = 	11;
+    public static final int bPawn = 	7;
+    public static final int bKnight =	8;
+    public static final int bBishop =	9;
+    public static final int bRook = 	10;
+    public static final int bQueen =    11;
+    public static final int bKing = 	12;
 
     public static final int[] kings = 		          new int[]{wKing, bKing};
 
@@ -266,7 +266,7 @@ public class Constants implements Serializable{
         for piece occupancy when determining the attack sets.
 
         These arrays will be used in the three functions which build the magic
-        bitboards for sliding move piece generation.
+        bitboards for sliding bestMove piece generation.
         */
 
         //ray directions for rooks and bishops
@@ -420,7 +420,7 @@ public class Constants implements Serializable{
                 Essentially, loop through in each of the 4 ray directions until you hit a set bit
                 or a border on the board. If it is not a border of the board, then set the bit in
                 the square that the loop was terminated on. This will be the bounding square that
-                the piece is able to move to.
+                the piece is able to bestMove to.
                 */
                 if(isRook){
 
@@ -462,10 +462,10 @@ public class Constants implements Serializable{
      * Magic Numbers are generated using a perfect hashing technique. Every occupancy
      * variation is mapped to its corresponding attack set through operations involving
      * a "magic number" which is specific to each square. This function searches for
-     * and stores the magic numbers which will be used during move generation for this
+     * and stores the magic numbers which will be used during bestMove generation for this
      * purpose. Given the occupancy of pieces on the board, perform the operations using
      * the magic number to instantly return the attack set that represents the possible
-     * squares the sliding piece can move to.
+     * squares the sliding piece can bestMove to.
      *
      * There is one magic number for each square and sliding piece type combination (rook
      * or bishop), which means that in total there are 2 x 64 = 128 magic numbers that need
@@ -537,8 +537,8 @@ public class Constants implements Serializable{
     }
 
     /**
-     * Generates the valid move bitboard for every square and occupancy variation and stores it at the magic index of the variation. Main difference between
-     * a move bitboard and an attack set is that the edge ranks and files are set to 1 to indicate they are valid moves. For example,
+     * Generates the valid bestMove bitboard for every square and occupancy variation and stores it at the magic index of the variation. Main difference between
+     * a bestMove bitboard and an attack set is that the edge ranks and files are set to 1 to indicate they are valid moves. For example,
      *
      *   Attack set (Rook - square 2)
      *   0 0 0 0 0 0 0 0
@@ -560,7 +560,7 @@ public class Constants implements Serializable{
      *   0 0 0 0 0 0 0 0
      *   1 1 R 0 1 0 0 0
      *
-     *   In the game logic, the returned move bitboard will be ANDed with the inverse of all friendly pieces on the board (non-capturable pieces) and that will
+     *   In the game logic, the returned bestMove bitboard will be ANDed with the inverse of all friendly pieces on the board (non-capturable pieces) and that will
      *   return the possible target squares for the sliding piece and take care of the edge squares.
      *
      */
@@ -590,19 +590,19 @@ public class Constants implements Serializable{
 
                     magicIndex = (int)((occupancyVariation[square][i] * magicNumberRook[square]) >>> magicShiftsRook[square]);
 
-                    for(j = square+8; j < 64; j+=8){ //move up
+                    for(j = square+8; j < 64; j+=8){ //bestMove up
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break; //if square occupied, end there
                     }
-                    for(j = square-8; j > -1; j-=8){ //move down
+                    for(j = square-8; j > -1; j-=8){ //bestMove down
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                     }
-                    for(j = square+1; j%8 != 0; j++){ //move right
+                    for(j = square+1; j%8 != 0; j++){ //bestMove right
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                     }
-                    for(j = square-1; (j%8 + 8)%8 != 7; j--){ //move left
+                    for(j = square-1; (j%8 + 8)%8 != 7; j--){ //bestMove left
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                     }
@@ -613,19 +613,19 @@ public class Constants implements Serializable{
 
                     magicIndex = (int)((occupancyVariation[square][i] * magicNumberBishop[square]) >>> magicShiftsBishop[square]);
 
-                    for(j = square+9; j < 64 && j%8 != 0; j+=9){ //move up and right
+                    for(j = square+9; j < 64 && j%8 != 0; j+=9){ //bestMove up and right
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                     }
-                    for(j = square-9; j > -1 && (j%8 + 8)%8 != 7; j-=9){ //move down and left
+                    for(j = square-9; j > -1 && (j%8 + 8)%8 != 7; j-=9){ //bestMove down and left
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                     }
-                    for(j = square+7; j < 64 && j%8 != 7; j+=7){ //move up and left
+                    for(j = square+7; j < 64 && j%8 != 7; j+=7){ //bestMove up and left
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                     }
-                    for(j = square-7; j > -1 && (j%8 + 8)%8 != 0; j-=7){ //move down and right
+                    for(j = square-7; j > -1 && (j%8 + 8)%8 != 0; j-=7){ //bestMove down and right
                         validMoves |= (1L << j);
                         if((occupancyVariation[square][i] & (1L << j)) != 0) break;
                     }

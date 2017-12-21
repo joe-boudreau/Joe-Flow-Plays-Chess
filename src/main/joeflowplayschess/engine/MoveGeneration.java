@@ -14,7 +14,7 @@ public class MoveGeneration {
     }
 
     /**
-     * Top level function for calling the individual move generation functions for each piece type. Returns
+     * Top level function for calling the individual bestMove generation functions for each piece type. Returns
      * an array of ints representing all the possible moves.
      *
      */
@@ -41,7 +41,7 @@ public class MoveGeneration {
     }
 
     /**
-     * Generates all possible pawn targets and invokes the move generation function to add the moves to the moves List, which is passed aa an input argument
+     * Generates all possible pawn targets and invokes the bestMove generation function to add the moves to the moves List, which is passed aa an input argument
      */
     public void generatePawnTargets(List moves, int colour, GameState state){
 
@@ -270,7 +270,7 @@ public class MoveGeneration {
 
             int toSq = Long.numberOfTrailingZeros(Targets); //Get square index by computing the position of the the least significant bit set in the long
             int capture = board[toSq]; //Return piece occupying that square, if any. Will be empty (0xE) if no piece occupies the square.
-            int move = pieceType << 28 | capture << 24 | from << 16 | toSq << 8 | flags; //Encode the move information in an int
+            int move = pieceType << 28 | capture << 24 | from << 16 | toSq << 8 | flags; //Encode the bestMove information in an int
             moveList.add(move); //Add to the Move List
             Targets &= Targets - 1; //Mask out the least significant bit before repeating the loop again
 
@@ -279,7 +279,7 @@ public class MoveGeneration {
     }
 
     /**
-     * Separate method for generating pawn moves. Similar to the generateMoves method but uses the restricted pawn move rules to generate the starting square dynamically
+     * Separate method for generating pawn moves. Similar to the generateMoves method but uses the restricted pawn bestMove rules to generate the starting square dynamically
      */
     public void generatePawnMoves(long Targets, int moveDiff, int colour, List moveList, int flags, int[] board){
 

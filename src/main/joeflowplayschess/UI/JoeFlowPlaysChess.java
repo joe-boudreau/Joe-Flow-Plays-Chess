@@ -9,24 +9,24 @@ package joeflowplayschess.UI;
 |   Joe Flow Plays Chess
 |   This package contains chess engine along with an interface to play against
 |   the engine, named "Joe Flow". Developed over the course of November 2016 to
-|   March 2017. Features a game board with drag-and-drop pieces, move legality
+|   March 2017. Features a game board with drag-and-drop pieces, bestMove legality
 |   checking for both user and computer, and a visual piece capture history table.
-|   User always plays as white, and therefore always has first move.
+|   User always plays as white, and therefore always has first bestMove.
 |   
 |   The main java file, JoeFlowPlaysChess.java, handles all the user interactions
-|   and GUI updating. It also does the user-side move legality checking, with a
+|   and GUI updating. It also does the user-side bestMove legality checking, with a
 |   little help from some methods available from the engine class instance. In 
 |   retrospect, I should've built all the game decisions into the engine class, 
-|   including the user move legality checking. This could be something I could
+|   including the user bestMove legality checking. This could be something I could
 |   fix in the future as right now there is some duplicated game logic between the
 |   two java classes.
 |   
 |   The other main file, ChessEngine.java, is the engine which decides the moves
 |   for black. The architecture is based on bit-board game representation, which
 |   allows for rapid computations of game information and efficient memory usage.
-|   The move generation uses fairly common techniques, including magic-bitboards
-|   for the move generation of sliding pieces (rooks, bishops, queen). Move
-|   selection is made using a recursive search through the move tree with alpha
+|   The bestMove generation uses fairly common techniques, including magic-bitboards
+|   for the bestMove generation of sliding pieces (rooks, bishops, queen). Move
+|   selection is made using a recursive search through the bestMove tree with alpha
 |   beta pruning techniques. The board evaluation is a minimax score based 
 |   function which uses a material score calculation as the primary factor for
 |   board advantage, with heuristic evaluation factors as well if there is no
@@ -43,6 +43,7 @@ package joeflowplayschess.UI;
 
 
 import joeflowplayschess.engine.ChessEngine;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -62,7 +63,9 @@ import static joeflowplayschess.engine.Constants.*;
  * @author jboudrea
  */
 public class JoeFlowPlaysChess extends JFrame {
-    
+
+    static Logger logger = Logger.getLogger(JoeFlowPlaysChess.class);
+
     //declarations
     private ChessEngine JoeFlow;
     private Container       pane;
@@ -97,6 +100,8 @@ public class JoeFlowPlaysChess extends JFrame {
     private boolean blackCheckmate =     false;    
     private boolean draw =               false;
     private boolean confirmNeeded =      false;
+    private int turn = 0;
+    private int ply =  0;
     
     private String[] pieceTypes = {"pawn", "knight", "bishop", "rook", "queen", "king",
                                    "pawn", "knight", "bishop", "rook", "queen", "king"};
@@ -140,6 +145,7 @@ public class JoeFlowPlaysChess extends JFrame {
         Runnable game = new Runnable(){
                     @Override
                     public void run(){
+                        logger.info("Starting Joe Flow Plays Chess");
                         startGame();
                     }
                 };  
@@ -149,7 +155,7 @@ public class JoeFlowPlaysChess extends JFrame {
     
     /**
      * Main game controller. Alternates white and black turns and checks for
-     * checkmate or draw after each move
+     * checkmate or draw after each bestMove
      * 
      */
     public void startGame(){
@@ -158,33 +164,40 @@ public class JoeFlowPlaysChess extends JFrame {
         whiteTurn = true;
         
         while(!(whiteCheckmate | blackCheckmate | draw)){
-
+        logger.info("White to bestMove; Turn: " + turn + " Ply: " + ply);
         synchronized(LOCK) {
             while(whiteTurn) {
 
-                try { LOCK.wait(); }    //LOCK is notified when a move is confirmed by user
+                try { LOCK.wait(); }    //LOCK is notified when a bestMove is confirmed by user
                 catch (InterruptedException e) {
                     break;
                 }
             }
         }
         
-        //clear en Passant flag for white after every move
+        //clear en Passant flag for white after every bestMove
         enPassantFlag = false;
-        
+        ply++;
+
+        logger.info("Black to bestMove; Turn: " + turn + " Ply: " + ply);
         makeBlackMove();
         whiteTurn = true;
-        
+
+        turn++;
+        ply++;
         }
         
         if(whiteCheckmate){
+            logger.info("Player wins");
             JOptionPane.showMessageDialog(this, "YOU WIN!");
         }
         else if(blackCheckmate){
+            logger.info("Engine wins. Woop tee doo!");
             JOptionPane.showMessageDialog(this, "JOE FLOW WINS! LONG LIVE OUR ROBOT OVERLORDS");
     
         }
         else{
+            logger.info("Stalemate. Everybody loses.");
             JOptionPane.showMessageDialog(this, "YOU TIED THE COMPUTER! THE SINGULARITY HAS BEEN REACHED!");
 
         }
@@ -192,16 +205,16 @@ public class JoeFlowPlaysChess extends JFrame {
     
     /**
      * Calls the selectMove method of the chess Engine, which chooses black's next
-     * move and returns the move as a 32-bit encoded int. The move encoding is as
+     * bestMove and returns the bestMove as a 32-bit encoded int. The bestMove encoding is as
      * follows:
      * 
-     * move (MSB --> LSB):
+     * bestMove (MSB --> LSB):
      * pieceMoving (4) | capturedPiece(4) | fromSq(8) | toSq(8) | flags(8)
      * 
      * flags (MSB --> LSB):
      * King Side Castle (1) | Queen Side Castle (1) | en-passant Capture (1) | promotion flag (1) | promoted piece (4)
      * 
-     * The returned move is then parsed and the game information and GUI are
+     * The returned bestMove is then parsed and the game information and GUI are
      * updated accordingly
      * 
      * 
@@ -225,7 +238,7 @@ public class JoeFlowPlaysChess extends JFrame {
             else{
                 draw = true;
             }
-            return; //Black has no move; exit function
+            return; //Black has no bestMove; exit function
         }
         
         if(blackMove.length > 5){
@@ -255,7 +268,7 @@ public class JoeFlowPlaysChess extends JFrame {
         if((flags & moveFlagPromotion) != 0){ //pawn promoted
             
             int newPiece = flags & moveFlagPromotedPiece;
-            pieceToMove.setType(pieceTypes[newPiece]);
+            pieceToMove.setType(pieceTypes[newPiece - 1]);
         }
         
         else if((flags & moveFlagKingSideCastle) != 0){ //King side castle
@@ -281,7 +294,7 @@ public class JoeFlowPlaysChess extends JFrame {
             boardSquares[toRow+1][toCol].setPiece(null);
         }
         
-        if(capturedPiece != 0xE){ //0xE == EMTPY (No piece)
+        if(capturedPiece != 0){ //0 == EMTPY (No piece)
             
             ChessPiece deadPiece = boardSquares[toRow][toCol].getPiece();
             addToTakenPieces(deadPiece.getColour(), deadPiece.getType()); //Add to piece capture history row
@@ -298,14 +311,14 @@ public class JoeFlowPlaysChess extends JFrame {
         }
         
         
-        //turn off last move visual indicators
+        //turn off last bestMove visual indicators
         for(BoardTile[] bTs : boardSquares){
             for(BoardTile bT : bTs){
                 bT.lightDown();
             }
         }
         
-        //turn on this move visual indicators
+        //turn on this bestMove visual indicators
         boardSquares[fromRow][fromCol].lightUp(BLACK);
         boardSquares[toRow][toCol].lightUp(BLACK);
             
@@ -330,15 +343,15 @@ public class JoeFlowPlaysChess extends JFrame {
      * The first check is if the square is in the list of valid moves calculated
      * during the mouseClicked() event.
      * The next check calls the whiteLegalMoves() method of the chess engine, which
-     * considers if white is in check or if the move would put it in check, and
-     * the returned list is checked against the proposed move.
+     * considers if white is in check or if the bestMove would put it in check, and
+     * the returned list is checked against the proposed bestMove.
      * The final check is in the case white is trying to castle, in which case
      * the chess engine is consulted by calling the isCastleLegalForWhite() method, to
      * make sure white would not be skipping over or landing on any potential checks.
      * 
-     * After these legality checks are performed, if the move is valid then
-     * the GUI is updated with the move and a confirm dialog is displayed. If the
-     * move is not legal, the piece is automatically returned to its initial square.
+     * After these legality checks are performed, if the bestMove is valid then
+     * the GUI is updated with the bestMove and a confirm dialog is displayed. If the
+     * bestMove is not legal, the piece is automatically returned to its initial square.
      * 
      */
     public void whiteTurnListener(){
@@ -1213,7 +1226,7 @@ public class JoeFlowPlaysChess extends JFrame {
      * defined in this game are:
      * 
      * Confirm Options:
-     * "Yes"    - User confirms move
+     * "Yes"    - User confirms bestMove
      * "No"     - User rescinds moves
      * 
      * Promotion Options:
@@ -1238,13 +1251,13 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
 
                     if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
-                        //Piece is captured by move
+                        //Piece is captured by bestMove
                         ChessPiece deadPiece = boardSquares[newPos[0]][newPos[1]].getPiece();
                         addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
                         
                     }
                     
-                    boardSquares[newPos[0]][newPos[1]].setPiece(currPiece); //move piece to new square
+                    boardSquares[newPos[0]][newPos[1]].setPiece(currPiece); //bestMove piece to new square
                     boardSquares[oldPos[0]][oldPos[1]].setPiece(null);      //remove piece from old square
                     
                     if(castleFlag){
@@ -1276,7 +1289,7 @@ public class JoeFlowPlaysChess extends JFrame {
                             break;
                     }
                     else{
-                        //Update the chess engine with the move information
+                        //Update the chess engine with the bestMove information
                         JoeFlow.makeMove(oldPos, newPos, moveFlags);
                         
                         whiteTurn = false;
@@ -1321,7 +1334,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 4;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -1338,7 +1351,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 2;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -1354,7 +1367,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 3;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -1370,7 +1383,7 @@ public class JoeFlowPlaysChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 1;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -1386,13 +1399,13 @@ public class JoeFlowPlaysChess extends JFrame {
             
             if(buttonName != "No"){
                 
-                //turn off last move visual indicators
+                //turn off last bestMove visual indicators
                 for(BoardTile[] bTs : boardSquares){
                     for(BoardTile bT : bTs){
                         bT.lightDown();
                     }
                 }
-                //turn on this move's visual indicators
+                //turn on this bestMove's visual indicators
                 boardSquares[oldPos[0]][oldPos[1]].lightUp(WHITE);
                 boardSquares[newPos[0]][newPos[1]].lightUp(WHITE);
             }

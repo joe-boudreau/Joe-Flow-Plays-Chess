@@ -1,15 +1,13 @@
 package joeflowplayschess.engine;
 
-import joeflowplayschess.engine.Constants;
-
 public class Utils {
 
 
     /**
-     * Returns true if the move is a castle. Does not check legality of move.
-     * @param parsedMove    the move to inspect
-     * @param colour        the colour making the move
-     * @return              true if the move is a castle
+     * Returns true if the bestMove is a castle. Does not check legality of bestMove.
+     * @param parsedMove    the bestMove to inspect
+     * @param colour        the colour making the bestMove
+     * @return              true if the bestMove is a castle
      */
     public static boolean isCastleMove(int[] parsedMove, int colour) {
         return parsedMove[0] == Constants.kings[colour] &&
@@ -30,10 +28,10 @@ public class Utils {
 
 
     /**
-     * Splits an encoded integer representing a piece move into a 5 element array, according to the
-     * defined move encoding scheme:
+     * Splits an encoded integer representing a piece bestMove into a 5 element array, according to the
+     * defined bestMove encoding scheme:
      *
-     * move (MSB --> LSB):
+     * bestMove (MSB --> LSB):
      * pieceMoving (4) | capturedPiece(4) | fromSq(8) | toSq(8) | flags(8)
      *
      *  Move Flags:
@@ -52,5 +50,13 @@ public class Utils {
         byte moveFlags =    (byte) move;
 
         return new int[]{piece, capturedPiece, fromSq, toSq, moveFlags};
+    }
+
+    public static boolean pieceIsWhite(int pieceNum){
+        return pieceNum <= Constants.wKing;
+    }
+
+    public static int pieceNumToColour(int pieceNum){
+        return (pieceNum - 1) / 6;
     }
 }

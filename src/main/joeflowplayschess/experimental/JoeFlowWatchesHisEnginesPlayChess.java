@@ -142,7 +142,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
     
     /**
      * Main game controller. Alternates white and black turns and checks for
-     * checkmate or draw after each move
+     * checkmate or draw after each bestMove
      * 
      */
     public void startGame(){
@@ -170,16 +170,16 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
     
     /**
      * Calls the selectMove method of the chess Engine, which chooses black's next
-     * move and returns the move as a 32-bit encoded int. The move encoding is as
+     * bestMove and returns the bestMove as a 32-bit encoded int. The bestMove encoding is as
      * follows:
      * 
-     * move (MSB --> LSB):
+     * bestMove (MSB --> LSB):
      * pieceMoving (4) | capturedPiece(4) | fromSq(8) | toSq(8) | flags(8)
      * 
      * flags (MSB --> LSB):
      * King Side Castle (1) | Queen Side Castle (1) | en-passant Capture (1) | promotion flag (1) | promoted piece (4)
      * 
-     * The returned move is then parsed and the game information and GUI are
+     * The returned bestMove is then parsed and the game information and GUI are
      * updated accordingly
      * 
      * 
@@ -205,7 +205,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
             else{
                 draw = true;
             }
-            return; //Black has no move; exit function
+            return; //Black has no bestMove; exit function
         }
         
         if(blackMove.length > 5){
@@ -280,14 +280,14 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
         }
         
         
-        //turn off last move visual indicators
+        //turn off last bestMove visual indicators
         for(BoardTile[] bTs : boardSquares){
             for(BoardTile bT : bTs){
                 bT.lightDown();
             }
         }
         
-        //turn on this move visual indicators
+        //turn on this bestMove visual indicators
         boardSquares[fromRow][fromCol].lightUp(BLACK);
         boardSquares[toRow][toCol].lightUp(BLACK);
             
@@ -296,16 +296,16 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
  
     /**
      * Calls the selective method of the chess Engine, which chooses black's next
-     * move and returns the move as a 32-bit encoded int. The move encoding is as
+     * bestMove and returns the bestMove as a 32-bit encoded int. The bestMove encoding is as
      * follows:
      * 
-     * move (MSB --> LSB):
+     * bestMove (MSB --> LSB):
      * pieceMoving (4) | capturedPiece(4) | fromSq(8) | toSq(8) | flags(8)
      * 
      * flags (MSB --> LSB):
      * King Side Castle (1) | Queen Side Castle (1) | en-passant Capture (1) | promotion flag (1) | promoted piece (4)
      * 
-     * The returned move is then parsed and the game information and GUI are
+     * The returned bestMove is then parsed and the game information and GUI are
      * updated accordingly
      * 
      * 
@@ -331,7 +331,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
             else{
                 draw = true;
             }
-            return; //White has no move; exit function
+            return; //White has no bestMove; exit function
         }
         
         if(whiteMove.length > 5){
@@ -406,14 +406,14 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
         }
         
         
-        //turn off last move visual indicators
+        //turn off last bestMove visual indicators
         for(BoardTile[] bTs : boardSquares){
             for(BoardTile bT : bTs){
                 bT.lightDown();
             }
         }
         
-        //turn on this move visual indicators
+        //turn on this bestMove visual indicators
         boardSquares[fromRow][fromCol].lightUp(BLACK);
         boardSquares[toRow][toCol].lightUp(BLACK);
             
@@ -826,7 +826,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
      * defined in this game are:
      * 
      * Confirm Options:
-     * "Yes"    - User confirms move
+     * "Yes"    - User confirms bestMove
      * "No"     - User rescinds moves
      * 
      * Promotion Options:
@@ -851,13 +851,13 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     confirmNeeded = false;
 
                     if(!boardSquares[newPos[0]][newPos[1]].isEmpty()){
-                        //Piece is captured by move
+                        //Piece is captured by bestMove
                         ChessPiece deadPiece = boardSquares[newPos[0]][newPos[1]].getPiece();
                         addToTakenPieces(deadPiece.getColour(), deadPiece.getType());
                         
                     }
                     
-                    boardSquares[newPos[0]][newPos[1]].setPiece(currPiece); //move piece to new square
+                    boardSquares[newPos[0]][newPos[1]].setPiece(currPiece); //bestMove piece to new square
                     boardSquares[oldPos[0]][oldPos[1]].setPiece(null);      //remove piece from old square
                     
                     if(castleFlag){
@@ -889,7 +889,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                             break;
                     }
                     else{
-                        //Update the chess engine with the move information
+                        //Update the chess engine with the bestMove information
                         JoeFlow.makeMove(oldPos, newPos, moveFlags);
                         
                         whiteTurn = false;
@@ -934,7 +934,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 4;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -951,7 +951,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 2;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -967,7 +967,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 3;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -983,7 +983,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     confirmNeeded = false;
                     moveFlags = moveFlagPromotion | 1;
                     
-                    //Update the chess engine with the move information
+                    //Update the chess engine with the bestMove information
                     JoeFlow.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
@@ -999,13 +999,13 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
             
             if(buttonName != "No"){
                 
-                //turn off last move visual indicators
+                //turn off last bestMove visual indicators
                 for(BoardTile[] bTs : boardSquares){
                     for(BoardTile bT : bTs){
                         bT.lightDown();
                     }
                 }
-                //turn on this move's visual indicators
+                //turn on this bestMove's visual indicators
                 boardSquares[oldPos[0]][oldPos[1]].lightUp(WHITE);
                 boardSquares[newPos[0]][newPos[1]].lightUp(WHITE);
             }

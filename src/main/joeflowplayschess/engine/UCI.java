@@ -93,8 +93,8 @@ public class UCI {
 
         setBoardPositions(gameState, pieces);
         gameState.setTurn(colourToMove.equals("w") ? WHITE : BLACK);
-        setCastlingRights(gameState, castling);
-        setEnPassantFlag(gameState, enPassantSquare);
+        //setCastlingRights(gameState, castling);
+        //setEnPassantFlag(gameState, enPassantSquare);
 
 
     }
@@ -129,15 +129,16 @@ public class UCI {
 
     }
 
-    public static void setCastlingRights(GameState gameState, String fen) {
+
+   /* public static void setCastlingRights(GameState gameState, String fen) {
 
         byte gameFlags = gameState.getFlags();
-	/*
+	*//*
 	bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
 	bit 6: Black King Side Castle possible  (Rook on square 63)
 	bit 7: White Queen Side Castle possible (Rook on square 0)
 	bit 8: White King Side Castle possible  (Rook on square 7)
-	*/
+	*//*
         for(int i = 0; i < fen.length(); i++){
             switch(fen.charAt(i)){
 
@@ -172,10 +173,10 @@ public class UCI {
 
     public static void setEnPassantFlag(GameState gameState, String fen){
         byte gameFlags = gameState.getFlags();
-	/*
+	*//*
 	bit 1: En Passant is possible, there was a pawn double pushed on the last turn
 	bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
-	*/
+	*//*
         if(fen.equals("-")){
             gameFlags &= 0b11110000;
         }
@@ -185,7 +186,7 @@ public class UCI {
         }
         gameState.setFlags(gameFlags);
 
-    }
+    }*/
 
     private static int[] ANtoArrayIndex(int Row, char Col){
 

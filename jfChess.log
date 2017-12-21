@@ -8258,3 +8258,5204 @@ Flags:
 Turn:
 BLACK
 
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1061
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 558617
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 717
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1203
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1960449
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1355
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 Q 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 n 0 0 
+p p p p 0 p p p 
+r n b q k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1606
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3336760
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1360
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 K B N R 
+P P P P 0 P P P 
+0 0 N 0 0 Q 0 0 
+0 0 0 0 P 0 0 0 
+0 0 b 0 p 0 0 0 
+0 0 0 0 0 n 0 0 
+p p p p 0 p p p 
+r n b q k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 632
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2142405
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3072
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 K B N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 Q 0 
+0 0 0 0 P 0 0 0 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 n 0 0 
+p p 0 p 0 p p p 
+r n b q k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1057
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2632787
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3004
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 Q 0 
+0 0 B 0 P 0 0 0 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 n 0 0 
+p p 0 p q p p p 
+r n b 0 k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1325
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2820544
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 5002
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 B 0 P 0 0 0 
+0 p b 0 p 0 0 0 
+0 0 p 0 0 n 0 0 
+p 0 0 p q p Q p 
+r n b 0 k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1139
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 4853992
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 392
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 B 0 P 0 0 0 
+0 p b 0 p 0 0 0 
+0 0 p 0 0 n 0 Q 
+p 0 0 p q p 0 p 
+r n b 0 k 0 r 0 
+Flags:
+1110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 621
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2715551
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -596
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 P 0 0 Q 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 n 0 0 
+p 0 0 p q p 0 p 
+r n b 0 k 0 r 0 
+Flags:
+1110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 981
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 4209889
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2198
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N R 
+P P P P 0 P r P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 P 0 0 Q 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 n 0 0 
+p 0 0 p q p 0 p 
+r n b 0 k 0 0 0 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1212
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3334740
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1367
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N R 
+P P P P 0 P 0 P 
+0 0 N 0 0 0 0 Q 
+0 0 p 0 P 0 r 0 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 n 0 0 
+p 0 0 p q p 0 p 
+r n b 0 k 0 0 0 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 542
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2214131
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3622
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N R 
+P P P P 0 P 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 n 0 Q 0 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p q p 0 p 
+r n b 0 k 0 0 0 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1301
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2388493
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2447
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N R 
+P P P P 0 n 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p q p Q p 
+r n b 0 k 0 0 0 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 476
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 865837
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1262
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N n 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 p 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p q p 0 p 
+r n b 0 k 0 0 Q 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 3049
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 5251704
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1260
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N n 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 Q 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p 0 p 0 p 
+r n b 0 k q 0 0 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 3264
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 5049903
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1259
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N n 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p q p 0 p 
+r n b 0 k 0 0 Q 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 3881
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 5110437
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1263
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N n 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 Q 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p 0 p 0 p 
+r n b 0 k q 0 0 
+Flags:
+1000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1238
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1753717
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -828
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N n 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 Q 0 0 0 
+0 0 b 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p 0 p 0 p 
+r n b k 0 q 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1755
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3889872
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -469
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N Q 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 0 0 0 0 
+0 0 p q 0 0 0 0 
+p 0 0 p 0 p 0 p 
+r n b k 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 159
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 410049
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -463
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N 0 
+P P P P 0 0 0 P 
+0 0 N 0 0 Q 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 0 0 0 0 
+0 0 p 0 0 q 0 0 
+p 0 0 p 0 p 0 p 
+r n b k 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1549
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3286211
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2589
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N 0 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 b 0 0 0 0 0 
+0 0 p 0 0 Q 0 0 
+p 0 0 p k p 0 p 
+r n b 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 251
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 204939
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2596
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N 0 
+P P P P 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 p 0 N 0 0 0 
+0 0 b 0 0 0 0 0 
+0 0 p 0 0 k 0 0 
+p 0 0 p 0 p 0 p 
+r n b 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 117
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 251288
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2350
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N 0 
+P P P P 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 N 0 k 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 p 0 p 0 p 
+r n b 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 353
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 390245
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1734
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N 0 
+P P P P 0 0 0 P 
+0 0 0 0 0 0 0 0 
+N 0 p 0 0 0 0 0 
+0 0 0 0 k 0 0 0 
+0 0 p p 0 0 0 0 
+p 0 0 0 0 p 0 p 
+r n b 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 210
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 178840
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2346
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N 0 
+P P P P 0 0 0 P 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 0 k 0 0 0 
+0 0 p p 0 0 0 0 
+p 0 0 n 0 p 0 p 
+r 0 b 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 252
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 191069
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2666
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K N 0 
+P P P 0 0 0 0 P 
+0 0 N P 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 0 k 0 0 0 
+0 0 p p 0 n 0 0 
+p 0 0 0 0 p 0 p 
+r 0 b 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 419
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 300019
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 6016
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 0 K 0 0 
+P P P 0 0 0 0 P 
+0 0 N P 0 N 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 0 k 0 0 0 
+0 0 p p b n 0 0 
+p 0 0 0 0 p 0 p 
+r 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1039
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 691439
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3907
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P P P 0 0 0 0 P 
+0 0 N P B N 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 p p b n 0 0 
+p 0 0 0 0 p 0 p 
+r 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1225
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 913606
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 6320
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P P P 0 0 0 0 P 
+0 0 N P 0 N 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 p p b n 0 0 
+B 0 0 0 0 p 0 p 
+0 r 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 841
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 625782
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 5657
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P r P 0 0 0 0 P 
+0 0 0 P 0 N 0 0 
+N 0 p 0 0 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 p p b n 0 0 
+B 0 0 0 0 p 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 413
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 334833
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 5393
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P 0 r 0 0 0 0 P 
+0 0 0 P 0 0 0 0 
+N 0 p N 0 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 p p b n 0 0 
+B 0 0 0 0 p 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 831
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 571636
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 5830
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P 0 N 0 0 0 0 P 
+0 0 0 P 0 0 0 0 
+N 0 p 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 p p b n k 0 
+B 0 0 0 0 p 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 751
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 240439
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 6321
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 p 0 0 0 0 
+N 0 0 N 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 p p b n k 0 
+B 0 0 0 0 p 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1009
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 226006
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 6736
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 p 0 0 0 0 
+N 0 0 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 p N n k 0 
+B 0 0 0 0 p 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 463
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 107303
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 6966
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P N 0 0 0 0 0 P 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 p p n k 0 
+B 0 0 0 0 0 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 456
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 99508
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 7082
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 K 0 0 
+P 0 0 p 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 N 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 p p n k 0 
+B 0 0 0 0 0 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 523
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 143933
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 6956
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 0 
+P 0 0 p K 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 N 0 n 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 p p 0 k 0 
+B 0 0 0 0 0 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 742
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 198652
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 7288
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 0 
+P 0 0 N K 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p p 0 0 0 0 
+0 0 0 0 p 0 k 0 
+B 0 0 0 0 0 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1129
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 401045
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 8006
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 0 
+P 0 0 0 K 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 p 0 N 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 p 0 k 0 
+B 0 0 0 0 0 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 109
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 39000
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 8698
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 p 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p 0 k 0 
+B 0 0 0 0 0 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 189
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 31853
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 9065
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 R 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 p 0 p 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 0 0 p 0 0 0 
+B 0 0 0 0 0 0 p 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 145
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 29695
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 11156
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 R 0 p 0 0 0 
+0 0 0 0 0 k 0 p 
+0 0 0 0 p 0 0 0 
+B 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 162
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 36957
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 11405
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 0 0 R 0 0 p 
+0 0 0 0 0 k 0 0 
+0 0 0 0 p 0 0 0 
+B 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 119
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 44428
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 11437
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 k 0 
+0 0 0 0 R 0 0 0 
+B 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 376
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 86611
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 12490
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 0 0 0 0 k p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 R 
+B 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 172
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 41934
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 12616
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+B 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 415
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 92017
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 12756
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 K 0 0 0 
+0 0 0 0 0 0 k p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 B 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 201
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 33471
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 12995
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 K 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 B 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 584
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 36426
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 13002
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 R 
+0 0 0 0 K 0 0 0 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 B 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 803
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 47806
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 13005
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 K 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 B 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1240
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 69718
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 13011
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 K 0 0 0 
+0 0 0 0 B 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 579
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 41997
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 13048
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 1
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 0 
+P 0 0 0 K 0 k 0 
+0 0 0 0 B 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 R 
+Flags:
+1
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 13
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 32688
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 13539
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 K 0 0 0 
+P 0 0 0 B 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 20
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 28458
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 23469
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 K 0 k 0 
+0 0 0 0 B 0 0 0 
+P 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 10
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 35752
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 23493
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 K 0 0 0 
+0 0 0 0 B 0 k 0 
+0 0 0 0 0 0 0 0 
+P 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 159
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 42099
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1000000
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 K 0 k 0 
+0 0 0 0 B 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+R 0 0 0 0 0 0 R 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1123
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1061
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 419259
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 972
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 1119
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 417587
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2502
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 336
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 331638
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2547
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 n 0 0 0 0 0 
+p p p 0 p p p p 
+r 0 b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 468
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 928877
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 5138
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 B 0 p 0 0 0 0 
+0 0 n 0 p 0 0 0 
+p p p 0 0 p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 399
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1764693
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4209
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 p 0 0 0 0 
+p 0 B 0 p 0 0 0 
+0 p p 0 0 p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 210
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 865725
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4196
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 0 0 0 
+p 0 p 0 p 0 0 0 
+0 0 p 0 0 p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - same score nodes: 877
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1471844
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2903
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B 0 K 0 N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+0 0 0 p 0 0 0 0 
+p 0 0 0 p 0 0 0 
+0 0 p 0 0 p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - No cached version of Constants found. Generating cache file.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Constants written to 'resources/chess.constants' successfully
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4119177  Node x Depth Score:1487
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:0  Node x Depth Score:0
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:0  Node x Depth Score:0
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 439351
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2249
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p 0 0 0 
+p p p p 0 p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:480617  Node x Depth Score:76024
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 438524
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2553
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1322695  Node x Depth Score:137574
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1365820
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 6054
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 p 0 Q 
+0 0 0 p 0 0 0 0 
+p p p 0 p 0 p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3762857  Node x Depth Score:242928
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3521076
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3513
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 Q 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 p 0 0 
+0 0 0 p 0 0 p 0 
+p p p 0 p 0 0 p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4078742  Node x Depth Score:187007
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 4782985
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1214
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p 0 0 Q 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 p 0 
+p p p 0 p 0 0 p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:994523  Node x Depth Score:141640
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1925346
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 5431
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 Q 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 p 0 
+p p p n p 0 0 p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4453468  Node x Depth Score:325988
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 6083607
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 7823
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 Q 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 n p 0 
+p p p 0 p 0 0 p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:5250752  Node x Depth Score:156460
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 6651193
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 16035
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 b 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 n p 0 
+p Q p 0 p 0 0 p 
+r 0 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:434337  Node x Depth Score:503605
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 418057
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2499
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:427945  Node x Depth Score:475904
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 373669
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4519
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110111
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P 0 P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 p 0 0 0 0 0 
+p p 0 0 p p p p 
+r n b q k b n r 
+Flags:
+11110111
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1297996  Node x Depth Score:1424876
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1096908
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4683
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B 0 R 
+P P P 0 P P P P 
+0 0 N 0 0 N 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 p 0 b 0 0 0 
+p p 0 0 p p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:115  Node x Depth Score:344
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 5
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1085
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+0 P P P P P P P 
+P 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:434447  Node x Depth Score:503841
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 418219
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2501
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.Constants - wtf
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - wtf
+INFO joeflowplayschess.engine.ChessEngine - wtf
+INFO joeflowplayschess.engine.ChessEngine - wtf
+INFO joeflowplayschess.engine.ChessEngine - wtf
+INFO joeflowplayschess.engine.ChessEngine - wtf
+INFO joeflowplayschess.engine.Constants - wtf
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:243536  Node x Depth Score:278462
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 249651
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4243
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 p 0 0 
+p p p p p 0 p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:468812  Node x Depth Score:541477
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 430494
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2562
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2897511  Node x Depth Score:3073958
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 7102307
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 11144
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 Q 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p p p 0 p p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4901594  Node x Depth Score:5090786
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 7051720
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 13856
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 Q 0 0 
+0 0 0 p 0 n 0 0 
+p p p 0 p p p p 
+r n 0 q k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:44949  Node x Depth Score:47831
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:1.4457704
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 31090
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 10
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B 0 R 
+P P P P P P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p 0 p p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:46099  Node x Depth Score:49046
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:59.39062%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 31521
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 10
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B 0 R 
+P P P P P P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 0 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p 0 p p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:65593  Node x Depth Score:69843
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:2999.7075%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 43089
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 763
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 P 0 0 0 
+0 0 p 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p p 0 0 p p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:56752  Node x Depth Score:60796
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:56.799145%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 43165
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2406
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:128658  Node x Depth Score:137560
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:56.70467%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 98612
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -460
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 N R 
+P P P P 0 P P P 
+0 0 0 B P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 p 0 0 0 0 0 
+p p 0 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:142116  Node x Depth Score:148397
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:58.638977%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 85242
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 291
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q 0 K N R 
+P P P P 0 P P P 
+0 0 0 B P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 p 0 p 0 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 0 p p p p 
+r n b q k b n r 
+Flags:
+11000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:134591  Node x Depth Score:142532
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:58.513206%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 96920
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -462
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q 0 K 0 R 
+P P P P 0 P P P 
+0 0 0 B P N 0 0 
+0 0 0 0 0 0 0 0 
+0 p 0 p 0 0 0 0 
+0 0 p 0 0 0 0 0 
+p 0 0 n p p p p 
+r 0 b q k b n r 
+Flags:
+11000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 4 Ply: 8
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 4 Ply: 9
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:252058  Node x Depth Score:264255
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:57.03231%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 241122
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1666
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q 0 K 0 R 
+P P P P 0 P P P 
+0 0 0 B P 0 0 0 
+0 0 0 N 0 0 0 0 
+0 p 0 p 0 0 0 0 
+0 0 p 0 p 0 0 0 
+p 0 0 n 0 p p p 
+r 0 b q k b n r 
+Flags:
+11000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 5 Ply: 10
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 5 Ply: 11
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:280177  Node x Depth Score:296509
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:57.21619%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 201760
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1971
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q 0 0 K R 
+P P P P 0 P P P 
+0 0 0 B P 0 0 0 
+0 0 0 N 0 0 0 0 
+0 p 0 p 0 0 0 0 
+b 0 p 0 p 0 0 0 
+p 0 0 n 0 p p p 
+r 0 0 q k b n r 
+Flags:
+11000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 6 Ply: 12
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 6 Ply: 13
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:260983  Node x Depth Score:274427
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:57.21103%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 195440
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2183
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 10000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q 0 0 K R 
+P P P P 0 P P P 
+0 N 0 B P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 p 0 p 0 0 0 0 
+b 0 p 0 p 0 0 0 
+p 0 0 n 0 p p p 
+0 0 r q k b n r 
+Flags:
+10000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 7 Ply: 14
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 7 Ply: 15
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:159470  Node x Depth Score:166037
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:57.846092%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 96536
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -602
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 10000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q 0 0 K R 
+P P P P 0 P P P 
+0 N N B P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 p n p 0 0 0 0 
+b 0 p 0 p 0 0 0 
+p 0 0 0 0 p p p 
+0 0 r q k b n r 
+Flags:
+10000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 8 Ply: 16
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 8 Ply: 17
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:126200  Node x Depth Score:130995
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:59.34902%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 50619
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2525
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 10000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q 0 0 K R 
+P P P P 0 P P P 
+0 N N B 0 0 0 0 
+0 0 0 P 0 0 0 0 
+0 p n 0 0 0 0 0 
+b 0 p 0 p 0 0 0 
+p 0 0 0 0 p p p 
+0 0 r q k b n r 
+Flags:
+10000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 9 Ply: 18
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 9 Ply: 19
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:132555  Node x Depth Score:138898
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:60.11728%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 65195
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 8994
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 10000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q 0 0 K R 
+P P P P 0 P P P 
+0 N N B 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 p P 0 p 0 0 0 
+b 0 p 0 0 0 0 0 
+p 0 0 0 0 p p p 
+0 0 r q k b n r 
+Flags:
+10000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 10 Ply: 20
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 10 Ply: 21
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:101188  Node x Depth Score:106791
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:59.585632%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 85268
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 28808
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 10000000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q 0 0 K R 
+P P 0 P 0 P P P 
+0 N N P 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 p P 0 p 0 0 0 
+b 0 p 0 0 0 0 0 
+p 0 0 0 0 p p p 
+0 0 r 0 k b n r 
+Flags:
+10000000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 11 Ply: 22
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:52890  Node x Depth Score:56884
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:58.45297%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 37593
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -876
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:181834  Node x Depth Score:188504
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:61.37035%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 101010
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 7067
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 P 0 0 
+0 0 0 p 0 0 0 0 
+p p p 0 p p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:113054  Node x Depth Score:118756
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:59.726547%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 87258
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 8128
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p P 0 0 0 
+p p p 0 0 p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:43082  Node x Depth Score:45977
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:60.84169%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 27728
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 289
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B 0 R 
+P P P P P P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 p 0 0 
+0 0 0 0 0 0 0 0 
+p p p p p 0 p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:593241  Node x Depth Score:681632
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:51.60448%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 556351
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1803
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1685980  Node x Depth Score:1888707
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:51.737656%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1564363
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2591
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 Q 0 
+0 0 b 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k 0 n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2762295  Node x Depth Score:2985115
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:50.473732%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2998981
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3020
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 Q 0 
+0 0 0 0 P 0 0 0 
+0 0 b 0 p 0 0 0 
+0 0 0 0 0 0 p 0 
+p p p p 0 p 0 p 
+r n b q k 0 n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1796608  Node x Depth Score:2054741
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:49.251522%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2144628
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4232
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K 0 N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 Q 0 
+0 0 B 0 P 0 0 0 
+0 0 b 0 p 0 0 0 
+0 0 0 0 0 n p 0 
+p p p p 0 p 0 p 
+r n b q k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 4 Ply: 8
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 4 Ply: 9
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:591651  Node x Depth Score:680226
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:51.6142%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 554644
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1807
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1747662  Node x Depth Score:1975873
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:51.7509%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1620507
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2591
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 Q 0 
+0 0 b 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k 0 n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1816745  Node x Depth Score:1991795
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:49.9881%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2093387
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3200
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 P 0 Q 0 
+0 0 b 0 p 0 0 0 
+0 0 0 0 0 0 p 0 
+p p p p 0 p 0 p 
+r n b q k 0 n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:5141050  Node x Depth Score:5433083
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:51.84434%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3813444
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4363
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 P 0 0 0 
+0 0 b 0 p 0 Q 0 
+0 0 0 0 0 n p 0 
+p p p p 0 p 0 p 
+r n b q k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 4 Ply: 8
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 4 Ply: 9
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4243157  Node x Depth Score:4559497
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:51.84979%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3936962
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 12036
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 n 0 0 0 
+0 0 b 0 Q 0 0 0 
+0 0 0 0 0 0 p 0 
+p p p p 0 p 0 p 
+r n b q k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 5 Ply: 10
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 5 Ply: 11
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:7506910  Node x Depth Score:7850916
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:50.65007%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 9305316
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 10531
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 0 0 0 Q 0 0 0 
+0 0 b 0 0 0 0 0 
+0 0 0 0 0 0 p 0 
+p p p p 0 p 0 p 
+r n b q 0 r k 0 
+Flags:
+110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 6 Ply: 12
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:437124  Node x Depth Score:508278
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:50.827957%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 422883
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2536
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:433663  Node x Depth Score:481843
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:52.101685%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 378814
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4525
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110111
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P 0 P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 p 0 0 0 0 0 
+p p 0 0 p p p p 
+r n b q k b n r 
+Flags:
+11110111
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1124155  Node x Depth Score:1235611
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:52.355923%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1002333
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4522
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B 0 R 
+P P P 0 P P P P 
+0 0 N 0 0 N 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 b 0 0 
+0 0 p 0 0 0 0 0 
+p p 0 0 p p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1562516  Node x Depth Score:1678700
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:53.977673%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1092885
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4674
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 Q K B 0 R 
+P P P 0 P P P P 
+0 0 N 0 0 N 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 b B 0 
+0 0 p 0 0 0 0 0 
+p p 0 n p p p p 
+r 0 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 4 Ply: 8
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:212129  Node x Depth Score:252941
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:35.36603%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 387681
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1807
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:828454  Node x Depth Score:915835
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:37.86276%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1224233
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4080
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P 0 P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p q p p p 
+r n b 0 k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:101742  Node x Depth Score:133916
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:32.896935%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 207533
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2540
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:319645  Node x Depth Score:384584
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:58.341198%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 228244
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2540
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:288666  Node x Depth Score:339337
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:61.670937%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 155431
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3325
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110111
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P 0 P P P P 
+0 0 N 0 0 0 0 0 
+0 0 0 P 0 0 b 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n 0 q k b n r 
+Flags:
+11110111
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:326952  Node x Depth Score:412984
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:62.521736%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 182134
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3925
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P 0 P P P 0 
+0 0 N 0 0 0 0 P 
+0 0 0 P 0 0 b 0 
+0 0 0 p 0 0 0 0 
+0 0 n 0 0 0 0 0 
+p p p 0 p p p p 
+r 0 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:512796  Node x Depth Score:616983
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:63.50475%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 258862
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4522
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P 0 0 P P 0 
+0 0 N 0 0 0 0 P 
+0 0 0 P P 0 0 0 
+0 0 0 p 0 b 0 0 
+0 0 n 0 0 0 0 0 
+p p p 0 p p p p 
+r 0 0 q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 4 Ply: 8
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 4 Ply: 9
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:311213  Node x Depth Score:427053
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:63.82971%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 166624
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2489
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111101
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P 0 0 P 0 0 
+0 0 N 0 0 0 0 P 
+0 0 0 P p 0 P 0 
+0 0 0 0 0 b 0 0 
+0 0 n 0 0 0 0 0 
+p p p 0 p p p p 
+r 0 0 q k b n r 
+Flags:
+11111101
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 5 Ply: 10
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 5 Ply: 11
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:129819  Node x Depth Score:164293
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:65.578354%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 44853
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 9026
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 Q K B N R 
+P P P 0 0 P 0 0 
+0 0 N 0 B 0 0 P 
+0 0 0 P 0 0 P 0 
+0 0 0 0 0 b 0 0 
+0 0 n 0 0 0 0 0 
+p p p 0 p p p p 
+r 0 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 6 Ply: 12
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:502402  Node x Depth Score:591700
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:61.214638%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 318320
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1807
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111001
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k b n r 
+Flags:
+11111001
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:514151  Node x Depth Score:607108
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:63.30805%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 271995
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2740
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B N R 
+P P P P 0 P P P 
+0 0 0 0 0 0 0 0 
+0 b 0 0 P 0 Q 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k 0 n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:483541  Node x Depth Score:585024
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:63.238865%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 282762
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 3353
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 b 0 0 P 0 Q 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 p 0 
+p p p p 0 p 0 p 
+r n b q k 0 n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:243544  Node x Depth Score:297817
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:64.38828%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 115472
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 7512
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 b 0 0 P 0 0 0 
+0 0 0 0 p 0 Q 0 
+0 0 0 0 0 n p 0 
+p p p p 0 p 0 p 
+r n b q k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 4 Ply: 8
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 4 Ply: 9
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:54465  Node x Depth Score:94627
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:62.70901%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 42808
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 13077
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B 0 K B 0 R 
+P P P P 0 P P P 
+0 0 0 0 0 N 0 0 
+0 b 0 0 n 0 0 0 
+0 0 0 0 Q 0 0 0 
+0 0 0 0 0 0 p 0 
+p p p p 0 p 0 p 
+r n b q k 0 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 5 Ply: 10
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4699828  Node x Depth Score:5239156
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.63734%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1597058
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2578
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:8885787  Node x Depth Score:9703079
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:78.41079%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1926245
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2114
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 B 0 p 0 0 0 0 
+0 0 n 0 0 0 0 0 
+p p p 0 p p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2019833  Node x Depth Score:2163475
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.67995%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 269753
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1784
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p 0 B 0 0 0 0 0 
+0 p p 0 p p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:5217549  Node x Depth Score:5669134
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.013145%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1385879
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1788
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110111
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 N R 
+P P P 0 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p 0 p 0 0 0 0 0 
+0 0 p 0 p p p p 
+r 0 b q k b n r 
+Flags:
+11110111
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 4 Ply: 8
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 4 Ply: 9
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:15200713  Node x Depth Score:16869211
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.69741%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3935449
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1637
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q K 0 N R 
+P P P B 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p 0 p 0 p 0 0 0 
+0 0 p 0 0 p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 5 Ply: 10
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 5 Ply: 11
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4921243  Node x Depth Score:5652836
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.98786%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1048232
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1587
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q K 0 0 R 
+P P P B N P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 P 0 0 0 0 
+0 0 p p 0 0 0 0 
+p 0 0 0 p 0 0 0 
+0 0 p 0 0 p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 6 Ply: 12
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 6 Ply: 13
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2638269  Node x Depth Score:2893029
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.76775%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 682519
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -788
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q K 0 0 R 
+P P P B N P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 0 0 0 
+p 0 0 0 p 0 0 0 
+0 0 p 0 0 p p p 
+r 0 b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 7 Ply: 14
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 7 Ply: 15
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:14172069  Node x Depth Score:15397342
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.62092%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3633593
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -586
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q K 0 0 R 
+P P P 0 N P P P 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 0 0 0 
+0 0 0 p 0 0 B 0 
+p 0 0 0 p n 0 0 
+0 0 p 0 0 p p p 
+r 0 b q k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 8 Ply: 16
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 8 Ply: 17
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:12483280  Node x Depth Score:13302194
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.41849%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1734730
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1067
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11111111
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q K 0 0 R 
+P P P 0 N P P 0 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 0 0 P 
+0 0 0 p 0 0 B 0 
+p 0 0 b p n 0 0 
+0 0 p 0 0 p p p 
+r 0 b q k 0 0 r 
+Flags:
+11111111
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 9 Ply: 18
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 9 Ply: 19
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:9898752  Node x Depth Score:10731275
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.91352%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1562279
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -317
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q 0 K 0 R 
+P P P 0 N P P 0 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 0 0 P 
+0 0 0 p 0 0 B 0 
+p 0 0 b p n 0 0 
+0 0 p 0 0 p p p 
+r 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 10 Ply: 20
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 10 Ply: 21
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3119469  Node x Depth Score:3519525
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.142%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 575412
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1370
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q 0 K 0 R 
+P P P 0 N P P 0 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 B 0 P 
+0 0 0 p 0 0 0 0 
+p 0 0 b p n 0 p 
+0 0 p 0 0 p p 0 
+r 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 11 Ply: 22
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 11 Ply: 23
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3808161  Node x Depth Score:4366533
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.3108%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 716339
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -745
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N 0 Q 0 0 K R 
+P P P 0 N P P 0 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 B 0 P 
+p 0 0 p 0 0 0 0 
+0 0 0 b p n 0 p 
+0 0 p 0 0 p p 0 
+r 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 12 Ply: 24
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 12 Ply: 25
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1994341  Node x Depth Score:2222612
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.66431%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 300473
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 739
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 Q 0 0 K R 
+P P P 0 N P P 0 
+0 0 N 0 0 0 0 0 
+p 0 0 P 0 B 0 P 
+0 0 0 p 0 0 0 0 
+0 0 0 b p n 0 p 
+0 0 p 0 0 p p 0 
+r 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 13 Ply: 26
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 13 Ply: 27
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1712045  Node x Depth Score:1904251
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:83.23475%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 176576
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 14
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 Q 0 0 K R 
+P 0 P 0 N P P 0 
+P 0 N 0 0 0 0 0 
+0 0 0 P 0 B 0 P 
+0 0 0 p 0 0 0 0 
+0 0 0 b p n 0 p 
+0 0 p 0 0 p p 0 
+r 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 14 Ply: 28
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 14 Ply: 29
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1683632  Node x Depth Score:1958130
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:83.43727%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 267895
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 468
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 Q 0 0 K R 
+P 0 P 0 N P P 0 
+r 0 0 0 0 0 0 0 
+0 0 0 P 0 B 0 P 
+0 N 0 p 0 0 0 0 
+0 0 0 b p n 0 p 
+0 0 p 0 0 p p 0 
+0 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 15 Ply: 30
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 15 Ply: 31
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2759262  Node x Depth Score:3145612
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:83.61309%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 439867
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -306
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 Q 0 0 K R 
+P 0 P 0 N P P 0 
+0 0 0 0 0 0 0 0 
+r 0 0 P 0 B 0 P 
+0 0 0 p 0 0 0 0 
+0 0 0 N p n 0 p 
+0 0 p 0 0 p p 0 
+0 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 16 Ply: 32
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 16 Ply: 33
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:9593669  Node x Depth Score:10801582
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:83.67608%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1735145
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1185
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R Q 0 0 0 0 K R 
+P 0 P 0 N P P 0 
+0 0 0 0 0 0 0 0 
+r 0 0 P 0 B 0 P 
+0 0 0 p 0 0 0 0 
+0 0 0 p p n 0 p 
+0 0 0 0 0 p p 0 
+0 0 b q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 17 Ply: 34
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 17 Ply: 35
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3219607  Node x Depth Score:3693033
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:83.78055%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 543529
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -4051
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 K R 
+P 0 P 0 N P P 0 
+0 Q 0 0 0 0 0 0 
+r 0 0 P 0 B 0 P 
+0 0 0 p 0 0 0 0 
+b 0 0 p p n 0 p 
+0 0 0 0 0 p p 0 
+0 0 0 q 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 18 Ply: 36
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 18 Ply: 37
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4414272  Node x Depth Score:4934117
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.052315%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 548697
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -4505
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 K R 
+P 0 P 0 0 P P 0 
+0 Q N 0 0 0 0 0 
+r 0 0 P 0 B 0 P 
+0 0 0 p 0 0 0 0 
+b 0 0 p p n 0 p 
+0 0 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 19 Ply: 38
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 19 Ply: 39
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:7845723  Node x Depth Score:8715666
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.17969%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1214026
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -5568
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 K R 
+P 0 P 0 0 P P 0 
+0 Q N 0 B 0 0 0 
+0 0 0 r 0 0 0 P 
+0 0 0 p 0 0 0 0 
+b 0 0 p p n 0 p 
+0 0 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 20 Ply: 40
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 20 Ply: 41
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:13335893  Node x Depth Score:14876888
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.30984%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2008067
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -5579
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 K R 
+P 0 P 0 0 0 P 0 
+0 Q N 0 B P 0 0 
+0 0 0 0 0 0 r P 
+0 0 0 p 0 0 0 0 
+b 0 0 p p n 0 p 
+0 0 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 21 Ply: 42
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 21 Ply: 43
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:15218458  Node x Depth Score:16990174
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.42052%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2325508
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -5418
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 K R 
+P 0 P 0 0 0 P 0 
+0 0 N 0 B P r 0 
+0 0 0 0 0 0 0 P 
+0 0 0 p 0 0 0 0 
+b Q 0 p p n 0 p 
+0 0 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 22 Ply: 44
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 22 Ply: 45
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:9918504  Node x Depth Score:10925322
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.633514%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1186023
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2094
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 K R 
+P 0 P 0 0 0 P 0 
+0 0 N 0 0 P r 0 
+0 0 0 0 0 B 0 P 
+0 0 0 p 0 0 0 0 
+0 Q 0 p p n 0 p 
+0 b 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 23 Ply: 46
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 23 Ply: 47
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:770505  Node x Depth Score:876823
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.72713%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 116354
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2394
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 R 
+P 0 P 0 0 0 K 0 
+0 0 N 0 0 P 0 0 
+0 0 0 0 0 B 0 P 
+0 0 0 p 0 0 0 0 
+0 Q 0 p p n 0 p 
+0 b 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 24 Ply: 48
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 24 Ply: 49
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:9431112  Node x Depth Score:10534783
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.87036%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1248686
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 4192
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 R 
+P 0 P B 0 0 K 0 
+0 0 N 0 0 P 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 p p 0 0 0 
+0 Q 0 p 0 n 0 p 
+0 b 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 25 Ply: 50
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 25 Ply: 51
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:8436520  Node x Depth Score:9981111
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.8591%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1538364
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1274
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 R 
+P 0 P B 0 0 K 0 
+0 0 0 0 0 P 0 0 
+0 0 0 p N 0 0 P 
+0 0 0 0 p 0 0 0 
+0 Q 0 p 0 n 0 p 
+0 b 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 26 Ply: 52
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 26 Ply: 53
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2858043  Node x Depth Score:3155757
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:85.07891%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 289791
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -373
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 R 
+P 0 P B 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p P 0 0 P 
+0 0 0 0 p 0 0 0 
+0 Q 0 p 0 0 0 p 
+0 b 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 27 Ply: 54
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 27 Ply: 55
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:7744421  Node x Depth Score:8427436
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:85.17792%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1070965
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2919
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 0 0 R 
+P 0 P B 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 p b 0 0 P 
+0 0 0 0 p 0 0 0 
+0 Q 0 p 0 0 0 p 
+0 0 0 q 0 p p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 28 Ply: 56
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 28 Ply: 57
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:8724344  Node x Depth Score:9633770
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:85.241%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1302815
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1329
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 R 0 0 0 0 0 
+P 0 P B 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 p b 0 0 P 
+0 0 0 0 p p 0 0 
+0 Q 0 p 0 0 0 p 
+0 0 0 q 0 0 p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 29 Ply: 58
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 29 Ply: 59
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1586107  Node x Depth Score:1931007
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:84.95338%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 484193
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 1545
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 R 0 0 0 0 0 
+P 0 P B 0 0 0 K 
+0 0 0 0 0 0 0 0 
+0 0 0 p b p 0 P 
+0 0 0 0 p 0 0 0 
+0 Q 0 p 0 0 0 p 
+0 0 0 q 0 0 p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 30 Ply: 60
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 30 Ply: 61
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:11540063  Node x Depth Score:20768490
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:83.89186%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 10632570
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -4925
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 R 0 0 0 0 0 
+P 0 P B 0 0 0 K 
+0 Q 0 0 0 0 0 0 
+0 0 0 p b p q P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 r k 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 31 Ply: 62
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 31 Ply: 63
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:10825422  Node x Depth Score:18757856
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.992134%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 8821291
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7759
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 R 0 0 0 0 0 
+P 0 P B 0 0 0 K 
+0 0 0 0 0 0 0 Q 
+0 0 0 p b p q P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 r 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 32 Ply: 64
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 32 Ply: 65
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:335836  Node x Depth Score:477090
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.548775%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 155430
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -10905
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 R 0 0 0 K 0 
+P 0 P B q 0 0 0 
+0 0 0 0 0 0 0 Q 
+0 0 0 p b p 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 r 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 33 Ply: 66
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 33 Ply: 67
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4964816  Node x Depth Score:5784891
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.49573%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1183916
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -10755
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R K 0 
+P 0 P q 0 0 0 0 
+0 0 0 0 0 0 0 Q 
+0 0 0 p b p 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 r 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 34 Ply: 68
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 34 Ply: 69
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3978185  Node x Depth Score:4966211
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.258865%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1382847
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -16454
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R K 0 
+P 0 P q 0 0 0 0 
+0 0 0 0 0 p 0 0 
+0 0 0 p b 0 Q P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 r 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 35 Ply: 70
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 35 Ply: 71
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:452715  Node x Depth Score:607327
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.99693%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 168898
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -19611
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 0 
+P 0 P q 0 p 0 K 
+0 0 0 0 0 0 0 0 
+0 0 0 p b 0 Q P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 r 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 36 Ply: 72
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 36 Ply: 73
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1093881  Node x Depth Score:1345287
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.9516%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 268025
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -16311
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 0 
+P 0 P q 0 p 0 K 
+0 0 0 0 0 0 0 0 
+0 0 0 p b r 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 Q 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 37 Ply: 74
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 37 Ply: 75
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2168156  Node x Depth Score:2513735
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.910995%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 528267
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -17218
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 0 
+P 0 P q 0 p 0 K 
+0 0 0 0 0 0 0 0 
+0 0 0 p b r 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 Q 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 38 Ply: 76
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 38 Ply: 77
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3999774  Node x Depth Score:5116900
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.6444%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1593247
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -20950
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 0 
+P 0 P q 0 p 0 K 
+0 0 0 0 0 0 0 0 
+0 0 0 p b 0 r P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 0 0 Q 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 39 Ply: 78
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 39 Ply: 79
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:605494  Node x Depth Score:798156
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.303825%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 284654
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -35186
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 K 
+P 0 P q 0 p r 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p b 0 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 0 0 Q 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 40 Ply: 80
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 40 Ply: 81
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:315286  Node x Depth Score:406678
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.980515%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 148041
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -22447
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R r 0 
+P 0 P q 0 p 0 K 
+0 0 0 0 0 0 0 0 
+0 0 0 p b 0 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 0 0 Q 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 41 Ply: 82
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 41 Ply: 83
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:605965  Node x Depth Score:798546
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.6723%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 284694
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -35186
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 K 
+P 0 P q 0 p r 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p b 0 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 0 0 Q 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 42 Ply: 84
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 42 Ply: 85
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2823062  Node x Depth Score:3670301
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.33709%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1437624
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -24260
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 K 
+P 0 q 0 0 p r 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p b 0 0 P 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 Q 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 43 Ply: 86
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 43 Ply: 87
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2735940  Node x Depth Score:3462143
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.12561%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1115773
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -24870
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 K 
+P 0 q 0 0 p r 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p b 0 0 P 
+0 0 0 p p 0 0 0 
+0 0 0 0 0 0 0 p 
+0 0 0 Q 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 44 Ply: 88
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 44 Ply: 89
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2521043  Node x Depth Score:2876619
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.14929%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 584024
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -25541
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 0 0 0 R 0 K 
+P 0 q 0 0 p r 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 b 0 0 0 
+0 0 0 p p 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 Q 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 45 Ply: 90
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 45 Ply: 91
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2122670  Node x Depth Score:2597267
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.99886%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 775985
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -35292
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 R 0 R 0 K 
+P 0 q p 0 p r 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 b 0 0 0 
+0 0 0 p p 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 Q 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 46 Ply: 92
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 46 Ply: 93
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:855823  Node x Depth Score:1006555
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.04494%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 185776
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -25210
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 R 0 K 
+P 0 q R 0 p r 0 
+0 0 0 0 0 b 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p p 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 Q 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 47 Ply: 94
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 47 Ply: 95
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3202766  Node x Depth Score:3978885
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.81646%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1433668
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -20534
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 R 0 K 
+P 0 0 q 0 p r 0 
+0 0 0 0 0 b 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p p Q 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 48 Ply: 96
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 48 Ply: 97
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:985873  Node x Depth Score:1166013
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.836044%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 234628
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -14111
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 R 0 K 
+P 0 0 q 0 p r 0 
+0 0 0 0 0 Q 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p p 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 49 Ply: 98
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 49 Ply: 99
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:190901  Node x Depth Score:247584
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.56994%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 96036
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -12620
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 R K 
+P 0 0 q 0 p 0 0 
+0 0 0 0 0 Q 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p p 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 50 Ply: 100
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 50 Ply: 101
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:36369  Node x Depth Score:53284
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.28679%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 19472
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -12682
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 K 0 
+P 0 0 q 0 0 0 0 
+0 0 0 0 0 Q 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p p 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 51 Ply: 102
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 51 Ply: 103
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:260112  Node x Depth Score:302405
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.34274%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 56339
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -9769
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 K 0 
+q 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p p 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 Q 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 52 Ply: 104
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 52 Ply: 105
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:565573  Node x Depth Score:673018
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.23357%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 203325
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -9486
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 K 0 
+q 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p p Q 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 53 Ply: 106
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 53 Ply: 107
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:269984  Node x Depth Score:308425
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.28016%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 60275
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -9455
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 K 0 
+q 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p Q 0 0 P 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 54 Ply: 108
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 54 Ply: 109
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:239309  Node x Depth Score:280481
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.28177%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 62206
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -9450
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p Q 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 55 Ply: 110
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 55 Ply: 111
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:763445  Node x Depth Score:855949
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.35721%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 150789
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7492
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 56 Ply: 112
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 56 Ply: 113
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1070892  Node x Depth Score:1221031
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.394196%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 243642
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7488
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 Q 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 57 Ply: 114
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 57 Ply: 115
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1008139  Node x Depth Score:1118607
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.47288%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 192631
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7494
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 58 Ply: 116
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 58 Ply: 117
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1073783  Node x Depth Score:1223331
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.507324%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 243661
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7486
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 Q 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 59 Ply: 118
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 59 Ply: 119
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1020737  Node x Depth Score:1132269
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.58234%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 194312
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7494
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 60 Ply: 120
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 60 Ply: 121
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1101349  Node x Depth Score:1254256
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.61635%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 247393
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7486
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 Q 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 61 Ply: 122
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 61 Ply: 123
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1020109  Node x Depth Score:1133074
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.68546%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 195739
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7494
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 62 Ply: 124
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 62 Ply: 125
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1101681  Node x Depth Score:1254977
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.71563%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 248655
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7487
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p Q 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 63 Ply: 126
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 63 Ply: 127
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1059195  Node x Depth Score:1176729
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.77604%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 208054
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7492
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 64 Ply: 128
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 64 Ply: 129
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1091629  Node x Depth Score:1243690
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.80295%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 247383
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7488
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p Q 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 65 Ply: 130
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 65 Ply: 131
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1050082  Node x Depth Score:1167044
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.86027%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 206205
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7492
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 66 Ply: 132
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 66 Ply: 133
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1084125  Node x Depth Score:1234058
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.887%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 243626
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7486
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 Q 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 67 Ply: 134
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 67 Ply: 135
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1020434  Node x Depth Score:1131777
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.94778%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 194085
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7492
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 68 Ply: 136
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 68 Ply: 137
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1092286  Node x Depth Score:1246043
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.97012%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 248114
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7488
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p Q 0 0 0 
+0 0 0 0 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p k 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 69 Ply: 138
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 69 Ply: 139
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1052648  Node x Depth Score:1169436
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.0216%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 206892
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -7492
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 P 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 p 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 70 Ply: 140
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 70 Ply: 141
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:401484  Node x Depth Score:450841
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.10037%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 67463
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -5161
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 Q 0 0 0 0 
+0 0 0 0 0 0 P p 
+q 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 k 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 71 Ply: 142
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 71 Ply: 143
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:720896  Node x Depth Score:816783
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.1114%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 170260
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -6135
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 Q 0 P p 
+q 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 72 Ply: 144
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 72 Ply: 145
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:864310  Node x Depth Score:997596
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.13371%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 193070
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -4337
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 Q 0 0 0 0 
+0 0 0 0 0 0 P p 
+q 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 73 Ply: 146
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 73 Ply: 147
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:490602  Node x Depth Score:545869
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.1057%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 137883
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -3460
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 K 0 
+0 0 0 Q 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 k p 
+q 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 74 Ply: 148
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 74 Ply: 149
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:965774  Node x Depth Score:1063226
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.021126%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 343529
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -3421
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 Q 0 0 K 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 75 Ply: 150
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 75 Ply: 151
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:994989  Node x Depth Score:1092957
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.94817%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 340980
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -3156
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 Q 0 0 0 0 
+0 0 0 0 0 K 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 k 
+0 0 0 0 0 0 0 p 
+q 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 76 Ply: 152
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 76 Ply: 153
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:897580  Node x Depth Score:996576
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.86053%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 328633
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2838
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 Q 
+0 0 0 0 0 K 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 k 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 q 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 77 Ply: 154
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 77 Ply: 155
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:759516  Node x Depth Score:854632
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.62209%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 480266
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2820
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 K Q 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 q 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 78 Ply: 156
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 78 Ply: 157
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:490172  Node x Depth Score:566624
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.330864%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 375613
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2823
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 K 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 Q 0 k 0 p 
+0 0 0 0 0 0 q 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 79 Ply: 158
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 79 Ply: 159
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1537449  Node x Depth Score:1711698
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.148384%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 837650
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2820
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 K Q 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 p 
+0 0 0 0 0 0 q 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 80 Ply: 160
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 80 Ply: 161
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:478234  Node x Depth Score:551004
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:78.87506%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 360639
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2823
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 K 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 Q 0 k 0 p 
+0 0 0 0 0 0 q 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 81 Ply: 162
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 81 Ply: 163
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1756217  Node x Depth Score:2095338
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:78.549225%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1610990
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2817
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 K 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 0 Q 0 0 0 p 
+0 0 0 0 0 0 q 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 82 Ply: 164
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 82 Ply: 165
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:413675  Node x Depth Score:504623
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:78.22301%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 389993
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2826
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 k q 0 
+0 0 0 Q 0 0 0 p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 83 Ply: 166
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 83 Ply: 167
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:522374  Node x Depth Score:631248
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:77.98545%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 374130
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2223
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 Q 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 84 Ply: 168
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 84 Ply: 169
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:457266  Node x Depth Score:558616
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:77.79352%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 284189
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2223
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 k 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 85 Ply: 170
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 85 Ply: 171
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:450889  Node x Depth Score:543535
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:77.560135%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 330228
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2223
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 Q 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 86 Ply: 172
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 86 Ply: 173
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:469764  Node x Depth Score:574001
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:77.37932%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 290018
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2223
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 k 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 87 Ply: 174
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 87 Ply: 175
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:361362  Node x Depth Score:458608
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:77.13652%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 283778
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2072
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 Q 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 k 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 88 Ply: 176
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 88 Ply: 177
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:446859  Node x Depth Score:547911
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.988396%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 251860
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2223
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 k 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 89 Ply: 178
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 89 Ply: 179
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:300361  Node x Depth Score:365001
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.92824%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 119293
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2073
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 Q 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 k 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 90 Ply: 180
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 90 Ply: 181
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:496009  Node x Depth Score:625808
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.764534%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 303594
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2223
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 k 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 91 Ply: 182
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 91 Ply: 183
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:442243  Node x Depth Score:535237
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.55053%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 332582
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2223
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 Q 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 92 Ply: 184
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 92 Ply: 185
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:206997  Node x Depth Score:234811
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.54521%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 65169
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2224
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 93 Ply: 186
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 93 Ply: 187
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:266095  Node x Depth Score:321795
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.34658%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 193686
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2079
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 Q 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 94 Ply: 188
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 94 Ply: 189
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:611011  Node x Depth Score:769466
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.122406%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 498908
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2075
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 Q 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 k 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 95 Ply: 190
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 95 Ply: 191
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:287353  Node x Depth Score:323427
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.96163%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 186137
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2076
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 Q 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 96 Ply: 192
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 96 Ply: 193
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:528304  Node x Depth Score:629201
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.89968%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 226930
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2224
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 97 Ply: 194
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 97 Ply: 195
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:225481  Node x Depth Score:252098
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.00272%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 36714
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2075
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 k 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 Q 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 98 Ply: 196
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 98 Ply: 197
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:479414  Node x Depth Score:591524
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.90559%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 242740
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2224
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 99 Ply: 198
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 99 Ply: 199
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:333694  Node x Depth Score:409694
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.78511%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 188864
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2078
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 k 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 Q 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 100 Ply: 200
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 100 Ply: 201
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:267673  Node x Depth Score:323351
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.6053%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 196842
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2075
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 Q 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 101 Ply: 202
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 101 Ply: 203
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:607485  Node x Depth Score:765286
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.40381%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 495962
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2077
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 Q 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 k 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 102 Ply: 204
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 102 Ply: 205
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:285724  Node x Depth Score:320970
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.26636%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 180789
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2077
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 Q 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 103 Ply: 206
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 103 Ply: 207
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:527949  Node x Depth Score:629508
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.216606%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 225283
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2224
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 Q 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 104 Ply: 208
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 104 Ply: 209
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:247516  Node x Depth Score:300177
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:75.04687%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 183741
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2075
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 k q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 Q 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 105 Ply: 210
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 105 Ply: 211
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:608505  Node x Depth Score:766694
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.85829%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 496705
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2075
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 Q 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 k 0 0 
+0 0 0 0 0 0 q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 106 Ply: 212
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 106 Ply: 213
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:121474  Node x Depth Score:139654
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.9267%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 26343
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 29593
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 Q p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 107 Ply: 214
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 107 Ply: 215
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:191329  Node x Depth Score:204937
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.9299%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 62853
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 30196
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 k 0 0 
+0 0 0 K 0 0 0 Q 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 108 Ply: 216
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 108 Ply: 217
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:229144  Node x Depth Score:247831
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.72823%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 203629
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 30196
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 k 0 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 Q 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 109 Ply: 218
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 109 Ply: 219
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:265484  Node x Depth Score:282879
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.53214%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 233932
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 30496
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 k 0 Q 
+0 0 0 0 0 0 0 0 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 110 Ply: 220
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 110 Ply: 221
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:173428  Node x Depth Score:186480
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.298485%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 183456
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 2000000
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 0
+INFO joeflowplayschess.engine.ChessEngine - Board:
+0 0 0 0 0 k 0 0 
+0 0 0 0 0 0 0 Q 
+0 0 0 K 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+Flags:
+0
+Turn:
+BLACK
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 111 Ply: 222
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 111 Ply: 223
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:120854  Node x Depth Score:127676
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.11872%
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Engine wins. Woop tee doo!
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:8427114  Node x Depth Score:9455627
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.7349%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2848895
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -3752
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p p 0 p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+-3616074567649625018
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:14066081  Node x Depth Score:15377094
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.58279%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3868331
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1951
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K B N R 
+P P P P 0 P P P 
+0 0 N 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 0 p 0 0 0 0 
+p p p 0 0 p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+3360908627779648776
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to move; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:26997086  Node x Depth Score:30064689
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:77.70664%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 6768541
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2417
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 N R 
+P P P P 0 P P P 
+0 0 N B P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p 0 0 0 
+0 0 p p 0 0 0 0 
+p p 0 0 0 p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+-1452109084010761401
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to move; Turn: 3 Ply: 6
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4713980  Node x Depth Score:5253373
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.66814%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1599262
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2580
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+3778794209881317353
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 1 Ply: 3
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:13960917  Node x Depth Score:15069123
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.90871%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2434897
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2578
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 N R 
+P P P P 0 P P P 
+0 0 0 B P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 b 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+-6964846092340763122
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 2 Ply: 4
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 2 Ply: 5
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1389137  Node x Depth Score:1526449
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:81.83609%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 231966
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2994
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 B 0 0 
+0 0 0 0 p 0 0 0 
+p p p 0 0 p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+7529426952771920654
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 3 Ply: 6
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 3 Ply: 7
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:17235738  Node x Depth Score:19059417
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.50082%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 5296115
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -3014
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 0 R 
+P P P P 0 P P P 
+0 0 0 0 P N 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 p 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 0 p p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+3870863610505852921
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 4 Ply: 8
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 4 Ply: 9
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:12239042  Node x Depth Score:13350243
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.977165%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 3475693
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -419
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K 0 0 R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 N 0 0 0 0 
+0 0 0 p 0 p 0 0 
+0 0 0 0 0 p 0 0 
+p p p 0 0 0 p p 
+r n 0 q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+6962172011462763664
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 5 Ply: 10
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 5 Ply: 11
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:10105299  Node x Depth Score:10824992
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.61469%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2883130
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -599
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 0 R 
+P P P P 0 P P P 
+0 0 N 0 P 0 0 0 
+0 0 0 N 0 0 0 0 
+0 0 0 p 0 p 0 0 
+0 0 0 0 0 p 0 0 
+p p p 0 n 0 p p 
+r n 0 q k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+7552105978062241079
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 6 Ply: 12
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 6 Ply: 13
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3419412  Node x Depth Score:3860004
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:79.85854%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 785388
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -1512
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 0 R 
+P P P P 0 P P P 
+0 0 N 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 p p 0 p 0 0 
+0 0 0 0 N p 0 0 
+p p 0 0 n 0 p p 
+r n 0 q k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+4389737232868389140
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 7 Ply: 14
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 7 Ply: 15
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:2476000  Node x Depth Score:2667179
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:80.93919%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 321622
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 724
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 0 R 
+P P P P 0 P P P 
+0 0 N 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 N p 0 p 0 0 
+0 0 0 0 0 p 0 0 
+p p 0 q n 0 p p 
+r n 0 0 k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+-2110101775056427838
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 8 Ply: 16
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 8 Ply: 17
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:1552809  Node x Depth Score:1680119
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.01636%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 160470
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 23573
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 0 R 
+P P P P 0 P P P 
+0 0 N 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 p 0 0 
+0 0 n 0 0 p 0 0 
+p p 0 N 0 0 p p 
+r n 0 0 k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+4923784711393604901
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 9 Ply: 18
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 9 Ply: 19
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:13157356  Node x Depth Score:14065090
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:82.09194%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 2738523
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: 24315
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R 0 B Q K 0 0 R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 N 0 p 0 0 
+0 0 n 0 0 p 0 0 
+p p 0 n 0 0 p p 
+r 0 0 0 k b 0 r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+7039681403601773932
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 10 Ply: 20
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:4698495  Node x Depth Score:5237962
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:74.61378%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1598593
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2582
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+-4157632867487380480
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 1 Ply: 2
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 0 Ply: 0
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.Constants - Constants Initialization - Found cached version of Constants. Loading into memory.
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Starting Joe Flow Plays Chess
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 0 Ply: 0
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 0 Ply: 1
+INFO joeflowplayschess.engine.ChessEngine - Nodes pruned:3478946
+INFO joeflowplayschess.engine.ChessEngine - Running Average Prunage:76.45897%
+INFO joeflowplayschess.engine.ChessEngine - Nodes traversed: 1071136
+INFO joeflowplayschess.engine.ChessEngine - Best Move Score For Black: -2416
+INFO joeflowplayschess.engine.ChessEngine - Game Flags: 11110000
+INFO joeflowplayschess.engine.ChessEngine - Board:
+R N B Q K B N R 
+P P P P 0 P P P 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+p p p 0 p p p p 
+r n b q k b n r 
+Flags:
+11110000
+Turn:
+BLACK
+Zobrist Key: 
+-6990110547389150640
+
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - White to bestMove; Turn: 1 Ply: 2
+INFO joeflowplayschess.UI.JoeFlowPlaysChess - Black to bestMove; Turn: 1 Ply: 3

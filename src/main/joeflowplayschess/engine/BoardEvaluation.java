@@ -11,7 +11,7 @@ public class BoardEvaluation {
 
     private static final Random rand = new Random();
 
-    private static final int[] PIECE_VALUE = {100, 320, 325, 500, 975};
+    private static final int[] PIECE_VALUE = {Integer.MIN_VALUE, 100, 320, 325, 500, 975};
 
     //The following piece square value tables are oriented for black.
     // To use for white pieces, lookup index (square + 56) - ((int)square/8)*16
@@ -48,7 +48,7 @@ public class BoardEvaluation {
             -20,-10,-40,-10,-10,-40,-10,-20
     };
 
-    private static final int[][] SQUARE_SCORES = {PAWN_SQUARE_SCORE, KNIGHT_SQUARE_SCORE, BISHOP_SQUARE_SCORE};
+    private static final int[][] SQUARE_SCORES = {null, PAWN_SQUARE_SCORE, KNIGHT_SQUARE_SCORE, BISHOP_SQUARE_SCORE};
 
     private static final int[] KING_SQUARE_SCORE = new int[]{
             -30, -40, -40, -50, -50, -40, -40, -30,
@@ -231,6 +231,6 @@ public class BoardEvaluation {
     }
 
     private static int squareMappedToTableIndexByColour(int square, int colour){
-        return (colour)*square + (1-colour)*((square + 56) - ((int)square/8)*16);
+        return (colour)*square + (1-colour)*((square + 56) - (square/8)*16);
     }
 }

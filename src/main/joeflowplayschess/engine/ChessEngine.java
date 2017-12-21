@@ -10,11 +10,13 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Random;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static joeflowplayschess.engine.Constants.*;
-import static joeflowplayschess.engine.DebugUtils.printMovesAsStrings;
+import static joeflowplayschess.engine.TranspositionTable.NodeType;
+import static joeflowplayschess.engine.TranspositionTable.PositionEntry;
 
 /**
  * The ChessEngine class computes all the decision making for the engine, which plays
@@ -22,9 +24,9 @@ import static joeflowplayschess.engine.DebugUtils.printMovesAsStrings;
  * 
  * The architecture is based on bit-board game representation, which
  * allows for rapid computations of game information and efficient memory usage.
- * The move generation uses fairly common techniques, including magic-bitboards
- *  for the move generation of sliding pieces (rooks, bishops, queen). Move
- *  selection is made using a recursive search through the move tree with alpha
+ * The bestMove generation uses fairly common techniques, including magic-bitboards
+ *  for the bestMove generation of sliding pieces (rooks, bishops, queen). Move
+ *  selection is made using a recursive search through the bestMove tree with alpha
  *  beta pruning techniques. The board evaluation is a minimax score based 
  *  function which uses a material score calculation as the primary factor for
  *  board advantage, with heuristic evaluation factors as well if there is no
@@ -42,10 +44,14 @@ public class ChessEngine {
 	private int 	  nodeCount;
 	private Constants constants;
 	private MoveGeneration moveGenerator;
+	private ZobristKeys zobristKeys;
+	private TranspositionTable transpositionTable;
 	private int nodesPruned = 0;
-	private int nodexDepth = 0;
+	private float avgPrunage = 0;
+	private int moveCount = 0;
+
 	//declarations + initializations
-	private static int defaultDepth = 	    4;
+	private static int defaultDepth = 	    5;
 	private boolean debugMode = 			true;
 	private boolean initialized =			false;
 	private boolean firstgame = 			true;
@@ -59,22 +65,11 @@ public void init(){
 			constants = Constants.init(this.getClass().getClassLoader());
 			firstgame = false;
 		}
-		
-		/*GAME FLAGS
-		variable name: flags
-		data type: byte
-		
-		bit 1: En Passant is possible, there was a pawn double pushed on the last turn
-		bits 2-4: The file number (0-7) that a pawn was double pushed to on the last turn
-		
-		bit 5: Black Queen Side Castle possible (Rook on sqaure 56)
-		bit 6: Black King Side Castle possible  (Rook on square 63)
-		bit 7: White Queen Side Castle possible (Rook on square 0)
-		bit 8: White King Side Castle possible  (Rook on square 7)
-		  
-		*/
-		gameState = new GameState();  //set up board for beginning of game
+		zobristKeys = new ZobristKeys();
+		transpositionTable = new TranspositionTable(2000003);
+		gameState = new GameState(zobristKeys);  //set up board for beginning of game
         moveGenerator = new MoveGeneration(constants);
+
 		initialized = true;
 	}
 }
@@ -83,32 +78,39 @@ public void init(){
 //--Decision Making Logic----------------------------------------------------------------------
 
 /**
- * Top-level decision controller which initiates the move selection process for black.
+ * Top-level decision controller which initiates the bestMove selection process for black.
  * 
  * This function is called by the main JoeFlowPlaysChess class when it is black's turn.
- * The function returns an int[] array which is the standard 32 bit move encoding, split into
- * a 5 or 6 element array. A standard move will return a 5 element array, which is just the move
- * information. If the move results in black winning, or a black stalemate, then the array returned
- * will have 6 elements.  The first 5 elements of the array are the move information, and the last 
- * element will be a flag signifying a black checkmate (0) or a stalemate caused by black's move (-1)
+ * The function returns an int[] array which is the standard 32 bit bestMove encoding, split into
+ * a 5 or 6 element array. A standard bestMove will return a 5 element array, which is just the bestMove
+ * information. If the bestMove results in black winning, or a black stalemate, then the array returned
+ * will have 6 elements.  The first 5 elements of the array are the bestMove information, and the last
+ * element will be a flag signifying a black checkmate (0) or a stalemate caused by black's bestMove (-1)
  * 
  * @param colour	Always BLACK, which is 1
- * @return 			array of ints containing move and game information
+ * @return 			array of ints containing bestMove and game information
  */
 
 public int[] selectMove(int colour){
 	return selectMove(colour, defaultDepth);
 }
+
 public int[] selectMove(int colour, int searchDepth){
 
 	int[] bestMove, moveInfo;
 
 	nodeCount = 0;
+
 	gameState.setTurn(colour);
 	bestMove = chooseBestMove(gameState, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
-	logger.info("Nodes pruned:" + nodesPruned + "  Node x Depth Score:"+nodexDepth);
-	nodexDepth = 0;
+
+	avgPrunage = ((moveCount*avgPrunage + ((float)nodesPruned / (nodeCount + nodesPruned))) / (moveCount + 1));
+
+	logger.info("Nodes pruned:" + nodesPruned);
+	logger.info("Running Average Prunage:" + avgPrunage*100 + "%");
 	nodesPruned = 0;
+	moveCount++;
+
 	return checkForMateAndUpdateBoard(searchDepth, bestMove);
 
 }
@@ -146,7 +148,7 @@ private int[] checkForMateAndUpdateBoard( int searchDepth, int[] bestMove) {
 	    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], -1};
 	}
 	
-	//Update game information now that the move has been completed
+	//Update game information now that the bestMove has been completed
 	updateGame(moveInfo, gameState);
 	
 	//Print some relevant infomation to the console
@@ -161,123 +163,129 @@ private int[] checkForMateAndUpdateBoard( int searchDepth, int[] bestMove) {
 }
 
 /**
- * Move Selection function which uses recursion to search the possible move space to a specified depth
+ * Move Selection function which uses recursion to search the possible bestMove space to a specified depth
  * 
  * This is the primary decision making function for the engine. It calls the generateAllMoves() function
- * to generate a list of every possible move, and then for each possible move a copy of the game state is 
- * updated with the results of the move, and then this function is called again from the perspective of the
+ * to generate a list of every possible bestMove, and then for each possible bestMove a copy of the game state is
+ * updated with the results of the bestMove, and then this function is called again from the perspective of the
  * opposing player and the process is repeated. This is done until a specified depth is reached (determined 
- * by the value of class field 'searchdepth' and then the board at that state is evaluated using an evaluation
+ * by the value of class field "searchdepth" and then the board at that state is evaluated using an evaluation
  * function. The results of the evaluation are returned through the recursion stack to the root function call
- * to decide the best move to make next.
+ * to decide the best bestMove to make next.
  * 
  * An alpha and beta score are used to keep track of the most positive (alpha) and most negative (beta) scores encountered
- * from moves previously searched in the search tree, which allows for pruning of the tree if the better move for the
+ * from moves previously searched in the search tree, which allows for pruning of the tree if the better bestMove for the
  * opposing player has already been determined and the tree currently being searched would not be selected by them.
  */
-private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, int[] movesToSearch){
+private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, int[] movesToSearch) {
 
-	int 	i;
-	int[] 	moves, moveScore, parsedMove;
-
-	int     colour = gState.getTurn();
-	boolean check = inCheck(colour, gState);
+	int i;
+	int[] moves, moveScore, parsedMove;
+	int colour = gState.getTurn();
 	boolean legal = true;
 
-	//moves = generateAndSortMoves(gState, movesToSearch, colour);
-	if (movesToSearch == null) {
-		moves = moveGenerator.generateAllMoves(colour, gState);
+
+	PositionEntry existingEntry = transpositionTable.getEntryIfExists(gState);
+	if (existingEntry != null) {
+		Integer existingValue = transpositionTable.getValueFromEntry(existingEntry, gState, depth, alpha, beta);
+		if (existingValue != null) {
+			//Use Transposition Table entry - no need to search tree
+			return new int[]{existingEntry.bestMove, existingValue};
+		} else {
+			moves = MoveSorter.sortMovesWithBestMove(moveGenerator.generateAllMoves(colour, gState), existingEntry.bestMove);
+		}
 	} else {
-		moves = movesToSearch;
+
+		moves = MoveSorter.sortMoves(moveGenerator.generateAllMoves(colour, gState));
 	}
 
-	int[] bestMove = new int[]{0, Integer.MAX_VALUE*(1-2*colour)};
 
-	for(i = 0; i < moves.length; i++){
-	    
-	    nodeCount++;
-	    GameState tState = gState.copy();
+	boolean check = inCheck(colour, gState);
+	int[] bestMove = new int[]{0, Integer.MAX_VALUE * (1 - 2 * colour)};
 
-	    parsedMove = Utils.parseMove(moves[i]);
-	    
-	    updateGame(parsedMove,tState);
-	    
-	    if(!check && Utils.isCastleMove(parsedMove, colour)){
-	        legal = isCastleLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
-	    }
-	    
-	    
-	    if(legal && !inCheck(colour, tState)){
-	        
-	        if(depth > 0){
-	        	//Call chooseBestMove on the resulting board position after move is made, from the opposing players view	
-	            tState.switchTurn();
-                int[] theirMove = chooseBestMove(tState,depth - 1, alpha, beta, null);
-	            moveScore = new int[]{moves[i], theirMove[1]};   
-	        }
-	        else{
-	        	//Evaluate board position if at the terminal depth
-	            moveScore = new int[]{moves[i], BoardEvaluation.evaluateGameScore(tState, moveGenerator)};
-	        }
+	for (i = 0; i < moves.length; i++) {
 
-	        
-	        if(colour == BLACK){
-	            
-	        	//A higher move score is beneficial for BLACK
-	            if(bestMove[1] < moveScore[1]){
+		nodeCount++;
+		GameState tState = gState.copy();
+
+		parsedMove = Utils.parseMove(moves[i]);
+
+		updateGame(parsedMove, tState);
+
+		if (!check && Utils.isCastleMove(parsedMove, colour)) {
+			legal = isCastleLegal(colour, tState, parsedMove[3] == Constants.queenSideCastleDestinationSquare[colour]);
+		}
+
+
+		if (legal && !inCheck(colour, tState)) {
+
+			if (depth > 0) {
+				//Call chooseBestMove on the resulting board position after bestMove is made, from the opposing players view
+				tState.switchTurn();
+				int[] theirMove = chooseBestMove(tState, depth - 1, alpha, beta, null);
+				moveScore = new int[]{moves[i], theirMove[1]};
+			} else {
+				//Evaluate board position if at the terminal depth
+				moveScore = new int[]{moves[i], BoardEvaluation.evaluateGameScore(tState, moveGenerator)};
+			}
+
+
+			if (colour == BLACK) {
+
+				//A higher bestMove score is beneficial for BLACK
+				if (moveScore[1] > bestMove[1]) {
 					bestMove = moveScore;
-	            }
-	            alpha = Math.max(alpha, bestMove[1]);
-	            
-	        }
-	        else{
+				}
 
-	            //A lower (possibly negative) game score is beneficial for WHITE
-	            if(bestMove[1] > moveScore[1]){
+				if (bestMove[1] > alpha) {
+					alpha = bestMove[1];
+
+					if (beta <= alpha) {
+						nodesPruned += (moves.length - i);
+						transpositionTable.put(gState, depth, beta, bestMove[0], NodeType.BETA);
+						return new int[]{bestMove[0], beta}; //Beta or alpha cut-off
+					}
+				}
+			} else {
+
+				//A lower (possibly negative) game score is beneficial for WHITE
+				if (moveScore[1] < bestMove[1]) {
 					bestMove = moveScore;
-	            } 
-	            beta = Math.min(beta, bestMove[1]);
-	        }
-	        
-	        if(beta < alpha){
-					nodesPruned += (moves.length - i);
-					nodexDepth +=  (moves.length - i)*(depth+1);
-	                break; //Beta or alpha cut-off
-	        }
-	    }
-	    legal = true;
+				}
+
+				if (bestMove[1] < beta) {
+					beta = bestMove[1];
+
+					if (beta <= alpha) {
+						nodesPruned += (moves.length - i);
+						transpositionTable.put(gState, depth, alpha, bestMove[0], NodeType.ALPHA);
+						return new int[]{bestMove[0], alpha}; //Beta or alpha cut-off
+					}
+				}
+			}
+		}
+		legal = true;
 	}
 
-	
-	if(bestMove[0] == 0) {
-	    //If the bestMove is 0, this means no moves for black are legal and it is either in checkmate or it is a stalemate
-	    if(check){
-	        bestMove = new int[]{-1, (-2*colour + 1)*1000000*depth}; //checkmate
-	    }
-	    else{
-	        bestMove = new int[]{-1, (2*colour - 1)*1000000*depth}; //stalemate
-	    }
+
+	if (bestMove[0] == 0) {
+		//If the bestMove is 0, this means no moves for black are legal and it is either in checkmate or it is a stalemate
+		if (check) {
+			bestMove = new int[]{-1, (-2 * colour + 1) * 1000000 * depth}; //checkmate
+		} else {
+			bestMove = new int[]{-1, (2 * colour - 1) * 1000000 * depth}; //stalemate
+		}
 	}
 
+	transpositionTable.put(gState, depth, bestMove[1], bestMove[0], NodeType.EXACT);
 	return bestMove;
 
 }
 
-	private int[] generateAndSortMoves(GameState gState, int[] movesToSearch, int colour) {
-		int[] moves;
-
-		if (movesToSearch == null) {
-			moves = moveGenerator.generateAllMoves(colour, gState);
-		} else {
-			moves = movesToSearch;
-		}
-		return Arrays.stream(moves).boxed().sorted(Comparator.comparingInt(a -> ((a << 4) >>> 28) - (a >>> 28))).mapToInt(i -> i).toArray();
-		//Arrays.stream(moves).boxed().sorted((a, b) ->  (((a << 4) >>> 28) - (a >>> 28)) - (((b << 4) >>> 28) - (b >>> 28))).mapToInt(i -> i).toArray();
-	}
 
 	/**
- * Accepts a move, and the object reference to the current game information,
- * and updates the game information based off the move
+ * Accepts a bestMove, and the object reference to the current game information,
+ * and updates the game information based off the bestMove
  * 
  * The game information is contained within three objects - the 12 element array
  * of piece bitboards, a 64 element int array representing the piece types on each
@@ -297,7 +305,7 @@ public void updateGame(int[] move, GameState state){
     int[] board = state.getBoard();
     byte flags = state.getFlags();
     
-    int colour = piece < 6 ? WHITE : BLACK;
+    int colour = piece <= 6 ? WHITE : BLACK;
 
     pieceBoards[piece] &= (~(1L << fromSq)); //Remove moving piece from old square
     board[fromSq] = empty;
@@ -352,7 +360,7 @@ public void updateGame(int[] move, GameState state){
             pieceBoards[capturedPiece] &= (~(1L << toSq)); //remove captured piece
     }
     
-    if((flags & 0b11110000) != 0){ //If castles are still possible, check if move removes castle eligibility
+    if((flags & 0b11110000) != 0){ //If castles are still possible, check if bestMove removes castle eligibility
         if(colour == WHITE){
             if(piece == wKing){
                 flags &= 0b00111111;
@@ -377,13 +385,13 @@ public void updateGame(int[] move, GameState state){
             } 
         }
     }
-    flags &= 0b11110000; // clear en-passant flags from last move
+    flags &= 0b11110000; // clear en-passant flags from last bestMove
     
     if((piece == wPawn || piece == bPawn) && Math.abs(toSq - fromSq) == 16){ //en passant possible
         flags = (byte) (flags | (toSq%8 << 1) | 1);
     }
-    
-    state.setFlags(flags);
+
+    state.updateZobristKeyAndFlags(move, flags);
     state.incrementMoveCount();
 }
 
@@ -397,7 +405,9 @@ public boolean inCheck(int colour, GameState state){
     int[] moves = moveGenerator.generateAllMoves(1 - colour, state);
 
     for(int move : moves){
-        if( ((move << 4) >>> 28) == (colour*6 + 5)) return true;
+        if( ((move << 4) >>> 28) == (colour*6 + 6)) {
+        	return true;
+		}
     }
     return false;
 }
@@ -459,7 +469,7 @@ public void parseFENAndUpdate(String fen){
 
 /**
  * Called by the user side class to update the chess engine game information once a user has made
- * a move
+ * a bestMove
  */
 public void makeMove(int[] oldPos, int[] newPos, int moveFlags){
 
@@ -487,6 +497,7 @@ updateGame(moveInfo, gameState);
 
 /**
  * Generate a complete list of legal moves for white
+ * TODO: WHITE CAN STILL CASTLE EVEN IF IN CHECK .... NOT GOOD
  */
 public int[] whiteLegalMoves(){
     
@@ -495,14 +506,18 @@ int[] whiteMoves, legalMoves, tempBoard;
 
 whiteMoves = moveGenerator.generateAllMoves(WHITE, gameState);
 
+
+
 for(int wmove : whiteMoves){
-    
+
+	
+
 	GameState tGameState = gameState.copy();
     
     updateGame(Utils.parseMove(wmove), tGameState);
     
-    if(!inCheck(WHITE, tGameState)){ //If move doesn't leave white in check
-        legalList.add(wmove);		 //then Add move
+    if(!inCheck(WHITE, tGameState)){ //If bestMove doesn't leave white in check
+        legalList.add(wmove);		 //then Add bestMove
     } 
 }
 

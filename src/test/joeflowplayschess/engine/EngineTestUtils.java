@@ -25,7 +25,7 @@ public class EngineTestUtils {
 
     public static int boardStringLengthLinux = 127;
 
-    public static List<Character> pieceMapping = Arrays.asList(new Character[]{'p', 'n', 'b', 'r', 'q', 'k', 'P', 'N', 'B', 'R', 'Q', 'K', ' ', ' ', '0'});
+    public static List<Character> pieceMapping = Arrays.asList(new Character[]{'0', 'p', 'n', 'b', 'r', 'q', 'k', 'P', 'N', 'B', 'R', 'Q', 'K'});
 
     public static int[] toGameBoard(String boardString) {
         int[] gameBoard = new int[64];
