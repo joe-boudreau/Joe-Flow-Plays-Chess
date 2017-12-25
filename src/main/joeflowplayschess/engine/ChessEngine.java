@@ -8,10 +8,6 @@ package joeflowplayschess.engine;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static joeflowplayschess.engine.Constants.*;
@@ -102,7 +98,13 @@ public int[] selectMove(int colour, int searchDepth){
 	nodeCount = 0;
 
 	gameState.setTurn(colour);
+	logger.info("Choosing move for " + (colour == 1 ? "BLACK" : "WHITE"));
 	bestMove = chooseBestMove(gameState, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
+
+	transpositionTable.setAllAncient();
+
+	logger.debug("Transposition Table number of entries:" + transpositionTable.tt.entrySet().size());
+
 
 	avgPrunage = ((moveCount*avgPrunage + ((float)nodesPruned / (nodeCount + nodesPruned))) / (moveCount + 1));
 
@@ -199,6 +201,7 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 		moves = MoveSorter.sortMoves(moveGenerator.generateAllMoves(colour, gState));
 	}
 
+	/*moves = MoveSorter.sortMoves(moveGenerator.generateAllMoves(colour, gState));*/
 
 	boolean check = inCheck(colour, gState);
 	int[] bestMove = new int[]{0, Integer.MAX_VALUE * (1 - 2 * colour)};
@@ -276,8 +279,10 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 			bestMove = new int[]{-1, (2 * colour - 1) * 1000000 * depth}; //stalemate
 		}
 	}
+	else{
+		transpositionTable.put(gState, depth, bestMove[1], bestMove[0], NodeType.EXACT);
+	}
 
-	transpositionTable.put(gState, depth, bestMove[1], bestMove[0], NodeType.EXACT);
 	return bestMove;
 
 }
@@ -292,7 +297,7 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
  * of the 64 squares, and then a byte for game flags
  * 
  */
-public void updateGame(int[] move, GameState state){
+private void updateGame(int[] move, GameState state){
     
     
     int piece =         move[0];
@@ -394,6 +399,16 @@ public void updateGame(int[] move, GameState state){
     state.updateZobristKeyAndFlags(move, flags);
     state.incrementMoveCount();
 }
+
+	/**
+	 * Used to update game from external move performed by another ChessEngine instance
+	 * (for when it plays itself)
+	 *
+	 * @param move
+	 */
+	public void updateGame(int[] move){
+		updateGame(move, gameState);
+	}
 
 /**
  * Checks if given colour is in check currently. Returns true if in check

@@ -50,7 +50,8 @@ import javax.swing.border.TitledBorder;
 public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
     
     //declarations
-    private ChessEngine JoeFlow;
+    private ChessEngine WhiteEngine;
+    private ChessEngine BlackEngine;
     private Container       pane;
     private JLabel          board;
     private JPanel          chessBoard;
@@ -117,8 +118,12 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
     public void initUI(){
   
         pane = getContentPane();
-        JoeFlow = new ChessEngine();
-        JoeFlow.init();
+        WhiteEngine = new ChessEngine();
+        WhiteEngine.init();
+
+        BlackEngine = new ChessEngine();
+        BlackEngine.init();
+
         chessBoard = setUpChessBoard();
         setUpInfoMsgPanel();
         setUpFooterPanel();
@@ -188,7 +193,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
         
     	
     	
-        int[] blackMove = JoeFlow.selectMove(BLACK, 3);
+        int[] blackMove = BlackEngine.selectMove(BLACK);
         // piece(4) | capturedPiece{4} | fromSq(8) | toSq(8) | flags(8)
         /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
                    bit 5: promotion flag
@@ -235,7 +240,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
         if((flags & moveFlagPromotion) != 0){ //pawn promoted
             
             int newPiece = flags & moveFlagPromotedPiece;
-            pieceToMove.setType(pieceTypes[newPiece]);
+            pieceToMove.setType(pieceTypes[newPiece - 1]);
         }
         
         else if((flags & moveFlagKingSideCastle) != 0){ //King side castle
@@ -261,7 +266,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
             boardSquares[toRow+1][toCol].setPiece(null);
         }
         
-        if(capturedPiece != 0xE){ //0xE == EMTPY (No piece)
+        if(capturedPiece != 0){ //0 == EMTPY (No piece)
             
             ChessPiece deadPiece = boardSquares[toRow][toCol].getPiece();
             addToTakenPieces(deadPiece.getColour(), deadPiece.getType()); //Add to piece capture history row
@@ -290,7 +295,9 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
         //turn on this bestMove visual indicators
         boardSquares[fromRow][fromCol].lightUp(BLACK);
         boardSquares[toRow][toCol].lightUp(BLACK);
-            
+
+        //inform the white engine
+        WhiteEngine.updateGame(blackMove);
     
     }
  
@@ -311,10 +318,8 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
      * 
      */
     public void makeWhiteMove(){
-        
-    	
-    	
-        int[] whiteMove = JoeFlow.selectMove(WHITE, 3);
+
+    	int[] whiteMove = WhiteEngine.selectMove(WHITE);
         // piece(4) | capturedPiece{4} | fromSq(8) | toSq(8) | flags(8)
         /* flags : bits 1-4: promoted piece type (Knight, Rook, Bishop, Queen)
                    bit 5: promotion flag
@@ -387,7 +392,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
             boardSquares[toRow-1][toCol].setPiece(null);
         }
         
-        if(capturedPiece != 0xE){ //0xE == EMTPY (No piece)
+        if(capturedPiece != 0){ //0 == EMTPY (No piece)
             
             ChessPiece deadPiece = boardSquares[toRow][toCol].getPiece();
             addToTakenPieces(deadPiece.getColour(), deadPiece.getType()); //Add to piece capture history row
@@ -416,7 +421,9 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
         //turn on this bestMove visual indicators
         boardSquares[fromRow][fromCol].lightUp(BLACK);
         boardSquares[toRow][toCol].lightUp(BLACK);
-            
+
+        //inform the black engine
+        BlackEngine.updateGame(whiteMove);
     
     }
     
@@ -890,7 +897,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     }
                     else{
                         //Update the chess engine with the bestMove information
-                        JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                        WhiteEngine.makeMove(oldPos, newPos, moveFlags);
                         
                         whiteTurn = false;
                         //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
@@ -935,7 +942,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     moveFlags = moveFlagPromotion | 4;
                     
                     //Update the chess engine with the bestMove information
-                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    WhiteEngine.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
                     //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
@@ -952,7 +959,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     moveFlags = moveFlagPromotion | 2;
                     
                     //Update the chess engine with the bestMove information
-                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    WhiteEngine.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
                     //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
@@ -968,7 +975,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     moveFlags = moveFlagPromotion | 3;
                     
                     //Update the chess engine with the bestMove information
-                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    WhiteEngine.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
                     //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())
@@ -984,7 +991,7 @@ public class JoeFlowWatchesHisEnginesPlayChess extends JFrame {
                     moveFlags = moveFlagPromotion | 1;
                     
                     //Update the chess engine with the bestMove information
-                    JoeFlow.makeMove(oldPos, newPos, moveFlags);
+                    WhiteEngine.makeMove(oldPos, newPos, moveFlags);
                     
                     whiteTurn = false;
                     //Notify the wait() lock in the main game controller (see: JoeFlowPlaysChess.startGame())

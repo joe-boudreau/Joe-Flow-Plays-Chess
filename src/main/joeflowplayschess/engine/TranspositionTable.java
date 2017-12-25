@@ -8,7 +8,7 @@ public class TranspositionTable {
 
     public enum NodeType {EXACT, ALPHA, BETA};
 
-    private final HashMap<Integer, PositionEntry> tt;
+    public final HashMap<Integer, PositionEntry> tt;
 
     public TranspositionTable(int size){
         TABLE_SIZE = size;
@@ -18,7 +18,7 @@ public class TranspositionTable {
     public void put(GameState state, int depth, int score, int bestMove, NodeType type){
 
         long zobrist = state.getZobristKey();
-        int index = (int) zobrist % TABLE_SIZE;
+        int index = (int) (zobrist >> 32) % TABLE_SIZE;
 
         if(tt.containsKey(index)){
             PositionEntry existingPosition = tt.get(index);
@@ -34,27 +34,34 @@ public class TranspositionTable {
     public PositionEntry getEntryIfExists(GameState state){
 
         long zobrist = state.getZobristKey();
-        int index = (int) zobrist % TABLE_SIZE;
+        int index = (int) (zobrist >> 32) % TABLE_SIZE;
 
-        return tt.get(index);
+        PositionEntry entry = tt.get(index);
+        if (entry != null && entry.zobrist == zobrist){
+            return tt.get(index);
+        }
+        else{
+            return null;
+        }
+
     }
 
     public Integer getValueFromEntry(PositionEntry entry, GameState state, int depth, int alpha, int beta){
 
         long zobrist = state.getZobristKey();
 
-        if(entry.zobrist == zobrist && entry.depth >= depth) {
+        if(entry.depth >= depth) {
 
-            switch (entry.type) {
+            switch (entry.type){
 
                 case EXACT:
                     return entry.evalScore;
-                case BETA:
+                case ALPHA:
                     if (entry.evalScore >= beta) {
                         return beta;
                     }
                     break;
-                case ALPHA:
+                case BETA:
                     if (entry.evalScore <= alpha) {
                         return alpha;
                     }
