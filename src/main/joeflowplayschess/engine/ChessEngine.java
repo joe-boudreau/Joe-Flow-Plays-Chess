@@ -42,15 +42,15 @@ public class ChessEngine {
 	private MoveGeneration moveGenerator;
 	private ZobristKeys zobristKeys;
 	private TranspositionTable transpositionTable;
-	private int nodesPruned = 0;
-	private float avgPrunage = 0;
-	private int moveCount = 0;
 
 	//declarations + initializations
 	private static int defaultDepth = 	    5;
 	private boolean debugMode = 			true;
 	private boolean initialized =			false;
 	private boolean firstgame = 			true;
+	private int nodesPruned = 				0;
+	private float avgPrunage =			 	0;
+	private int moveCount = 				0;
 
 public ChessEngine(){}
 
@@ -62,7 +62,7 @@ public void init(){
 			firstgame = false;
 		}
 		zobristKeys = new ZobristKeys();
-		transpositionTable = new TranspositionTable(2000003);
+		transpositionTable = new TranspositionTable(5000003);
 		gameState = new GameState(zobristKeys);  //set up board for beginning of game
         moveGenerator = new MoveGeneration(constants);
 

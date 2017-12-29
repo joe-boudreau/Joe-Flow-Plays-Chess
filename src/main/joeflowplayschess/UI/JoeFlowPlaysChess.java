@@ -8,8 +8,7 @@ package joeflowplayschess.UI;
 /*
 |   Joe Flow Plays Chess
 |   This package contains chess engine along with an interface to play against
-|   the engine, named "Joe Flow". Developed over the course of November 2016 to
-|   March 2017. Features a game board with drag-and-drop pieces, bestMove legality
+|   the engine, named "Joe Flow". Features a game board with drag-and-drop pieces, bestMove legality
 |   checking for both user and computer, and a visual piece capture history table.
 |   User always plays as white, and therefore always has first bestMove.
 |   
@@ -35,12 +34,9 @@ package joeflowplayschess.UI;
 |   
 |   The main goal of this project was to make a chess engine smart enough to beat
 |   its creator. This goal was realized.   
-|   
-|   Version: 1.0
-|   Date: 04/03/17
+|
 |   
 */
-
 
 import joeflowplayschess.engine.ChessEngine;
 import org.apache.log4j.Logger;
@@ -164,7 +160,7 @@ public class JoeFlowPlaysChess extends JFrame {
         whiteTurn = true;
         
         while(!(whiteCheckmate | blackCheckmate | draw)){
-        logger.info("White to bestMove; Turn: " + turn + " Ply: " + ply);
+        logger.info("White to move; Turn: " + turn + " Ply: " + ply);
         synchronized(LOCK) {
             while(whiteTurn) {
 
@@ -179,7 +175,7 @@ public class JoeFlowPlaysChess extends JFrame {
         enPassantFlag = false;
         ply++;
 
-        logger.info("Black to bestMove; Turn: " + turn + " Ply: " + ply);
+        logger.info("Black to move; Turn: " + turn + " Ply: " + ply);
         makeBlackMove();
         whiteTurn = true;
 
