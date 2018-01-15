@@ -8,7 +8,6 @@ package joeflowplayschess.engine;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 import static joeflowplayschess.engine.Constants.*;
 import static joeflowplayschess.engine.TranspositionTable.NodeType;
@@ -42,12 +41,11 @@ public class ChessEngine {
 	private MoveGeneration moveGenerator;
 	private ZobristKeys zobristKeys;
 	private TranspositionTable transpositionTable;
+	private int globalRootDepth;
 
 	//declarations + initializations
-	private static int defaultDepth = 	    5;
 	private boolean debugMode = 			true;
 	private boolean initialized =			false;
-	private boolean firstgame = 			true;
 	private int nodesPruned = 				0;
 	private float avgPrunage =			 	0;
 	private int moveCount = 				0;
@@ -57,10 +55,7 @@ public ChessEngine(){}
 public void init(){
 	
 	if(!initialized){
-		if(firstgame){
-			constants = Constants.init(this.getClass().getClassLoader());
-			firstgame = false;
-		}
+		constants = Constants.init(this.getClass().getClassLoader());
 		zobristKeys = new ZobristKeys();
 		transpositionTable = new TranspositionTable(5000003);
 		gameState = new GameState(zobristKeys);  //set up board for beginning of game
@@ -86,12 +81,7 @@ public void init(){
  * @param colour	Always BLACK, which is 1
  * @return 			array of ints containing bestMove and game information
  */
-
 public int[] selectMove(int colour){
-	return selectMove(colour, defaultDepth);
-}
-
-public int[] selectMove(int colour, int searchDepth){
 
 	int[] bestMove, moveInfo;
 
@@ -99,12 +89,9 @@ public int[] selectMove(int colour, int searchDepth){
 
 	gameState.setTurn(colour);
 	logger.info("Choosing move for " + (colour == 1 ? "BLACK" : "WHITE"));
-	bestMove = chooseBestMove(gameState, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
+	bestMove = findBestMoveWithIterativeDepthSearch();
 
 	transpositionTable.setAllAncient();
-
-	logger.debug("Transposition Table number of entries:" + transpositionTable.tt.entrySet().size());
-
 
 	avgPrunage = ((moveCount*avgPrunage + ((float)nodesPruned / (nodeCount + nodesPruned))) / (moveCount + 1));
 
@@ -113,56 +100,98 @@ public int[] selectMove(int colour, int searchDepth){
 	nodesPruned = 0;
 	moveCount++;
 
-	return checkForMateAndUpdateBoard(searchDepth, bestMove);
+	return checkForMateAndUpdateBoard(bestMove);
 
 }
 
-public int[] selectMoveRestricted(String[] FENMoves){
+/*public int[] selectMoveRestricted(String[] FENMoves){
 
 	int[] bestMove, moveInfo;
-	
+
 	nodeCount = 0;
-	
-	bestMove = chooseBestMove(gameState, defaultDepth, Integer.MIN_VALUE, Integer.MAX_VALUE,
-							  Stream.of(FENMoves).map(s -> UCI.convertFENtoMoveInt(gameState, s)).mapToInt(Integer::intValue).toArray());
-	
+	//TODO: Fix later with new method
+	*//*
+	bestMove = searchMoves(gameState, defaultDepth, Integer.MIN_VALUE, Integer.MAX_VALUE,
+							  Stream.of(FENMoves).map(s -> UCI.convertFENtoMoveInt(gameState, s)).mapToInt(Integer::intValue).toArray());*//*
+
 	return checkForMateAndUpdateBoard(defaultDepth, bestMove);
 
-}
+}*/
 
-private int[] checkForMateAndUpdateBoard( int searchDepth, int[] bestMove) {
-	int colour = gameState.getTurn();
-    int[] moveInfo;
-	moveInfo = Utils.parseMove(bestMove[0]);
-	
-	//Special cases
-	if(bestMove[0] == -1){
-	    //moving player has lost
-	    return bestMove;
+	private int[] checkForMateAndUpdateBoard(int[] bestMove) {
+		int colour = gameState.getTurn();
+		int[] moveInfo;
+		moveInfo = Utils.parseMove(bestMove[0]);
+
+		//Special cases
+		if(bestMove[0] == -1){
+			//moving player has lost
+			return bestMove;
+		}
+		else if(bestMove[1] == (2*colour - 1)*(globalRootDepth-1)*1000000){
+			//moving player wins
+			return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], 0};
+		}
+
+		else if(bestMove[1] == (2*colour - 1)*(globalRootDepth-1)*-1000000){
+			//moving player forcing draw
+			return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], -1};
+		}
+
+		//Update game information now that the bestMove has been completed
+		updateGame(moveInfo, gameState);
+
+		//Print some relevant information to the log
+		if(debugMode) {
+			logger.info("Nodes traversed: " + nodeCount);
+			logger.info("Best Move Score For Black: " + bestMove[1]);
+			logger.info("Game Flags: " + Integer.toBinaryString(Byte.toUnsignedInt(gameState.getFlags())));
+			logger.info(gameState.toString());
+			transpositionTable.printInfo();
+		}
+
+		return moveInfo;
 	}
-	else if(bestMove[1] == (2*colour - 1)*(searchDepth-1)*1000000){
-	    //moving player wins
-	    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], 0};
+
+	private int[] findBestMoveWithIterativeDepthSearch() {
+		int[] bestMove;
+		int searchDepth = 0;
+		int[][] rootNodeMoves = moveGenerator.generateAllMovesWithMoveScorePlaceholders(gameState.getTurn(), gameState);
+		MoveSorter.sortMovesByMoveHeuristics(rootNodeMoves);
+
+		while (searchDepth < 5){
+			searchMoves(gameState, rootNodeMoves, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			MoveSorter.sortMovesByMoveScore(rootNodeMoves);
+			Utils.clearMoveScoresFromMoveArray(rootNodeMoves);
+			searchDepth++;
+		}
+
+		bestMove = searchMoves(gameState, rootNodeMoves, searchDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+		return bestMove;
 	}
-	
-	else if(bestMove[1] == (2*colour - 1)*(searchDepth-1)*-1000000){
-	    //moving player forcing draw
-	    return new int[]{moveInfo[0], moveInfo[1], moveInfo[2], moveInfo[3], moveInfo[4], -1};
+
+	private int[] findBestMoveOrUseTranspositionTable(GameState gState, int depth, int alpha, int beta) {
+		int[][] moves;
+		int colour = gState.getTurn();
+
+		PositionEntry existingEntry = transpositionTable.getEntryIfExists(gState);
+		if (existingEntry != null) {
+			Integer existingValue = transpositionTable.getValueFromEntry(existingEntry, gState, depth, alpha, beta);
+			if (existingValue != null) {
+				//Use Transposition Table entry - no need to search tree
+				return new int[]{existingEntry.bestMove, existingValue};
+			} else {
+				moves = MoveSorter.sortMovesWithBestMove(moveGenerator.generateAllMovesWithMoveScorePlaceholders(colour, gState), existingEntry.bestMove);
+			}
+		} else {
+			moves = moveGenerator.generateAllMovesWithMoveScorePlaceholders(colour, gState);
+			MoveSorter.sortMovesByMoveHeuristics(moves);
+		}
+
+		return searchMoves(gState, moves, depth, alpha, beta);
 	}
-	
-	//Update game information now that the bestMove has been completed
-	updateGame(moveInfo, gameState);
-	
-	//Print some relevant infomation to the console
-	if(debugMode) {
-		logger.info("Nodes traversed: " + nodeCount);
-		logger.info("Best Move Score For Black: " + bestMove[1]);
-		logger.info("Game Flags: " + Integer.toBinaryString(Byte.toUnsignedInt(gameState.getFlags())));
-		logger.info(gameState.toString());
-	}
-	
-	return moveInfo;
-}
+
 
 /**
  * Move Selection function which uses recursion to search the possible bestMove space to a specified depth
@@ -179,29 +208,12 @@ private int[] checkForMateAndUpdateBoard( int searchDepth, int[] bestMove) {
  * from moves previously searched in the search tree, which allows for pruning of the tree if the better bestMove for the
  * opposing player has already been determined and the tree currently being searched would not be selected by them.
  */
-private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, int[] movesToSearch) {
+private int[] searchMoves(GameState gState, int[][] moves, int depth, int alpha, int beta) {
 
 	int i;
-	int[] moves, moveScore, parsedMove;
+	int[] moveScore, parsedMove;
 	int colour = gState.getTurn();
 	boolean legal = true;
-
-
-	PositionEntry existingEntry = transpositionTable.getEntryIfExists(gState);
-	if (existingEntry != null) {
-		Integer existingValue = transpositionTable.getValueFromEntry(existingEntry, gState, depth, alpha, beta);
-		if (existingValue != null) {
-			//Use Transposition Table entry - no need to search tree
-			return new int[]{existingEntry.bestMove, existingValue};
-		} else {
-			moves = MoveSorter.sortMovesWithBestMove(moveGenerator.generateAllMoves(colour, gState), existingEntry.bestMove);
-		}
-	} else {
-
-		moves = MoveSorter.sortMoves(moveGenerator.generateAllMoves(colour, gState));
-	}
-
-	/*moves = MoveSorter.sortMoves(moveGenerator.generateAllMoves(colour, gState));*/
 
 	boolean check = inCheck(colour, gState);
 	int[] bestMove = new int[]{0, Integer.MAX_VALUE * (1 - 2 * colour)};
@@ -211,7 +223,7 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 		nodeCount++;
 		GameState tState = gState.copy();
 
-		parsedMove = Utils.parseMove(moves[i]);
+		parsedMove = Utils.parseMove(moves[i][0]);
 
 		updateGame(parsedMove, tState);
 
@@ -223,21 +235,20 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 		if (legal && !inCheck(colour, tState)) {
 
 			if (depth > 0) {
-				//Call chooseBestMove on the resulting board position after bestMove is made, from the opposing players view
+				//Call searchMoves on the resulting board position after bestMove is made, from the opposing players view
 				tState.switchTurn();
-				int[] theirMove = chooseBestMove(tState, depth - 1, alpha, beta, null);
-				moveScore = new int[]{moves[i], theirMove[1]};
+				moves[i][1] = findBestMoveOrUseTranspositionTable(tState, depth - 1, alpha, beta)[1];
 			} else {
 				//Evaluate board position if at the terminal depth
-				moveScore = new int[]{moves[i], BoardEvaluation.evaluateGameScore(tState, moveGenerator)};
+				moves[i][1] = BoardEvaluation.evaluateGameScore(tState, moveGenerator);
 			}
 
 
 			if (colour == BLACK) {
 
 				//A higher bestMove score is beneficial for BLACK
-				if (moveScore[1] > bestMove[1]) {
-					bestMove = moveScore;
+				if (moves[i][1] > bestMove[1]) {
+					bestMove = moves[i];
 				}
 
 				if (bestMove[1] > alpha) {
@@ -252,8 +263,8 @@ private int[] chooseBestMove(GameState gState, int depth, int alpha, int beta, i
 			} else {
 
 				//A lower (possibly negative) game score is beneficial for WHITE
-				if (moveScore[1] < bestMove[1]) {
-					bestMove = moveScore;
+				if (moves[i][1] < bestMove[1]) {
+					bestMove = moves[i];
 				}
 
 				if (bestMove[1] < beta) {

@@ -13,6 +13,7 @@ public class GameStateTest{
     private byte initialGameFlags;
     private int[] initialGameBoard;
     private GameState initialGameState;
+    private ZobristKeys zobristKeys = new ZobristKeys();
 
     @Before
     public void setup() throws IOException {
@@ -20,13 +21,13 @@ public class GameStateTest{
                                         BLACK_KINGSIDE_CASTLE | BLACK_QUEENSIDE_CASTLE);
         String boardStr = EngineTestUtils.loadBoardString("start.board");
         initialGameBoard = EngineTestUtils.toGameBoard(boardStr);
-        initialGameState = new GameState(initialGameFlags, initialGameBoard, WHITE, 0);
+        initialGameState = new GameState(initialGameFlags, initialGameBoard, WHITE, 0, 0, zobristKeys);
     }
 
     @Test
     public void GameState_Initial_ReturnStartBoard() {
 
-        GameState gameState = new GameState();
+        GameState gameState = new GameState(zobristKeys);
 
         assertEquals(initialGameState, gameState);
 

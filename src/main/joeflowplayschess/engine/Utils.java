@@ -59,4 +59,10 @@ public class Utils {
     public static int pieceNumToColour(int pieceNum){
         return (pieceNum - 1) / 6;
     }
+
+    public static void clearMoveScoresFromMoveArray(int[][] moves){
+        for(int[] move : moves){
+            move[1] = 0;
+        }
+    }
 }
